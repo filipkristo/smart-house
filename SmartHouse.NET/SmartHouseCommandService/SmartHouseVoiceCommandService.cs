@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SmartHouse.UWPLib.BLL;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,7 @@ using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources.Core;
 using Windows.ApplicationModel.VoiceCommands;
 
-namespace SmartHouseCommandService
+namespace SmartHouse.UWPClient.VoiceCommands
 {
     public sealed class SmartHouseVoiceCommandService : IBackgroundTask
     {
@@ -27,21 +29,6 @@ namespace SmartHouseCommandService
         /// Background tasks can run for a maximum of 30 seconds.
         /// </summary>
         BackgroundTaskDeferral serviceDeferral;
-
-        /// <summary>
-        /// ResourceMap containing localized strings for display in Cortana.
-        /// </summary>
-        ResourceMap cortanaResourceMap;
-
-        /// <summary>
-        /// The context for localized strings.
-        /// </summary>
-        ResourceContext cortanaContext;
-
-        /// <summary>
-        /// Get globalization-aware date formats.
-        /// </summary>
-        DateTimeFormatInfo dateFormatInfo;
 
         /// <summary>
         /// Background task entrypoint. Voice Commands using the <VoiceCommandService Target="...">
@@ -64,8 +51,9 @@ namespace SmartHouseCommandService
         /// </summary>
         /// <param name="taskInstance">Connection to the hosting background service process.</param>
         /// 
-        public void Run(IBackgroundTaskInstance taskInstance)
+        public async void Run(IBackgroundTaskInstance taskInstance)
         {
+            Debug.WriteLine("Starting backgruond task...");
             serviceDeferral = taskInstance.GetDeferral();
 
             // Register to receive an event if Cortana dismisses the background task. This will
@@ -75,19 +63,10 @@ namespace SmartHouseCommandService
 
             var triggerDetails = taskInstance.TriggerDetails as AppServiceTriggerDetails;
 
-            // Load localized resources for strings sent to Cortana to be displayed to the user.
-            cortanaResourceMap = ResourceManager.Current.MainResourceMap.GetSubtree("Resources");
-
-            // Select the system language, which is what Cortana should be running as.
-            cortanaContext = ResourceContext.GetForViewIndependentUse();
-
-            // Get the currently used system date format
-            dateFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
-
             // This should match the uap:AppService and VoiceCommandService references from the 
             // package manifest and VCD files, respectively. Make sure we've been launched by
             // a Cortana Voice Command.
-            if (triggerDetails != null && triggerDetails.Name == "AdventureWorksVoiceCommandService")
+            if (triggerDetails != null && triggerDetails.Name == nameof(SmartHouseVoiceCommandService))
             {
                 try
                 {
@@ -96,37 +75,64 @@ namespace SmartHouseCommandService
                             triggerDetails);
 
                     voiceServiceConnection.VoiceCommandCompleted += OnVoiceCommandCompleted;
+                    
+                    VoiceCommand voiceCommand = await voiceServiceConnection.GetVoiceCommandAsync();
 
-                    // GetVoiceCommandAsync establishes initial connection to Cortana, and must be called prior to any 
-                    // messages sent to Cortana. Attempting to use ReportSuccessAsync, ReportProgressAsync, etc
-                    // prior to calling this will produce undefined behavior.
-
-                    //VoiceCommand voiceCommand = await voiceServiceConnection.GetVoiceCommandAsync();
-
-                    //// Depending on the operation (defined in AdventureWorks:AdventureWorksCommands.xml)
-                    //// perform the appropriate command.
-                    //switch (voiceCommand.CommandName)
-                    //{
-                    //    case "whenIsTripToDestination":
-                    //        var destination = voiceCommand.Properties["destination"][0];
-                    //        await SendCompletionMessageForDestination(destination);
-                    //        break;
-                    //    case "cancelTripToDestination":
-                    //        var cancelDestination = voiceCommand.Properties["destination"][0];
-                    //        await SendCompletionMessageForCancellation(cancelDestination);
-                    //        break;
-                    //    default:
-                    //        // As with app activation VCDs, we need to handle the possibility that
-                    //        // an app update may remove a voice command that is still registered.
-                    //        // This can happen if the user hasn't run an app since an update.
-                    //        LaunchAppInForeground();
-                    //        break;
-                    //}
+                    // Depending on the operation (defined in AdventureWorks:AdventureWorksCommands.xml)
+                    // perform the appropriate command.
+                    switch (voiceCommand.CommandName)
+                    {
+                        case "pandoraCommands":
+                            var command = voiceCommand.Properties["command"][0];
+                            await PandoraCommands(command);
+                            break;                        
+                        default:
+                            // As with app activation VCDs, we need to handle the possibility that
+                            // an app update may remove a voice command that is still registered.
+                            // This can happen if the user hasn't run an app since an update.
+                            LaunchAppInForeground();
+                            break;
+                    }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("Handling Voice Command failed " + ex.ToString());
                 }
+            }
+        }
+
+        private async Task PandoraCommands(string command)
+        {
+            var pandora = new PandoraCommand();
+
+            switch (command)
+            {
+                case "Play":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
+                    break;
+                case "Stop":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
+                    break;
+                case "Next":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Next);
+                    break;
+                case "Volume up":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolUp);
+                    break;
+                case "Volume down":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolDown);
+                    break;
+                case "Thumb up":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbUp);
+                    break;
+                case "Thumb down":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbDown);
+                    break;
+                case "Tired of":
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Tired);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -137,7 +143,7 @@ namespace SmartHouseCommandService
         private async void LaunchAppInForeground()
         {
             var userMessage = new VoiceCommandUserMessage();
-            userMessage.SpokenMessage = cortanaResourceMap.GetValue("LaunchingAdventureWorks", cortanaContext).ValueAsString;
+            userMessage.SpokenMessage = "Launcing Smart House Application";
 
             var response = VoiceCommandResponse.CreateResponse(userMessage);
 

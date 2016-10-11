@@ -7,7 +7,7 @@
     <ProjectGuid>{FC96DE58-0B41-4996-8030-84BF5684B4A0}</ProjectGuid>
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SmartHouseCommandService</RootNamespace>
+    <RootNamespace>SmartHouse.UWPClient.VoiceCommands</RootNamespace>
     <AssemblyName>SmartHouseCommandService</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>

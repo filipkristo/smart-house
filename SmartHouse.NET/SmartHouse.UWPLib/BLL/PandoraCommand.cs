@@ -10,12 +10,12 @@ namespace SmartHouse.UWPLib.BLL
 {
     public class PandoraCommand
     {
-        public void Run(Commands command)
+        public async Task Run(Commands command)
         {
             using (var client = new HttpClient())
             {
                 var uri = $"http://10.110.166.90/player/pandoraApi?q={command}";
-                var json = client.GetStringAsync(uri).Result;
+                var json = await client.GetStringAsync(uri);
             }
         }
     }
