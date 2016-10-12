@@ -1,26 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">  
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
   <CommandSet xml:lang="en-us" Name="SmartHouseCommandSet_en-us">
     <AppName> Smart House </AppName>
     <Example> play current song </Example>
 
     <Command Name="pandoraCommands">
       <Example> play current song </Example>
-      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {command} current song</ListenFor>      
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {command} [current song]</ListenFor>
       <Feedback> Starting to {command} current song</Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
-    </Command>    
+    </Command>
 
     <PhraseList Label="command">
       <Item>Play</Item>
       <Item>Stop</Item>
       <Item>Next</Item>
       <Item>Volume up</Item>
-      <Item>Volume down</Item>      
+      <Item>Volume down</Item>
       <Item>Thumb up</Item>
       <Item>Thumb down</Item>
       <Item>Tired of</Item>
-    </PhraseList>    
+    </PhraseList>
+  
   </CommandSet>
-    
+
 </VoiceCommands>

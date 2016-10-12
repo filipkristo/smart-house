@@ -78,7 +78,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     
                     VoiceCommand voiceCommand = await voiceServiceConnection.GetVoiceCommandAsync();
 
-                    // Depending on the operation (defined in AdventureWorks:AdventureWorksCommands.xml)
+                    // Depending on the operation (defined in SmartHouse:SmartHouseCommands.xml)
                     // perform the appropriate command.
                     switch (voiceCommand.CommandName)
                     {
@@ -96,44 +96,74 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 }
                 catch (Exception ex)
                 {
+                    await CompleteMessageError(ex.Message);
                     System.Diagnostics.Debug.WriteLine("Handling Voice Command failed " + ex.ToString());
                 }
             }
         }
 
         private async Task PandoraCommands(string command)
-        {
+        {            
             var pandora = new PandoraCommand();
+
+            await ShowProgressScreen($"Starting to {command} song");
 
             switch (command)
             {
                 case "Play":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 case "Stop":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 case "Next":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Next);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 case "Volume up":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolUp);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 case "Volume down":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolDown);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 case "Thumb up":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbUp);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 case "Thumb down":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbDown);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 case "Tired of":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Tired);
+                    await CompleteMessage("Command send Successfully");
                     break;
                 default:
+                    LaunchAppInForeground();
                     break;
             }
+        }
+
+        private async Task CompleteMessage(string message)
+        {
+            // Provide a completion message to the user.
+            var userMessage = new VoiceCommandUserMessage();            
+            userMessage.DisplayMessage = userMessage.SpokenMessage = message;
+            var response = VoiceCommandResponse.CreateResponse(userMessage);
+            await voiceServiceConnection.ReportSuccessAsync(response);
+        }
+
+        private async Task CompleteMessageError(string message)
+        {
+            // Provide a completion message to the user.
+            var userMessage = new VoiceCommandUserMessage();
+            userMessage.DisplayMessage = userMessage.SpokenMessage = $"Error message: {message}";
+            var response = VoiceCommandResponse.CreateResponse(userMessage);
+            await voiceServiceConnection.ReportSuccessAsync(response);
         }
 
         /// <summary>
@@ -146,10 +176,25 @@ namespace SmartHouse.UWPClient.VoiceCommands
             userMessage.SpokenMessage = "Launcing Smart House Application";
 
             var response = VoiceCommandResponse.CreateResponse(userMessage);
-
             response.AppLaunchArgument = "";
 
             await voiceServiceConnection.RequestAppLaunchAsync(response);
+        }
+
+        /// <summary>
+        /// Show a progress screen. These should be posted at least every 5 seconds for a 
+        /// long-running operation, such as accessing network resources over a mobile 
+        /// carrier network.
+        /// </summary>
+        /// <param name="message">The message to display, relating to the task being performed.</param>
+        /// <returns></returns>
+        private async Task ShowProgressScreen(string message)
+        {
+            var userProgressMessage = new VoiceCommandUserMessage();
+            userProgressMessage.DisplayMessage = userProgressMessage.SpokenMessage = message;
+
+            VoiceCommandResponse response = VoiceCommandResponse.CreateResponse(userProgressMessage);
+            await voiceServiceConnection.ReportProgressAsync(response);
         }
 
         /// <summary>

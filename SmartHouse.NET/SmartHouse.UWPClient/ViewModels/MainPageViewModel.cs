@@ -12,7 +12,7 @@ namespace SmartHouse.UWPClient.ViewModels
     public class MainPageViewModel : ViewModelBase
     {
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
-        {
+        {            
             await Task.CompletedTask;
         }        
     }

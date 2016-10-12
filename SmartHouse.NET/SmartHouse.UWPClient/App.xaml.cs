@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -21,18 +22,26 @@ namespace SmartHouse.UWPClient
 
         public override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
-            var url = new Uri("ms-appx:///SmartHouseCommands.xml");
-            var file = await StorageFile.GetFileFromApplicationUriAsync(url);
-            await VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(file);
+            try
+            {
+                Debug.WriteLine("Initialize Cortana file");
+
+                var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"SmartHouseCommands.xml");
+                await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
+
+                Debug.WriteLine("Initialized Cortana file");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed initialized Cortana file: {ex.Message}");
+            }
+
+            await Task.CompletedTask;
         }        
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {            
-            NavigationService.Navigate(typeof(Views.MainPage));
-
-            var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"SmartHouseCommands.xml");
-            await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
-
+            NavigationService.Navigate(typeof(Views.MainPage));            
             await Task.CompletedTask;            
         }
         

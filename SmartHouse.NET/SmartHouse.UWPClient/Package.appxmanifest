@@ -8,7 +8,7 @@
     <Logo>images\NewStoreLogo.png</Logo>
   </Properties>
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.10586.0" MaxVersionTested="10.0.14393.0" />
   </Dependencies>
   <Resources>
     <Resource Language="x-generate" />
@@ -17,8 +17,11 @@
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="SmartHouse.UWPClient.App">
       <uap:VisualElements DisplayName="Smart House" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png" Description="Sample" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png" ShortName="Smart House" Square310x310Logo="images\Square310x310Logo.png" Square71x71Logo="images\Square71x71Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="wide310x150Logo" />
+          </uap:ShowNameOnTiles>
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="green" />
       </uap:VisualElements>
       <Extensions>
         <uap:Extension Category="windows.personalAssistantLaunch" />
