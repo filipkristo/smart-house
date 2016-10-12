@@ -1,10 +1,12 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Template10.Controls;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.VoiceCommands;
 using Windows.Storage;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 namespace SmartHouse.UWPClient
@@ -22,6 +24,20 @@ namespace SmartHouse.UWPClient
 
         public override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
+            if (Window.Current.Content as ModalDialog == null)
+            {
+                // create a new frame 
+                var nav = NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
+
+                // create modal root
+                Window.Current.Content = new ModalDialog
+                {
+                    DisableBackButtonWhenModal = true,
+                    Content = new Views.Shell(nav),
+                    ModalContent = new Views.Busy(),
+                };
+            }                        
+
             try
             {
                 Debug.WriteLine("Initialize Cortana file");
@@ -35,8 +51,7 @@ namespace SmartHouse.UWPClient
             {
                 Debug.WriteLine($"Failed initialized Cortana file: {ex.Message}");
             }
-
-            await Task.CompletedTask;
+            
         }        
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)

@@ -14,7 +14,7 @@ namespace SmartHouse.UWPLib.BLL
         {
             using (var client = new HttpClient())
             {
-                var uri = $"http://10.110.166.90/player/pandoraApi?q={command}";
+                var uri = $"http://10.110.166.90/player/pandoraApi.php?q={command.ToString()}";
                 var json = await client.GetStringAsync(uri);
             }
         }

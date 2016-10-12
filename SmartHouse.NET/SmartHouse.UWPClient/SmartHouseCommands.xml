@@ -5,8 +5,8 @@
     <Example> play current song </Example>
 
     <Command Name="pandoraCommands">
-      <Example> play current song </Example>
-      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {command} [current song]</ListenFor>
+      <Example> Smart House play current song </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {command} [current][this][song]</ListenFor>
       <Feedback> Starting to {command} current song</Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
