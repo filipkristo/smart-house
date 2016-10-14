@@ -5,11 +5,11 @@ using SmartHouse.Lib;
 namespace SmartHouse.WebApiMono
 {
 	[RoutePrefix("api/Pandora")]
-	public class PandoraController : ApiController
+	public class PandoraController : BaseController
 	{
 		private PandoraCommand command;
 
-		public PandoraController()
+		public PandoraController(ISettingsService service) : base(service)
 		{
 			command = new PandoraCommand();
 		}

@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Net;
+using log4net;
 using Microsoft.Owin.Hosting;
 
 namespace SmartHouse.WebApiMono
 {
-	class MainClass
+	public class MainClass
 	{
+		public static readonly ILog Log = LogManager.GetLogger(typeof(MainClass));
+
+		public static String SslPort { get; private set; } = "5001";
+		public static String SslUrl => $"https://*:{SslPort}";
+
 		public static String Port { get; private set; } = "5000";
 		public static String Url => $"http://*:{Port}";
 
@@ -13,6 +19,12 @@ namespace SmartHouse.WebApiMono
 		{
 			if (args.Length > 0)
 				Port = args[0];
+
+			if (args.Length > 1)
+				SslPort = args[1];
+
+			log4net.Config.XmlConfigurator.Configure();
+			Log.Info("Application_Start");
 
 			StartSelfHosting();
 			Console.ReadLine();
@@ -23,20 +35,20 @@ namespace SmartHouse.WebApiMono
 			try
 			{
 				ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, error) =>
-				{
-					// Ignore errors
+				{					
 					return true;
 				};
+
 				ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
 				var Server = WebApp.Start<SelfhostStartup>(Url);
-
 				var message = $"Started self hosting at {Url}.";
-				Console.WriteLine(message);
+				Log.Info(message);
+
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Exception: {ex.Message}");
+				Log.Error($"Exception StartSelfHosting", ex);
 			}
 		}
 	}

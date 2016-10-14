@@ -2,9 +2,11 @@
 using System.IO;
 using System.Reflection;
 using System.Web.Http;
+using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
+using SmartHouse.Lib;
 using Swashbuckle.Application;
 
 namespace SmartHouse.WebApiMono
@@ -24,8 +26,18 @@ namespace SmartHouse.WebApiMono
 				defaults: new { id = RouteParameter.Optional }
 			);
 
-			config.MessageHandlers.Add(new MessageLoggingHandler());
+			var unity = new UnityContainer();
+			unity.RegisterType<BaseController>();
+			unity.RegisterType<PandoraCommand>();
+			unity.RegisterType<SmartHouseController>();
+			unity.RegisterType<UtilController>();
+			unity.RegisterType<SettingsController>();
 
+			unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
+
+			config.DependencyResolver = new UnityResolver(unity);
+
+			config.MessageHandlers.Add(new MessageLoggingHandler());
 			config.Filters.Add(new ExceptionFilter());
 
 			var formatters = config.Formatters;
@@ -39,10 +51,10 @@ namespace SmartHouse.WebApiMono
 			config.EnableSwagger(c =>
 					{
 						c.SingleApiVersion("1.0.0", "Smart House REST API")
-						.Description("Web api for Smart house")
+				         .Description("Open Source web api for Smart House running on mono framework")
 						.Contact(co => co
 							.Name("Filip Krišto")
-							.Url("https://twitter.com/filipkristo")
+							.Url("https://github.com/filipkristo")
 							.Email("filipkristo@outlook.com"));
 				                 						
 					}

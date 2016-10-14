@@ -29,6 +29,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -36,6 +45,13 @@
     <Compile Include="Util\BashHelper.cs" />
     <Compile Include="BLL\Pandora\PandoraCommand.cs" />
     <Compile Include="Model\PandoraCommandEnum.cs" />
+    <Compile Include="Interfaces\ISettings.cs" />
+    <Compile Include="Service\SettingService.cs" />
+    <Compile Include="Interfaces\ISettingsService.cs" />
+    <Compile Include="Model\Yamaha\BaseStatus.cs" />
+    <Compile Include="Model\Settings\Settings.cs" />
+    <Compile Include="Model\Settings\YamahaSettings.cs" />
+    <Compile Include="Model\Settings\KodiSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BLL\" />
@@ -43,6 +59,19 @@
     <Folder Include="BLL\Yamaha\" />
     <Folder Include="Model\" />
     <Folder Include="Util\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Service\" />
+    <Folder Include="Model\Yamaha\" />
+    <Folder Include="Model\Settings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmartHouse.AzureIot\SmartHouse.AzureIot.csproj">
+      <Project>{2E7AB2DB-A705-4371-B116-79AB07120242}</Project>
+      <Name>SmartHouse.AzureIot</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

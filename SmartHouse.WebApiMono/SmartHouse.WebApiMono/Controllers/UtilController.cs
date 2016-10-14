@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Web.Http;
+using SmartHouse.Lib;
 
 namespace SmartHouse.WebApiMono
 {
 	[RoutePrefix("api/Util")]
-	public class UtilController : ApiController
+	public class UtilController : BaseController
 	{
-		public UtilController()
+		public UtilController(ISettingsService service) : base(service)
 		{
+
 		}
 
 		[HttpGet]
@@ -23,5 +25,7 @@ namespace SmartHouse.WebApiMono
 		{
 			return DateTime.Now;
 		}
+
+
 	}
 }

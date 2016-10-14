@@ -10,7 +10,7 @@ namespace SmartHouse.WebApiMono
 		{
 			await Task.Run(() =>
 					{
-
+						MainClass.Log.Debug($"Request: {requestInfo}");
 					}
 				);
 		}
@@ -20,7 +20,7 @@ namespace SmartHouse.WebApiMono
 		{
 			await Task.Run(() =>
 			{
-
+				MainClass.Log.Debug($"Response: {requestInfo}");
 			});
 		}
 	}

@@ -69,6 +69,21 @@
       <HintPath>..\packages\Microsoft.Owin.Hosting.3.0.1\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -80,6 +95,10 @@
     <Compile Include="Controllers\SmartHouseController.cs" />
     <Compile Include="Controllers\UtilController.cs" />
     <Compile Include="Controllers\PandoraController.cs" />
+    <Compile Include="DI\ScopeContainer.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\YamahaController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -99,11 +118,16 @@
     <Folder Include="Utils\" />
     <Folder Include="Logging\" />
     <Folder Include="Controllers\" />
+    <Folder Include="DI\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartHouse.Lib\SmartHouse.Lib.csproj">
       <Project>{CEF8FE44-20C2-460E-9909-7DD0277C45B7}</Project>
       <Name>SmartHouse.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartHouse.AzureIot\SmartHouse.AzureIot.csproj">
+      <Project>{2E7AB2DB-A705-4371-B116-79AB07120242}</Project>
+      <Name>SmartHouse.AzureIot</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
