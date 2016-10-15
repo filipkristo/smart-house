@@ -123,11 +123,11 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     await CompleteMessage("Command send Successfully");
                     break;
                 case "Volume up":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolUp);
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolumeUp);
                     await CompleteMessage("Command send Successfully");
                     break;
                 case "Volume down":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolDown);
+                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolumeDown);
                     await CompleteMessage("Command send Successfully");
                     break;
                 case "Thumb up":

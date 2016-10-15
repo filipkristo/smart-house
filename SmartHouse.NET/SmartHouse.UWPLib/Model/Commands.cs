@@ -10,8 +10,8 @@ namespace SmartHouse.UWPLib.Model
     {
         Play,
         Next,
-        VolUp,
-        VolDown,
+        VolumeUp,
+        VolumeDown,
         Tired,
         ThumbUp,
         ThumbDown
