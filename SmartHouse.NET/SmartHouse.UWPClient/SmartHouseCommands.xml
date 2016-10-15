@@ -15,11 +15,15 @@
       <Item>Play</Item>
       <Item>Stop</Item>
       <Item>Next</Item>
-      <Item>Volume up</Item>
-      <Item>Volume down</Item>
-      <Item>Thumb up</Item>
-      <Item>Thumb down</Item>
-      <Item>Tired of</Item>
+      <Item>Volume</Item>
+      <Item>Display</Item>
+      <Item>Thumb</Item>
+      <Item>Tired</Item>
+      <Item>Up</Item>
+      <Item>Down</Item>
+      <Item>Of</Item>
+      <Item>On</Item>
+      <Item>Off</Item>
     </PhraseList>
   
   </CommandSet>

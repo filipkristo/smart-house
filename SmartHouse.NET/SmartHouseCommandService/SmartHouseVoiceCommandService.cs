@@ -112,35 +112,39 @@ namespace SmartHouse.UWPClient.VoiceCommands
             {
                 case "Play":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
                     break;
                 case "Stop":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
                     break;
                 case "Next":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Next);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
                     break;
                 case "Volume up":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolumeUp);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
                     break;
                 case "Volume down":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolumeDown);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
                     break;
                 case "Thumb up":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbUp);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
                     break;
                 case "Thumb down":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbDown);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
                     break;
                 case "Tired of":
                     await pandora.Run(SmartHouse.UWPLib.Model.Commands.Tired);
-                    await CompleteMessage("Command send Successfully");
+                    await CompleteMessage("");
+                    break;
+                case "Display":
+                    var info = await pandora.ShowInfo();
+                    await CompleteMessage($"Playing Song {info.Song}, from artist {info.Artist}, on album {info.Album}. {(info.Loved ? "You like this song." : "")}");
                     break;
                 default:
                     LaunchAppInForeground();
