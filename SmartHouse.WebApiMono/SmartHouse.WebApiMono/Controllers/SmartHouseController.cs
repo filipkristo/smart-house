@@ -33,7 +33,7 @@ namespace SmartHouse.WebApiMono
 			await YamahaService.SetInput("AV2");
 			sb.AppendLine("Setting AV2 input");
 
-			await Task.Delay(TimeSpan.FromSeconds(1));
+			await Task.Delay(TimeSpan.FromSeconds(4));
 
 			PandoraService.Play();
 			sb.AppendLine("Playing pandora radio");
