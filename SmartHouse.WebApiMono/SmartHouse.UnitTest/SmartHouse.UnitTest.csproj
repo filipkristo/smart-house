@@ -8,6 +8,7 @@
     <RootNamespace>SmartHouse.UnitTest</RootNamespace>
     <AssemblyName>SmartHouse.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>1.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,11 +33,16 @@
     <Reference Include="Xamarin.UITest">
       <HintPath>..\packages\Xamarin.UITest.2.0.0\lib\Xamarin.UITest.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartHouse.WebApiMono\SmartHouse.WebApiMono.csproj">
       <Project>{6B1925D4-BDBD-4D35-B79A-4A70094888EE}</Project>
       <Name>SmartHouse.WebApiMono</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartHouse.Lib\SmartHouse.Lib.csproj">
+      <Project>{CEF8FE44-20C2-460E-9909-7DD0277C45B7}</Project>
+      <Name>SmartHouse.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -8,81 +8,88 @@ namespace SmartHouse.WebApiMono
 	[RoutePrefix("api/Pandora")]
 	public class PandoraController : BaseController
 	{
-		private PandoraCommand command;
+		private IPanodraService PandoraService;
 
-		public PandoraController(ISettingsService service) : base(service)
+		public PandoraController(ISettingsService service, IPanodraService pandoraService) : base(service)
 		{
-			command = new PandoraCommand();
+			PandoraService = pandoraService;
 		}
 
 		[HttpGet]
 		[Route("Play")]
 		public Result Play()
 		{
-			return command.Play();
+			return PandoraService.Play();
 		}
 
 		[HttpGet]
 		[Route("Stop")]
 		public Result Stop()
 		{
-			return command.Stop();
+			return PandoraService.Stop();
 		}
 
 		[HttpGet]
 		[Route("Next")]
 		public Result Next()
 		{
-			return command.Next();
+			return PandoraService.Next();
 		}
 
 		[HttpGet]
 		[Route("ThumbUp")]
 		public Result ThumbUp()
 		{
-			return command.ThumbUp();
+			return PandoraService.ThumbUp();
 		}
 
 		[HttpGet]
 		[Route("ThumbDown")]
 		public Result ThumbDown()
 		{
-			return command.ThumbDown();
+			return PandoraService.ThumbDown();
+		}
+
+		[HttpGet]
+		[Route("Tired")]
+		public Result Tired()
+		{
+			return PandoraService.TiredOfThisSong();
 		}
 
 		[HttpGet]
 		[Route("VolumeUp")]
 		public Result VolumeUp()
 		{
-			return command.VolumeUp();
+			return PandoraService.VolumeUp();
 		}
 
 		[HttpGet]
 		[Route("VolumeDown")]
 		public Result VolumeDown()
 		{
-			return command.VolumeDown();
+			return PandoraService.VolumeDown();
 		}
 
 		[HttpGet]
 		[Route("ChangeStation")]
 		public Result ChangeStation(string stationId)
 		{
-			return command.ChangeStation(stationId);
+			return PandoraService.ChangeStation(stationId);
 		}
 
 		[HttpGet]
 		[Route("CurrentSongInfo")]
 		public PandoraResult CurrentSongInfo()
 		{
-			return command.GetCurrentSongInfo();
+			return PandoraService.GetCurrentSongInfo();
 		}
 
 		[HttpGet]
 		[Route("StationList")]
 		public IEnumerable<KeyValue> StationList()
 		{
-			return command.GetStationList();
+			return PandoraService.GetStationList();
 		}
 
 	}

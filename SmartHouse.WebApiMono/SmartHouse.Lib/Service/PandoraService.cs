@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace SmartHouse.Lib
 {
-	public class PandoraCommand
+	public class PandoraService : IPanodraService
 	{
-		public PandoraCommand()
+		public PandoraService()
 		{
 		}
 
@@ -34,6 +34,11 @@ namespace SmartHouse.Lib
 		public Result ThumbDown()
 		{
 			return CommandExecuter(PandoraCommandEnum.ThumbDown);
+		}
+
+		public Result TiredOfThisSong()
+		{
+			return CommandExecuter(PandoraCommandEnum.Tired);
 		}
 
 		public Result VolumeUp()
@@ -86,8 +91,7 @@ namespace SmartHouse.Lib
 						{
 							Key = x.Replace(")", "").Substring(0, x.Replace(")", "").IndexOf(' ')),
 							Value = x.Replace(")", "")
-						})
-							.ToList();
+						}).ToList();
 			
 			return lines;
 		}
@@ -124,6 +128,10 @@ namespace SmartHouse.Lib
 				case PandoraCommandEnum.VolumeDown:
 					BashHelper.ExecBashCommand("echo '((' >> /home/pi/.config/pianobar/ctl");
 					message = "Volume down";
+					break;
+				case PandoraCommandEnum.Tired:
+					BashHelper.ExecBashCommand("echo 't' >> /home/pi/.config/pianobar/ctl");
+					message = "Tired of this song";
 					break;
 				default:
 					throw new Exception($"Command {command} is not defined");

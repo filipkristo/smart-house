@@ -2,6 +2,7 @@
 using System.Net;
 using log4net;
 using Microsoft.Owin.Hosting;
+using SmartHouse.Lib;
 
 namespace SmartHouse.WebApiMono
 {

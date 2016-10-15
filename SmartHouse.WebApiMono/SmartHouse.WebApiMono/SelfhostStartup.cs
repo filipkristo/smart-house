@@ -29,12 +29,15 @@ namespace SmartHouse.WebApiMono
 
 			var unity = new UnityContainer();
 			unity.RegisterType<BaseController>();
-			unity.RegisterType<PandoraCommand>();
+			unity.RegisterType<PandoraController>();
+			unity.RegisterType<YamahaController>();
 			unity.RegisterType<SmartHouseController>();
 			unity.RegisterType<UtilController>();
 			unity.RegisterType<SettingsController>();
 
 			unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
+			unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
+			unity.RegisterType<IYamahaService, YamahaService>(new HierarchicalLifetimeManager());
 
 			config.DependencyResolver = new UnityResolver(unity);
 
