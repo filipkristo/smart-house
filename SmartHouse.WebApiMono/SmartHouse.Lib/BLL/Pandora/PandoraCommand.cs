@@ -46,6 +46,18 @@ namespace SmartHouse.Lib
 			return CommandExecuter(PandoraCommandEnum.VolumeDown);
 		}
 
+		public Result ChangeStation(string stationId)
+		{
+			BashHelper.ExecBashCommand($"echo 's{stationId}' >> /home/pi/.config/pianobar/ctl");
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = $"Changed station {stationId}",
+				Ok = true
+			};
+		}
+
 		public PandoraResult GetCurrentSongInfo()
 		{
 			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
@@ -64,12 +76,19 @@ namespace SmartHouse.Lib
 			};
 		}
 
-		public IEnumerable<string> GetStationList()
+		public IEnumerable<KeyValue> GetStationList()
 		{
 			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
 			var path = Path.Combine(homeDir, @".config/pianobar/stationlist");
 
-			var lines = File.ReadLines(path).ToList().Select(x => x.Replace(")", ""));
+			var lines = File.ReadLines(path)						
+						.Select(x => new KeyValue
+						{
+							Key = x.Replace(")", "").Substring(0, x.Replace(")", "").IndexOf(' ')),
+							Value = x.Replace(")", "")
+						})
+							.ToList();
+			
 			return lines;
 		}
 

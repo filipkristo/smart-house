@@ -53,6 +53,7 @@
     <Compile Include="Model\Settings\YamahaSettings.cs" />
     <Compile Include="Model\Settings\KodiSettings.cs" />
     <Compile Include="Model\Pandora\PandoraResult.cs" />
+    <Compile Include="Model\KeyValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BLL\" />

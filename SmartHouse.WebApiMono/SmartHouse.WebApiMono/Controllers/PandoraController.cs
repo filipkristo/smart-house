@@ -65,6 +65,13 @@ namespace SmartHouse.WebApiMono
 		}
 
 		[HttpGet]
+		[Route("ChangeStation")]
+		public Result ChangeStation(string stationId)
+		{
+			return command.ChangeStation(stationId);
+		}
+
+		[HttpGet]
 		[Route("CurrentSongInfo")]
 		public PandoraResult CurrentSongInfo()
 		{
@@ -73,9 +80,10 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("StationList")]
-		public IEnumerable<string> StationList()
+		public IEnumerable<KeyValue> StationList()
 		{
 			return command.GetStationList();
 		}
+
 	}
 }
