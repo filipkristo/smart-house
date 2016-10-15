@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
 namespace SmartHouse.Lib
 {
 	public class PandoraCommand
@@ -40,6 +44,33 @@ namespace SmartHouse.Lib
 		public Result VolumeDown()
 		{
 			return CommandExecuter(PandoraCommandEnum.VolumeDown);
+		}
+
+		public PandoraResult GetCurrentSongInfo()
+		{
+			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
+			var path = Path.Combine(homeDir, @".config/pianobar/nowplaying");
+
+			var lines = File.ReadLines(path).ToList();
+
+			return new PandoraResult()
+			{
+				Artist = lines[0].Trim(),
+				Song = lines[1].Trim(),
+				Radio = lines[2].Trim(),
+				Loved = lines[3] == "1",
+				AlbumUri = lines[4].Trim(),
+				Album = lines[5].Trim()
+			};
+		}
+
+		public IEnumerable<string> GetStationList()
+		{
+			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
+			var path = Path.Combine(homeDir, @".config/pianobar/stationlist");
+
+			var lines = File.ReadLines(path).ToList().Select(x => x.Replace(")", ""));
+			return lines;
 		}
 
 		private Result CommandExecuter(PandoraCommandEnum command)

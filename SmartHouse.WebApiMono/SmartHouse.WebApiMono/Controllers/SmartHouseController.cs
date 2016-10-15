@@ -12,12 +12,15 @@ namespace SmartHouse.WebApiMono
 			
 		}
 
-
+		[HttpGet]
+		[Route("TurnOn")]
 		public Result TurnOn()
 		{
 			return null;	
 		}
 
+		[HttpGet]
+		[Route("TurnOff")]
 		public Result TurnOff()
 		{
 			return null;

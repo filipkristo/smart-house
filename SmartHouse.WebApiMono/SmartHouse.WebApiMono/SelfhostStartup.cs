@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Web.Http;
+using Microsoft.Owin;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -46,11 +47,38 @@ namespace SmartHouse.WebApiMono
 			settings.Formatting = Formatting.Indented;
 			settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
+			appBuilder.Use(async (context, next) =>
+			{
+				var serveri = new[] { "*", "http://localhost" };
+
+				IOwinRequest req = context.Request;
+				IOwinResponse res = context.Response;
+
+				var origin = req.Headers.Get("Origin");
+
+				if (!String.IsNullOrWhiteSpace(origin) && !res.Headers.ContainsKey("Access-Control-Allow-Origin"))
+				{
+					res.Headers.Set("Access-Control-Allow-Origin", origin);
+				}
+
+				if (req.Method == "OPTIONS")
+				{
+
+					res.StatusCode = 200;
+					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Methods", "GET", "POST", "PUT", "DELETE");
+					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Headers", "authorization", "content-type");
+					return;
+				}
+
+				await next();
+			});
+
+
 			config.EnsureInitialized();
 
 			config.EnableSwagger(c =>
 					{
-						c.SingleApiVersion("1.0.0", "Smart House REST API")
+						c.SingleApiVersion("1.0.0", "Smart House - REST API")
 				         .Description("Open Source web api for Smart House running on mono framework")
 						.Contact(co => co
 							.Name("Filip Krišto")

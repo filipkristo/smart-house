@@ -12,22 +12,30 @@ namespace SmartHouse.WebApiMono
 		public static String SslPort { get; private set; } = "5001";
 		public static String SslUrl => $"https://*:{SslPort}";
 
-		public static String Port { get; private set; } = "5000";
+		public static String Port { get; private set; } = "8081";
 		public static String Url => $"http://*:{Port}";
 
 		public static void Main(string[] args)
 		{
-			if (args.Length > 0)
-				Port = args[0];
+			try
+			{
+				if (args.Length > 0)
+					Port = args[0];
 
-			if (args.Length > 1)
-				SslPort = args[1];
+				if (args.Length > 1)
+					SslPort = args[1];
 
-			log4net.Config.XmlConfigurator.Configure();
-			Log.Info("Application_Start");
+				log4net.Config.XmlConfigurator.Configure();
+				Log.Info("Application_Start");
 
-			StartSelfHosting();
-			Console.ReadLine();
+				StartSelfHosting();
+				Console.ReadLine();
+			}
+			catch (Exception ex)
+			{
+				Log.Error("Unhandled exception", ex);
+				throw;
+			}
 		}
 
 		private static void StartSelfHosting()

@@ -52,6 +52,7 @@
     <Compile Include="Model\Settings\Settings.cs" />
     <Compile Include="Model\Settings\YamahaSettings.cs" />
     <Compile Include="Model\Settings\KodiSettings.cs" />
+    <Compile Include="Model\Pandora\PandoraResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BLL\" />
@@ -63,6 +64,7 @@
     <Folder Include="Service\" />
     <Folder Include="Model\Yamaha\" />
     <Folder Include="Model\Settings\" />
+    <Folder Include="Model\Pandora\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartHouse.AzureIot\SmartHouse.AzureIot.csproj">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using SmartHouse.Lib;
 
@@ -63,5 +64,18 @@ namespace SmartHouse.WebApiMono
 			return command.VolumeDown();
 		}
 
+		[HttpGet]
+		[Route("CurrentSongInfo")]
+		public PandoraResult CurrentSongInfo()
+		{
+			return command.GetCurrentSongInfo();
+		}
+
+		[HttpGet]
+		[Route("StationList")]
+		public IEnumerable<string> StationList()
+		{
+			return command.GetStationList();
+		}
 	}
 }
