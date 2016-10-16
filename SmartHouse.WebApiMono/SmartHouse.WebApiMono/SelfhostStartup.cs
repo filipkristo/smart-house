@@ -20,6 +20,32 @@ namespace SmartHouse.WebApiMono
 		{
 			var config = new HttpConfiguration();
 
+			appBuilder.Use(async (context, next) =>
+			{
+				var serveri = new[] { "*", "http://localhost" };
+
+				IOwinRequest req = context.Request;
+				IOwinResponse res = context.Response;
+
+				var origin = req.Headers.Get("Origin");
+
+				if (!String.IsNullOrWhiteSpace(origin) && !res.Headers.ContainsKey("Access-Control-Allow-Origin"))
+				{
+					res.Headers.Set("Access-Control-Allow-Origin", origin);
+				}
+
+				if (req.Method == "OPTIONS")
+				{
+
+					res.StatusCode = 200;
+					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Methods", "GET", "POST", "PUT", "DELETE");
+					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Headers", "authorization", "content-type");
+					return;
+				}
+
+				await next();
+			});
+
 			config.MapHttpAttributeRoutes();
 			config.Routes.MapHttpRoute(
 				name: "DefaultApi",
@@ -49,33 +75,6 @@ namespace SmartHouse.WebApiMono
 			var settings = jsonFormatter.SerializerSettings;
 			settings.Formatting = Formatting.Indented;
 			settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
-			appBuilder.Use(async (context, next) =>
-			{
-				var serveri = new[] { "*", "http://localhost" };
-
-				IOwinRequest req = context.Request;
-				IOwinResponse res = context.Response;
-
-				var origin = req.Headers.Get("Origin");
-
-				if (!String.IsNullOrWhiteSpace(origin) && !res.Headers.ContainsKey("Access-Control-Allow-Origin"))
-				{
-					res.Headers.Set("Access-Control-Allow-Origin", origin);
-				}
-
-				if (req.Method == "OPTIONS")
-				{
-
-					res.StatusCode = 200;
-					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Methods", "GET", "POST", "PUT", "DELETE");
-					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Headers", "authorization", "content-type");
-					return;
-				}
-
-				await next();
-			});
-
 
 			config.EnsureInitialized();
 

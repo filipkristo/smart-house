@@ -75,7 +75,7 @@ namespace SmartHouse.Lib
 				Artist = lines[0].Trim(),
 				Song = lines[1].Trim(),
 				Radio = lines[2].Trim(),
-				Loved = lines[3] == "1",
+				Loved = lines[3].Trim() == "1",
 				AlbumUri = lines[4].Trim(),
 				Album = lines[5].Trim()
 			};

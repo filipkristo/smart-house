@@ -167,7 +167,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
             var userMessage = new VoiceCommandUserMessage();
             userMessage.DisplayMessage = userMessage.SpokenMessage = $"Error message: {message}";
             var response = VoiceCommandResponse.CreateResponse(userMessage);
-            await voiceServiceConnection.ReportSuccessAsync(response);
+            await voiceServiceConnection.ReportFailureAsync(response);
         }
 
         /// <summary>
