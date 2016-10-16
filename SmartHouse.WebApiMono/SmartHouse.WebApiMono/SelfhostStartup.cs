@@ -20,6 +20,51 @@ namespace SmartHouse.WebApiMono
 		{
 			var config = new HttpConfiguration();
 
+			EnableCors(appBuilder);
+
+			config.MapHttpAttributeRoutes();
+			config.Routes.MapHttpRoute(
+				name: "DefaultApi",
+				routeTemplate: "api/{controller}/{id}",
+				defaults: new { id = RouteParameter.Optional }
+			);
+
+			SetupDI(config);
+
+			config.MessageHandlers.Add(new MessageLoggingHandler());
+			config.Filters.Add(new ExceptionFilter());
+
+			var formatters = config.Formatters;
+			var jsonFormatter = formatters.JsonFormatter;
+			var settings = jsonFormatter.SerializerSettings;
+			settings.Formatting = Formatting.Indented;
+			settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+			SetupSwagger(config);
+
+			config.EnsureInitialized();
+			appBuilder.UseWebApi(config);
+		}
+
+		private void SetupDI(HttpConfiguration config)
+		{
+			var unity = new UnityContainer();
+			unity.RegisterType<BaseController>();
+			unity.RegisterType<PandoraController>();
+			unity.RegisterType<YamahaController>();
+			unity.RegisterType<SmartHouseController>();
+			unity.RegisterType<UtilController>();
+			unity.RegisterType<SettingsController>();
+
+			unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
+			unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
+			unity.RegisterType<IYamahaService, YamahaService>(new HierarchicalLifetimeManager());
+
+			config.DependencyResolver = new UnityResolver(unity);
+		}
+
+		private void EnableCors(IAppBuilder appBuilder)
+		{
 			appBuilder.Use(async (context, next) =>
 			{
 				var serveri = new[] { "*", "http://localhost" };
@@ -45,63 +90,22 @@ namespace SmartHouse.WebApiMono
 
 				await next();
 			});
+		}
 
-			config.MapHttpAttributeRoutes();
-			config.Routes.MapHttpRoute(
-				name: "DefaultApi",
-				routeTemplate: "api/{controller}/{id}",
-				defaults: new { id = RouteParameter.Optional }
-			);
-
-			var unity = new UnityContainer();
-			unity.RegisterType<BaseController>();
-			unity.RegisterType<PandoraController>();
-			unity.RegisterType<YamahaController>();
-			unity.RegisterType<SmartHouseController>();
-			unity.RegisterType<UtilController>();
-			unity.RegisterType<SettingsController>();
-
-			unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
-			unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
-			unity.RegisterType<IYamahaService, YamahaService>(new HierarchicalLifetimeManager());
-
-			config.DependencyResolver = new UnityResolver(unity);
-
-			config.MessageHandlers.Add(new MessageLoggingHandler());
-			config.Filters.Add(new ExceptionFilter());
-
-			var formatters = config.Formatters;
-			var jsonFormatter = formatters.JsonFormatter;
-			var settings = jsonFormatter.SerializerSettings;
-			settings.Formatting = Formatting.Indented;
-			settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
-			config.EnsureInitialized();
-
-			config.EnableSwagger(c =>
-					{
-						c.SingleApiVersion("1.0.0", "Smart House - REST API")
-				         .Description("Open Source web api for Smart House running on mono framework")
-						.Contact(co => co
-							.Name("Filip Krišto")
-							.Url("https://github.com/filipkristo")
-							.Email("filipkristo@outlook.com"));
-				                 						
-					}
-				)
-			.EnableSwaggerUi();
-			// Swagger configuration end
-
-			appBuilder.UseWebApi(config);
-		}
-
-		private string GetXMLCommentsFile()
+		private void SetupSwagger(HttpConfiguration config)
 		{
-			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".XML";
-			var commentsFile = Path.Combine(baseDirectory, commentsFileName);
-			return commentsFile;
-		}
+			config.EnableSwagger(c =>
+								{
+									c.SingleApiVersion("1.0.0", "Smart House - REST API")
+									 .Description("Open Source web api for Smart House running on mono framework")
+									.Contact(co => co
+										.Name("Filip Krišto")
+										.Url("https://github.com/filipkristo")
+										.Email("filipkristo@outlook.com"));
 
+								}
+							)
+						.EnableSwaggerUi();
+		}
 	}
 }

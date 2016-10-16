@@ -63,6 +63,7 @@
     <Compile Include="Service\PandoraService.cs" />
     <Compile Include="Interfaces\IPanodraService.cs" />
     <Compile Include="Interfaces\IYamahaService.cs" />
+    <Compile Include="Model\PowerStatusEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

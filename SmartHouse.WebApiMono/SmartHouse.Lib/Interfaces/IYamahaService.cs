@@ -17,5 +17,6 @@ namespace SmartHouse.Lib
 
 		Task<string> VolumeDown();
 
+		Task<PowerStatusEnum> PowerStatus();
 	}
 }

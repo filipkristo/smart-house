@@ -23,17 +23,17 @@ namespace SmartHouse.WebApiMono
 		public async Task<Result> TurnOn()
 		{
 			var sb = new StringBuilder();
-			var yamahaInfo = await YamahaService.GetInfo();
+			var powerStatus = await YamahaService.PowerStatus();
 
-			if (yamahaInfo.Main_Zone.Basic_Status.Power_Control.Power != "On")
+			if (powerStatus == PowerStatusEnum.StandBy)
 			{
 				await YamahaService.TurnOn();
 				sb.AppendLine("Yamaha Turn on");
+				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
+
 			await YamahaService.SetInput("AV2");
 			sb.AppendLine("Setting AV2 input");
-
-			await Task.Delay(TimeSpan.FromSeconds(8));
 
 			PandoraService.Play();
 			sb.AppendLine("Playing pandora radio");
@@ -51,17 +51,66 @@ namespace SmartHouse.WebApiMono
 		public async Task<Result> TurnOff()
 		{
 			var sb = new StringBuilder();
-			var yamahaInfo = await YamahaService.GetInfo();
+			var powerStatus = await YamahaService.PowerStatus();
 
 			PandoraService.Play();
 			sb.AppendLine("Pausing pandora radio");
 
-			await Task.Delay(TimeSpan.FromSeconds(2));
-
-			if (yamahaInfo.Main_Zone.Basic_Status.Power_Control.Power == "On")
+			if (powerStatus == PowerStatusEnum.On)
 			{
+				await Task.Delay(TimeSpan.FromSeconds(2));
 				await YamahaService.TurnOff();
 				sb.AppendLine("Yamaha Turn Off");
+			}
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
+		[HttpGet]
+		[Route("VolumeUp")]
+		public async Task<Result> VolumeUp()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.On)
+			{
+				await YamahaService.VolumeUp();
+				sb.AppendLine("Yamaha Volume Up");
+			}
+			else
+			{
+				sb.AppendLine("Yamaha is turned off");
+			}
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
+		[HttpGet]
+		[Route("VolumeDown")]
+		public async Task<Result> VolumeDown()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.On)
+			{
+				await YamahaService.VolumeDown();
+				sb.AppendLine("Yamaha Volume Down");
+			}
+			else
+			{
+				sb.AppendLine("Yamaha is turned off");	
 			}
 
 			return new Result()
