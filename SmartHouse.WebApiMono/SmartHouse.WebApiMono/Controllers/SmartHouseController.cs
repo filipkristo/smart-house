@@ -11,11 +11,13 @@ namespace SmartHouse.WebApiMono
 	{
 		private readonly IYamahaService YamahaService;
 		private readonly IPanodraService PandoraService;
+		private readonly ISmartHouseService SmartHouseService;
 
-		public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService) : base(service)
+		public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService) : base(service)
 		{
 			YamahaService = yamahaService;
 			PandoraService = pandoraService;
+			SmartHouseService = smartHouseService;
 		}
 
 		[HttpGet]
@@ -119,6 +121,16 @@ namespace SmartHouse.WebApiMono
 				Message = sb.ToString(),
 				Ok = true
 			};
+		}
+
+		[HttpGet]
+		[Route("SetMode")]
+		public async Task<Result> SetMode(string mode)
+		{
+			var modeEnum = (ModeEnum)Enum.Parse(typeof(ModeEnum), mode);
+
+			var result = await SmartHouseService.SetMode(modeEnum);
+			return result;
 		}
 	}
 }

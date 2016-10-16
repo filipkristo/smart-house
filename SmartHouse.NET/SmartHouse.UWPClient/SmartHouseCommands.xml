@@ -13,7 +13,7 @@
     
     <Command Name="smartHouseCommands">
       <Example> Smart House Turn On </Example>
-      <ListenFor RequireAppName="BeforeOrAfterPhrase">{command}</ListenFor>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {command} </ListenFor>
       <Feedback> Please wait </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>

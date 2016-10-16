@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace SmartHouse.Lib
 {
@@ -18,7 +20,10 @@ namespace SmartHouse.Lib
 		public async Task<ISettings> GetSettings()
 		{
 			if (!File.Exists(fileName))
-				return new Settings() { KodiSettings = new KodiSettings(), YamahaSettings = new YamahaSettings() };
+			{
+				var setting = GetDefaultSettings();
+				return setting;
+			}				
 
 			using (var stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
 			{
@@ -41,6 +46,21 @@ namespace SmartHouse.Lib
 			{
 				await stream.WriteAsync(buffer, 0, buffer.Length);
 			}
+		}
+
+		private Settings GetDefaultSettings()
+		{
+			return new Settings() 
+			{ 
+				KodiSettings = new KodiSettings(),
+				YamahaSettings = new YamahaSettings(),
+				ModeSettings = new[] { 
+					new ModeSettings() {  Mode = ModeEnum.Quiet, Value = -360 }, 
+					new ModeSettings() { Mode = ModeEnum.Normal, Value = -320 }, 
+					new ModeSettings() { Mode = ModeEnum.Loud, Value = -230 }, 
+					new ModeSettings() { Mode = ModeEnum.ExtraLoud, Value = -180 } 
+				}.ToList()
+			};
 		}
 	}
 }

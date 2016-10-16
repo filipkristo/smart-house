@@ -52,6 +52,12 @@ namespace SmartHouse.Lib
 			return xmlResponse;
 		}
 
+		public async Task<string> SetVolume(int volume)
+		{
+			var xmlResponse = await YamahaHelper.DoRequest($"<?xml version=\"1.0\" encoding=\"utf-8\"?><YAMAHA_AV cmd=\"PUT\"><Main_Zone><Volume><Lvl><Val>{volume}</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume></Main_Zone></YAMAHA_AV>");
+			return xmlResponse;
+		}
+
 		public async Task<PowerStatusEnum> PowerStatus()
 		{
 			var info = await GetInfo();

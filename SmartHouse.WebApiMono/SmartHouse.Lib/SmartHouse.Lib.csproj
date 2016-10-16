@@ -64,6 +64,10 @@
     <Compile Include="Interfaces\IPanodraService.cs" />
     <Compile Include="Interfaces\IYamahaService.cs" />
     <Compile Include="Model\PowerStatusEnum.cs" />
+    <Compile Include="Service\SmartHouseService.cs" />
+    <Compile Include="Interfaces\ISmartHouseService.cs" />
+    <Compile Include="Model\Settings\ModeSettings.cs" />
+    <Compile Include="Model\ModeEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

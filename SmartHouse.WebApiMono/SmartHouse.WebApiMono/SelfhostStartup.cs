@@ -59,6 +59,7 @@ namespace SmartHouse.WebApiMono
 			unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IYamahaService, YamahaService>(new HierarchicalLifetimeManager());
+			unity.RegisterType<ISmartHouseService, SmartHouseService>(new HierarchicalLifetimeManager());
 
 			config.DependencyResolver = new UnityResolver(unity);
 		}
