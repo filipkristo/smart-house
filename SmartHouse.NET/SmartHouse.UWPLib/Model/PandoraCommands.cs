@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartHouse.UWPLib.Model
 {
-    public enum Commands
+    public enum PandoraCommands
     {
         Play,
         Next,

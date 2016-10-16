@@ -74,8 +74,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                         VoiceCommandServiceConnection.FromAppServiceTriggerDetails(
                             triggerDetails);
 
-                    voiceServiceConnection.VoiceCommandCompleted += OnVoiceCommandCompleted;
-                    
+                    voiceServiceConnection.VoiceCommandCompleted += OnVoiceCommandCompleted;                   
                     VoiceCommand voiceCommand = await voiceServiceConnection.GetVoiceCommandAsync();
 
                     // Depending on the operation (defined in SmartHouse:SmartHouseCommands.xml)
@@ -84,12 +83,13 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     {
                         case "pandoraCommands":
                             var command = voiceCommand.Properties["command"][0];
-                            await PandoraCommands(command);
-                            break;                        
-                        default:
-                            // As with app activation VCDs, we need to handle the possibility that
-                            // an app update may remove a voice command that is still registered.
-                            // This can happen if the user hasn't run an app since an update.
+                            await ExecutePandoraCommands(command);
+                            break;
+                        case "smartHouseCommands":
+                            var smarthouseCommand = voiceCommand.Properties["command"][0];
+                            await ExecuteSmarthouseCommands(smarthouseCommand);
+                            break;
+                        default:                            
                             LaunchAppInForeground();
                             break;
                     }
@@ -97,49 +97,77 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 catch (Exception ex)
                 {
                     await CompleteMessageError(ex.Message);
-                    System.Diagnostics.Debug.WriteLine("Handling Voice Command failed " + ex.ToString());
+                    Debug.WriteLine("Handling Voice Command failed " + ex.ToString());
                 }
             }
         }
 
-        private async Task PandoraCommands(string command)
-        {            
-            var pandora = new PandoraCommand();
+        private async Task ExecuteSmarthouseCommands(string command)
+        {
+            var smartHouse = new SmartHouseService();
+            await ShowProgressScreen($"Please wait");
 
+            switch (command)
+            {
+                case "Turn on":
+                    var result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.TurnOn);
+                    await CompleteMessage(result.Message);
+                    break;
+                case "Turn off":
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.TurnOff);
+                    await CompleteMessage(result.Message);
+                    break;
+                case "Volume up":
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+                    await CompleteMessage(result.Message);
+                    break;
+                case "Volume down":
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+                    await CompleteMessage(result.Message);
+                    break;
+                default:
+                    LaunchAppInForeground();
+                    break;
+            }
+        }
+
+        private async Task ExecutePandoraCommands(string command)
+        {            
+            var pandora = new PandoraService();
             await ShowProgressScreen($"Starting to {command} song");
 
             switch (command)
             {
                 case "Play":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Play);
                     await CompleteMessage("");
                     break;
                 case "Stop":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Play);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Play);
                     await CompleteMessage("");
                     break;
                 case "Next":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Next);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Next);
                     await CompleteMessage("");
                     break;
                 case "Volume up":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolumeUp);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.VolumeUp);
                     await CompleteMessage("");
                     break;
                 case "Volume down":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.VolumeDown);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.VolumeDown);
                     await CompleteMessage("");
                     break;
                 case "Thumb up":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbUp);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbUp);
                     await CompleteMessage("");
                     break;
                 case "Thumb down":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.ThumbDown);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbDown);
                     await CompleteMessage("");
                     break;
                 case "Tired of":
-                    await pandora.Run(SmartHouse.UWPLib.Model.Commands.Tired);
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Tired);
                     await CompleteMessage("");
                     break;
                 case "Display":

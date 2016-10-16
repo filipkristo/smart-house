@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace SmartHouse.UWPLib.BLL
 {
-    public class PandoraCommand
+    public class PandoraService
     {
-        public async Task<Result> Run(Commands command)
+        public async Task<Result> Run(PandoraCommands command)
         {
             using (var client = new HttpClient())
             {

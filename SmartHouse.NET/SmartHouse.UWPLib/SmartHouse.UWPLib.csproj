@@ -113,9 +113,10 @@
     <Compile Include="..\..\SmartHouse.WebApiMono\SmartHouse.Lib\Model\Result.cs">
       <Link>Model\Result.cs</Link>
     </Compile>
-    <Compile Include="BLL\PandoraCommand.cs" />
-    <Compile Include="BLL\SmartHouseCommand.cs" />
-    <Compile Include="Model\Commands.cs" />
+    <Compile Include="BLL\PandoraService.cs" />
+    <Compile Include="BLL\SmartHouseService.cs" />
+    <Compile Include="Model\PandoraCommands.cs" />
+    <Compile Include="Model\SmartHouseCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\SmartHouse.UWPLib.rd.xml" />
   </ItemGroup>
