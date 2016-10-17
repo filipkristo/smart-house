@@ -132,5 +132,48 @@ namespace SmartHouse.WebApiMono
 			var result = await SmartHouseService.SetMode(modeEnum);
 			return result;
 		}
+
+		[HttpGet]
+		[Route("Xbox")]
+		public async Task<Result> Xbox()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.StandBy)
+			{
+				await YamahaService.TurnOn();
+				sb.AppendLine("Yamaha Turn on");
+				await Task.Delay(TimeSpan.FromSeconds(8));
+			}
+
+			if (PandoraService.IsPlaying())
+				PandoraService.Play();
+
+			await YamahaService.SetInput("HDMI2");
+			sb.AppendLine("Set HDMI2 input");
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
+		[HttpGet]
+		[Route("TV")]
+		public async Task<Result> TV()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
 	}
 }

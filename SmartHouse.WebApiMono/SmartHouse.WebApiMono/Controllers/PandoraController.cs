@@ -92,5 +92,11 @@ namespace SmartHouse.WebApiMono
 			return PandoraService.GetStationList();
 		}
 
+		[HttpGet]
+		[Route("IsPlaying")]
+		public bool IsPlaying()
+		{
+			return PandoraService.IsPlaying();
+		}
 	}
 }

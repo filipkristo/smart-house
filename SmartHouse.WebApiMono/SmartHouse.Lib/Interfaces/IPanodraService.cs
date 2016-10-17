@@ -27,5 +27,6 @@ namespace SmartHouse.Lib
 
 		IEnumerable<KeyValue> GetStationList();
 
+		bool IsPlaying();
 	}
 }

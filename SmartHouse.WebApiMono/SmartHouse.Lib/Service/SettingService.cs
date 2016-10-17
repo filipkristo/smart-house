@@ -55,7 +55,7 @@ namespace SmartHouse.Lib
 				KodiSettings = new KodiSettings(),
 				YamahaSettings = new YamahaSettings(),
 				ModeSettings = new[] { 
-					new ModeSettings() {  Mode = ModeEnum.Quiet, Value = -360 }, 
+					new ModeSettings() {  Mode = ModeEnum.Quiet, Value = -420 }, 
 					new ModeSettings() { Mode = ModeEnum.Normal, Value = -320 }, 
 					new ModeSettings() { Mode = ModeEnum.Loud, Value = -230 }, 
 					new ModeSettings() { Mode = ModeEnum.ExtraLoud, Value = -180 } 

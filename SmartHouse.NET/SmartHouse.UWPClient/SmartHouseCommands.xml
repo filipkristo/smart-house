@@ -6,7 +6,7 @@
 
     <Command Name="pandoraCommands">
       <Example> Smart House play current song </Example>
-      <ListenFor RequireAppName="BeforeOrAfterPhrase">{command} [current][this] song</ListenFor>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {command} [current] [this] song</ListenFor>
       <Feedback> Starting to {command} song</Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
@@ -22,11 +22,7 @@
       <Item>Play</Item>
       <Item>Stop</Item>
       <Item>Next</Item>
-      <Item>Volume up</Item>
-      <Item>Volume down</Item>
-      <Item>Display</Item>
-      <Item>Thumb up</Item>
-      <Item>Tired of</Item>            
+      <Item>Show</Item> 
       <Item>Turn on</Item>
       <Item>Turn off</Item>
     </PhraseList>

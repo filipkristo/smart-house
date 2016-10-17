@@ -70,6 +70,9 @@ namespace SmartHouse.Lib
 
 			var lines = File.ReadLines(path).ToList();
 
+			var fileInfo = new FileInfo(path);
+			var stamp = DateTime.Now - fileInfo.LastWriteTime;
+
 			return new PandoraResult()
 			{
 				Artist = lines[0].Trim(),
@@ -77,7 +80,10 @@ namespace SmartHouse.Lib
 				Radio = lines[2].Trim(),
 				Loved = lines[3].Trim() == "1",
 				AlbumUri = lines[4].Trim(),
-				Album = lines[5].Trim()
+				Album = lines[5].Trim(),
+				DurationSeconds = int.Parse(lines[6].Trim()),
+				IsPlaying = stamp.Seconds < int.Parse(lines[6].Trim()),
+				LastModifed = fileInfo.LastWriteTime
 			};
 		}
 
@@ -94,6 +100,11 @@ namespace SmartHouse.Lib
 						}).ToList();
 			
 			return lines;
+		}
+
+		public bool IsPlaying()
+		{
+			return GetCurrentSongInfo().IsPlaying;
 		}
 
 		private Result CommandExecuter(PandoraCommandEnum command)
