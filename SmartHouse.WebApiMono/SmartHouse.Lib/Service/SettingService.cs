@@ -31,6 +31,7 @@ namespace SmartHouse.Lib
 				await stream.ReadAsync(buffer, 0, buffer.Length);
 
 				var json = Encoding.UTF8.GetString(buffer);
+				Logger.LogInfoMessage(json);
 
 				var settings = JsonConvert.DeserializeObject(json) as Settings;
 				return settings;

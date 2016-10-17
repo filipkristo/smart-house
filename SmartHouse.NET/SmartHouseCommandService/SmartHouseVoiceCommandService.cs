@@ -85,9 +85,15 @@ namespace SmartHouse.UWPClient.VoiceCommands
                             var command = voiceCommand.Properties["command"][0];
                             await ExecutePandoraCommands(command);
                             break;
-                        case "smartHouseCommands":
-                            var smarthouseCommand = voiceCommand.Properties["command"][0];
-                            await ExecuteSmarthouseCommands(smarthouseCommand);
+                        case "smartHouseTurnOnCommand":                            
+                            await ExecuteSmarthouseCommands("Turn on");
+                            break;
+                        case "smartHouseTurnOffCommand":
+                            await ExecuteSmarthouseCommands("Turn off");
+                            break;
+                        case "smartHouseMode":
+                            var mode = voiceCommand.Properties["command"][0];
+                            await SetSmartHouseMode(mode);
                             break;
                         default:                            
                             LaunchAppInForeground();
@@ -129,6 +135,15 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     LaunchAppInForeground();
                     break;
             }
+        }
+
+        private async Task SetSmartHouseMode(string mode)
+        {
+            var smartHouse = new SmartHouseService();
+            await ShowProgressScreen($"Setting {mode} mode");
+
+            var result = await smartHouse.SetMode(mode);
+            await CompleteMessage(result.Message);
         }
 
         private async Task ExecutePandoraCommands(string command)

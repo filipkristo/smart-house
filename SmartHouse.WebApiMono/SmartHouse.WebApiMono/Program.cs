@@ -50,7 +50,7 @@ namespace SmartHouse.WebApiMono
 
 				ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
-				var Server = WebApp.Start<SelfhostStartup>(Url);
+				var Server = WebApp.Start<WebApiConfig>(Url);
 				var message = $"Started self hosting at {Url}.";
 				Log.Info(message);
 

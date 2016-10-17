@@ -23,6 +23,13 @@ namespace SmartHouse.WebApiMono
 		}
 
 		[HttpGet]
+		[Route("Start")]
+		public Result Start()
+		{
+			return PandoraService.Start();
+		}
+
+		[HttpGet]
 		[Route("Stop")]
 		public Result Stop()
 		{

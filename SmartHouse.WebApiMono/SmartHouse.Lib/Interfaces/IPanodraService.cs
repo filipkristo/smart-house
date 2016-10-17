@@ -7,6 +7,10 @@ namespace SmartHouse.Lib
 	{
 		Result Play();
 
+		Result Pause();
+
+		Result Start();
+
 		Result Stop();
 
 		Result Next();

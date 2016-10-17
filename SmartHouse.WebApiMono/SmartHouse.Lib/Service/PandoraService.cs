@@ -16,6 +16,16 @@ namespace SmartHouse.Lib
 			return CommandExecuter(PandoraCommandEnum.Play);
 		}
 
+		public Result Pause()
+		{
+			return CommandExecuter(PandoraCommandEnum.Pause);
+		}
+
+		public Result Start()
+		{
+			return CommandExecuter(PandoraCommandEnum.Start);
+		}
+
 		public Result Stop()
 		{
 			return CommandExecuter(PandoraCommandEnum.Stop);
@@ -68,21 +78,21 @@ namespace SmartHouse.Lib
 			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
 			var path = Path.Combine(homeDir, @".config/pianobar/nowplaying");
 
-			var lines = File.ReadLines(path).ToList();
+			var lines = File.ReadLines(path).Select(x => x?.Trim()).ToList();
 
 			var fileInfo = new FileInfo(path);
 			var stamp = DateTime.Now - fileInfo.LastWriteTime;
 
 			return new PandoraResult()
 			{
-				Artist = lines[0].Trim(),
-				Song = lines[1].Trim(),
-				Radio = lines[2].Trim(),
-				Loved = lines[3].Trim() == "1",
-				AlbumUri = lines[4].Trim(),
-				Album = lines[5].Trim(),
-				DurationSeconds = int.Parse(lines[6].Trim()),
-				IsPlaying = stamp.Seconds < int.Parse(lines[6].Trim()),
+				Artist = lines[0],
+				Song = lines[1],
+				Radio = lines[2],
+				Loved = lines[3] == "1",
+				AlbumUri = lines[4],
+				Album = lines[5],
+				DurationSeconds = Convert.ToInt32(lines[6]),
+				IsPlaying = stamp.TotalSeconds <= Convert.ToInt32(lines[6]),
 				LastModifed = fileInfo.LastWriteTime
 			};
 		}
@@ -115,6 +125,14 @@ namespace SmartHouse.Lib
 				case PandoraCommandEnum.Play:
 					BashHelper.ExecBashCommand("echo 'p' >> /home/pi/.config/pianobar/ctl");
 					message = "Play/Pause";
+					break;
+				case PandoraCommandEnum.Pause:
+					BashHelper.ExecBashCommand("echo 'p' >> /home/pi/.config/pianobar/ctl");
+					message = "Play/Pause";
+					break;
+				case PandoraCommandEnum.Start:
+					BashHelper.ExecBashCommand("./pandora.sh start");
+					message = "Start";
 					break;
 				case PandoraCommandEnum.Stop:
 					BashHelper.ExecBashCommand("./pandora.sh stop");

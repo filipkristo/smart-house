@@ -9,6 +9,7 @@ namespace SmartHouse.Lib
 		Start,
 		Stop,
 		Play,
+		Pause,
 		VolumeUp,
 		VolumeDown,
 		Next,

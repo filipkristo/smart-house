@@ -24,5 +24,18 @@ namespace SmartHouse.UWPLib.BLL
                 return JsonConvert.DeserializeObject<Result>(json);
             }
         }
+
+        public async Task<Result> SetMode(string mode)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://10.110.166.90:8081/api/SmartHouse/SetMode?Mode={mode}";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
     }
 }

@@ -68,6 +68,7 @@
     <Compile Include="Interfaces\ISmartHouseService.cs" />
     <Compile Include="Model\Settings\ModeSettings.cs" />
     <Compile Include="Model\ModeEnum.cs" />
+    <Compile Include="Util\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

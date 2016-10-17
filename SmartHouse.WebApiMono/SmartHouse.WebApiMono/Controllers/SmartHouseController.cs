@@ -13,7 +13,8 @@ namespace SmartHouse.WebApiMono
 		private readonly IPanodraService PandoraService;
 		private readonly ISmartHouseService SmartHouseService;
 
-		public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService) : base(service)
+		public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService) 
+			: base(service)
 		{
 			YamahaService = yamahaService;
 			PandoraService = pandoraService;
@@ -55,8 +56,11 @@ namespace SmartHouse.WebApiMono
 			var sb = new StringBuilder();
 			var powerStatus = await YamahaService.PowerStatus();
 
-			PandoraService.Play();
-			sb.AppendLine("Pausing pandora radio");
+			if (PandoraService.IsPlaying())
+			{
+				PandoraService.Pause();
+				sb.AppendLine("Pausing pandora radio");	
+			}
 
 			if (powerStatus == PowerStatusEnum.On)
 			{
@@ -148,7 +152,7 @@ namespace SmartHouse.WebApiMono
 			}
 
 			if (PandoraService.IsPlaying())
-				PandoraService.Play();
+				PandoraService.Pause();
 
 			await YamahaService.SetInput("HDMI2");
 			sb.AppendLine("Set HDMI2 input");
@@ -167,6 +171,13 @@ namespace SmartHouse.WebApiMono
 		{
 			var sb = new StringBuilder();
 			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.StandBy)
+			{
+				await YamahaService.TurnOn();
+				sb.AppendLine("Yamaha Turn on");
+				await Task.Delay(TimeSpan.FromSeconds(8));
+			}
 
 			return new Result()
 			{

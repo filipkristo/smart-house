@@ -12,7 +12,7 @@ using Swashbuckle.Application;
 
 namespace SmartHouse.WebApiMono
 {
-	public class SelfhostStartup
+	public class WebApiConfig
 	{
 		// This code configures Web API. The Startup class is specified as a type
 		// parameter in the WebApp.Start method.
