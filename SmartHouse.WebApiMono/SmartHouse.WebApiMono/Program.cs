@@ -29,7 +29,9 @@ namespace SmartHouse.WebApiMono
 				log4net.Config.XmlConfigurator.Configure();
 				Log.Info("Application_Start");
 
+				StartTcpServer();
 				StartSelfHosting();
+
 				Console.ReadLine();
 			}
 			catch (Exception ex)
@@ -58,6 +60,19 @@ namespace SmartHouse.WebApiMono
 			catch (Exception ex)
 			{
 				Log.Error($"Exception StartSelfHosting", ex);
+			}
+		}
+
+		private static async void StartTcpServer()
+		{
+			try
+			{
+				var tcp = new TcpServer();
+				await tcp.StartTcpServer();
+			}
+			catch (Exception ex)
+			{
+				Log.Error("TCP Server Error", ex);
 			}
 		}
 	}

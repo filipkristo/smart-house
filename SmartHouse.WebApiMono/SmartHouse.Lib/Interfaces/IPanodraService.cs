@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
@@ -12,6 +13,14 @@ namespace SmartHouse.Lib
 		Result Start();
 
 		Result Stop();
+
+		Result Restart();
+
+		Task<Result> StartTcp();
+
+		Task<Result> StopTcp();
+
+		Task<Result> RestartTcp();
 
 		Result Next();
 

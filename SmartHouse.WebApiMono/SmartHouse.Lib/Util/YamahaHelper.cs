@@ -19,7 +19,6 @@ namespace SmartHouse.Lib
 			using (var client = new HttpClient())
 			{	
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-
 				client.DefaultRequestHeaders.Add("User-Agent", "SmartHouse");
 
 				var payload = new StringContent(command, Encoding.Default, "application/xml");
@@ -36,16 +35,6 @@ namespace SmartHouse.Lib
 		public static T SerializeXmlString<T>(string xml) where T : new()
 		{
 			return XmlConvert.DeserializeObject<T>(xml);
-
-			//var serializer = new XmlSerializer(typeof(T), );
-
-			////XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-			////ns.Add("", "");
-
-			//using (var reader = new StringReader(xml))
-			//{
-			//	return (T)serializer.Deserialize(reader);
-			//}
 		}
 	}
 }

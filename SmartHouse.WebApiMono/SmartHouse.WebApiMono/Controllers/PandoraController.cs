@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using SmartHouse.Lib;
 
@@ -24,16 +25,23 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("Start")]
-		public Result Start()
+		public async Task<Result> Start()
 		{
-			return PandoraService.Start();
+			return await PandoraService.StartTcp();
 		}
 
 		[HttpGet]
 		[Route("Stop")]
-		public Result Stop()
+		public async Task<Result> Stop()
 		{
-			return PandoraService.Stop();
+			return await PandoraService.StopTcp();
+		}
+
+		[HttpGet]
+		[Route("Restart")]
+		public async Task<Result> Restart()
+		{
+			return await PandoraService.RestartTcp();
 		}
 
 		[HttpGet]

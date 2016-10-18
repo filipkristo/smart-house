@@ -69,6 +69,8 @@
     <Compile Include="Model\Settings\ModeSettings.cs" />
     <Compile Include="Model\ModeEnum.cs" />
     <Compile Include="Util\Logger.cs" />
+    <Compile Include="TCP\TcpServer.cs" />
+    <Compile Include="TCP\TcpCommands.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
@@ -78,6 +80,7 @@
     <Folder Include="Model\Yamaha\" />
     <Folder Include="Model\Settings\" />
     <Folder Include="Model\Pandora\" />
+    <Folder Include="TCP\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartHouse.AzureIot\SmartHouse.AzureIot.csproj">

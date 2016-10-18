@@ -179,6 +179,15 @@ namespace SmartHouse.WebApiMono
 				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
 
+			if (PandoraService.IsPlaying())
+			{
+				PandoraService.Pause();	
+				sb.AppendLine("Pause pandora radio");
+			}
+
+			await YamahaService.SetInput("AUDIO1");
+			sb.AppendLine("Setting AUDIO1 input");
+
 			return new Result()
 			{
 				ErrorCode = 0,

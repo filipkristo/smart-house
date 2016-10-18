@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
@@ -23,12 +24,44 @@ namespace SmartHouse.Lib
 
 		public Result Start()
 		{
-			return CommandExecuter(PandoraCommandEnum.Start);
+			var result = CommandExecuter(PandoraCommandEnum.Start);
+
+			Task.Delay(TimeSpan.FromSeconds(4)).Wait();
+			BashHelper.ExecBashCommand("echo '1' >> /home/pi/.config/pianobar/ctl");
+
+			return result;
 		}
 
 		public Result Stop()
 		{
 			return CommandExecuter(PandoraCommandEnum.Stop);
+		}
+
+		public Result Restart()
+		{
+			var result = Stop();
+			Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+
+			result.Message += Start().Message;
+			return result;
+		}
+
+		public async Task<Result> StartTcp()
+		{
+			var tcp = new TcpServer();
+			return await tcp.SendCommandToServer<Result>(TcpCommands.Pandora.PANDORA_START);
+		}
+
+		public async Task<Result> StopTcp()
+		{
+			var tcp = new TcpServer();
+			return await tcp.SendCommandToServer<Result>(TcpCommands.Pandora.PANDORA_STOP);
+		}
+
+		public async Task<Result> RestartTcp()
+		{
+			var tcp = new TcpServer();
+			return await tcp.SendCommandToServer<Result>(TcpCommands.Pandora.PANDORA_RESTART);
 		}
 
 		public Result Next()
@@ -131,11 +164,11 @@ namespace SmartHouse.Lib
 					message = "Play/Pause";
 					break;
 				case PandoraCommandEnum.Start:
-					BashHelper.ExecBashCommand("./pandora.sh start");
+					BashHelper.ExecBashScript("./pandora.sh start");
 					message = "Start";
 					break;
 				case PandoraCommandEnum.Stop:
-					BashHelper.ExecBashCommand("./pandora.sh stop");
+					BashHelper.ExecBashScript("./pandora.sh stop");
 					message = "Stop";
 					break;				
 				case PandoraCommandEnum.Next:
