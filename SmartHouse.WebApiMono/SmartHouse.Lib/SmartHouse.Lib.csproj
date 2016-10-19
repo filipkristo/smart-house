@@ -71,6 +71,7 @@
     <Compile Include="Util\Logger.cs" />
     <Compile Include="TCP\TcpServer.cs" />
     <Compile Include="TCP\TcpCommands.cs" />
+    <Compile Include="Model\SmartHouseState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

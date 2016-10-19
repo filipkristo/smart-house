@@ -45,7 +45,6 @@ namespace SmartHouse.Lib
 						} while (netStream.DataAvailable);
 
 						Logger.LogInfoMessage($"Payload: {payload}");
-
 						Result result = null;
 
 						try
@@ -77,48 +76,35 @@ namespace SmartHouse.Lib
 			}
 		}
 
-		public async Task<T> SendCommandToServer<T>(string data)
+		public async Task<T> SendCommandToServer<T>(string data) where T : class
 		{
-			var buffer = new byte[2048];
+			var buffer = new byte[512];
 
-			using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+			using (var tcpClient = new TcpClient())
 			{
-				socket.Blocking = true;
+				tcpClient.Connect(IpAddress, Port);
 
-				var ipAddress = IPAddress.Parse(IpAddress);
-				var ipLocal = new IPEndPoint(ipAddress, Port);
+				var stream = tcpClient.GetStream();
 
-				socket.Connect(ipLocal);
+				var bytes = Encoding.UTF8.GetBytes(data);
+				await stream.WriteAsync(bytes, 0, bytes.Length);
 
-				Logger.LogInfoMessage("Client connected");
+				var response = string.Empty;
 
-				if (!socket.Connected)
-					throw new Exception("Connection NOT established on " + ipLocal.Address.ToString() + ", port" + ipLocal.Port);
-
-				var response = String.Empty;
-
-				var buffOut = Encoding.UTF8.GetBytes(response);
-
-				Logger.LogInfoMessage($"Sending {response}");
-				socket.Send(buffOut);
-				Logger.LogInfoMessage($"Data sent");
-
-				using (var netStream = new NetworkStream(socket))
+				do
 				{
-					do
-					{
-						var size = await netStream.ReadAsync(buffer, 0, buffer.Length);
-						var str = Encoding.UTF8.GetString(buffer, 0, size);
-						response += str;
+					var size = await stream.ReadAsync(buffer, 0, buffer.Length);
+					var str = Encoding.UTF8.GetString(buffer, 0, size);
+					response += str;
 
-					} while (netStream.DataAvailable);
-				}
+				} while (stream.DataAvailable);
 
 				Logger.LogInfoMessage($"Result: {response}");
 
-				var result = (T)JsonConvert.DeserializeObject(response);
+				var result = JsonConvert.DeserializeObject(response) as T;
 				return result;
 			}
+
 		}
 	}
 }

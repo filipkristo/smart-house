@@ -41,6 +41,8 @@ namespace SmartHouse.WebApiMono
 			PandoraService.Play();
 			sb.AppendLine("Playing pandora radio");
 
+			await SmartHouseService.SaveState(SmartHouseState.Music);
+
 			return new Result()
 			{
 				ErrorCode = 0,
@@ -157,6 +159,8 @@ namespace SmartHouse.WebApiMono
 			await YamahaService.SetInput("HDMI2");
 			sb.AppendLine("Set HDMI2 input");
 
+			await SmartHouseService.SaveState(SmartHouseState.XBox);
+
 			return new Result()
 			{
 				ErrorCode = 0,
@@ -188,12 +192,22 @@ namespace SmartHouse.WebApiMono
 			await YamahaService.SetInput("AUDIO1");
 			sb.AppendLine("Setting AUDIO1 input");
 
+			await SmartHouseService.SaveState(SmartHouseState.TV);
+
 			return new Result()
 			{
 				ErrorCode = 0,
 				Message = sb.ToString(),
 				Ok = true
 			};
+		}
+
+		[HttpGet]
+		[Route("GetCurrentState")]
+		public async Task<string> GetCurrentState()
+		{
+			var state = await SmartHouseService.GetCurrentState();
+			return state.ToString();
 		}
 	}
 }

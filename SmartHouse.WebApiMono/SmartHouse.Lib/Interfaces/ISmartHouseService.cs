@@ -6,5 +6,9 @@ namespace SmartHouse.Lib
 	public interface ISmartHouseService
 	{
 		Task<Result> SetMode(ModeEnum mode);
+
+		Task SaveState(SmartHouseState state);
+
+		Task<SmartHouseState> GetCurrentState();
 	}
 }
