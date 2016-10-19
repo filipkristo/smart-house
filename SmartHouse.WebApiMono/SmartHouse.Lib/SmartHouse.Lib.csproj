@@ -72,6 +72,8 @@
     <Compile Include="TCP\TcpServer.cs" />
     <Compile Include="TCP\TcpCommands.cs" />
     <Compile Include="Model\SmartHouseState.cs" />
+    <Compile Include="Model\Sensors\TemperatureData.cs" />
+    <Compile Include="UDP\TemperatureUdp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
@@ -82,6 +84,8 @@
     <Folder Include="Model\Settings\" />
     <Folder Include="Model\Pandora\" />
     <Folder Include="TCP\" />
+    <Folder Include="Model\Sensors\" />
+    <Folder Include="UDP\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartHouse.AzureIot\SmartHouse.AzureIot.csproj">

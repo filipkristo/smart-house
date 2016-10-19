@@ -99,6 +99,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\YamahaController.cs" />
+    <Compile Include="Controllers\SensorController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

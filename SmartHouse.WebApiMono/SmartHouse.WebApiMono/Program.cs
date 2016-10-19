@@ -30,6 +30,8 @@ namespace SmartHouse.WebApiMono
 				Log.Info("Application_Start");
 
 				StartTcpServer();
+				StartUdpTemperature();
+
 				StartSelfHosting();
 
 				Console.ReadLine();
@@ -73,6 +75,19 @@ namespace SmartHouse.WebApiMono
 			catch (Exception ex)
 			{
 				Log.Error("TCP Server Error", ex);
+			}
+		}
+
+		private static async void StartUdpTemperature()
+		{
+			try
+			{
+				var udp = new TemperatureUdp();
+				await udp.StartListen();
+			}
+			catch (Exception ex)
+			{
+				Log.Error("UDP Server Error", ex);
 			}
 		}
 	}

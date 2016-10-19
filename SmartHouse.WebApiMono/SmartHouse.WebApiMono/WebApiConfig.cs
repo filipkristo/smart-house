@@ -55,6 +55,7 @@ namespace SmartHouse.WebApiMono
 			unity.RegisterType<SmartHouseController>();
 			unity.RegisterType<UtilController>();
 			unity.RegisterType<SettingsController>();
+			unity.RegisterType<SensorController>();
 
 			unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
