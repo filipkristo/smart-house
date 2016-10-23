@@ -74,6 +74,9 @@
     <Compile Include="Model\SmartHouseState.cs" />
     <Compile Include="Model\Sensors\TemperatureData.cs" />
     <Compile Include="UDP\TemperatureUdp.cs" />
+    <Compile Include="Model\Room.cs" />
+    <Compile Include="Service\TelemetryService.cs" />
+    <Compile Include="Interfaces\ITelemetryService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
@@ -86,12 +89,6 @@
     <Folder Include="TCP\" />
     <Folder Include="Model\Sensors\" />
     <Folder Include="UDP\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SmartHouse.AzureIot\SmartHouse.AzureIot.csproj">
-      <Project>{2E7AB2DB-A705-4371-B116-79AB07120242}</Project>
-      <Name>SmartHouse.AzureIot</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

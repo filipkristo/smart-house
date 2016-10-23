@@ -9,6 +9,7 @@
     <AssemblyName>SmartHouse.AzureIot</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ReleaseVersion>1.0</ReleaseVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,30 +41,49 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="PInvoke.Windows.Core">
-      <HintPath>..\packages\PInvoke.Windows.Core.0.3.2\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="PInvoke.Kernel32">
-      <HintPath>..\packages\PInvoke.Kernel32.0.3.2\lib\net40\PInvoke.Kernel32.dll</HintPath>
-    </Reference>
-    <Reference Include="PInvoke.BCrypt">
-      <HintPath>..\packages\PInvoke.BCrypt.0.3.2\lib\net40\PInvoke.BCrypt.dll</HintPath>
-    </Reference>
-    <Reference Include="PInvoke.NCrypt">
-      <HintPath>..\packages\PInvoke.NCrypt.0.3.2\lib\net40\PInvoke.NCrypt.dll</HintPath>
-    </Reference>
     <Reference Include="Validation">
       <HintPath>..\packages\Validation.2.3.7\lib\dotnet\Validation.dll</HintPath>
     </Reference>
     <Reference Include="PCLCrypto">
       <HintPath>..\packages\PCLCrypto.2.0.147\lib\net45\PCLCrypto.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PInvoke.Windows.Core">
+      <HintPath>..\packages\PInvoke.Windows.Core.0.3.152\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.Kernel32">
+      <HintPath>..\packages\PInvoke.Kernel32.0.3.152\lib\net40\PInvoke.Kernel32.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.BCrypt">
+      <HintPath>..\packages\PInvoke.BCrypt.0.3.152\lib\net40\PInvoke.BCrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="PInvoke.NCrypt">
+      <HintPath>..\packages\PInvoke.NCrypt.0.3.152\lib\net40\PInvoke.NCrypt.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Config\AureIoTAuth.cs" />
+    <Compile Include="Model\DeviceProperties.cs" />
+    <Compile Include="Model\CommandParameter.cs" />
+    <Compile Include="Model\Command.cs" />
+    <Compile Include="Model\Thermostat.cs" />
+    <Compile Include="Model\TelemetryData.cs" />
+    <Compile Include="Service\Telemetry\LivingTelemetryRoomService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="Model\" />
+    <Folder Include="Service\" />
+    <Folder Include="Service\Telemetry\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

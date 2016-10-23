@@ -61,6 +61,7 @@ namespace SmartHouse.WebApiMono
 			unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IYamahaService, YamahaService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<ISmartHouseService, SmartHouseService>(new HierarchicalLifetimeManager());
+			unity.RegisterType<ITelemetryService, TelemetryService>(new HierarchicalLifetimeManager());
 
 			config.DependencyResolver = new UnityResolver(unity);
 		}
@@ -99,7 +100,7 @@ namespace SmartHouse.WebApiMono
 			config.EnableSwagger(c =>
 								{
 									c.SingleApiVersion("1.0.0", "Smart House - REST API")
-									 .Description("Open Source web api for Smart House running on mono framework")
+				                     .Description("Open Source web api for Smart House running on .NET framework(Mono compatibile)")
 									.Contact(co => co
 										.Name("Filip Krišto")
 										.Url("https://github.com/filipkristo")

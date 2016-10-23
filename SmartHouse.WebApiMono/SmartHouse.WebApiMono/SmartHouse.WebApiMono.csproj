@@ -84,6 +84,10 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.3.7\lib\dotnet\Validation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -125,10 +129,6 @@
     <ProjectReference Include="..\SmartHouse.Lib\SmartHouse.Lib.csproj">
       <Project>{CEF8FE44-20C2-460E-9909-7DD0277C45B7}</Project>
       <Name>SmartHouse.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SmartHouse.AzureIot\SmartHouse.AzureIot.csproj">
-      <Project>{2E7AB2DB-A705-4371-B116-79AB07120242}</Project>
-      <Name>SmartHouse.AzureIot</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

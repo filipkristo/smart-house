@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using SmartHouse.Lib;
 
@@ -7,31 +8,25 @@ namespace SmartHouse.WebApiMono
 	[RoutePrefix("api/Sensor")]
 	public class SensorController : BaseController
 	{
-		public SensorController(ISettingsService settingsService) : base(settingsService)
-		{
+		private readonly ITelemetryService TelemetryService;
 
+		public SensorController(ISettingsService settingsService, ITelemetryService telemetryService) : base(settingsService)
+		{
+			this.TelemetryService = telemetryService;
 		}
 
 		[HttpPost]
 		[Route("SaveTemperature")]
-		public Result SaveTemperature(TemperatureData data)
+		public async Task<Result> SaveTemperature(TemperatureData data)
 		{
-			MainClass.Log.Info($"Temperature: {data?.Temperature}");
-			MainClass.Log.Info($"Humidity: {data?.Humidity}");
-
-			return new Result()
-			{
-				ErrorCode = 0,
-				Message = "OK",
-				Ok = true
-			};
+			return await TelemetryService.SaveTemperature(data);
 		}
 
 		[HttpGet]
 		[Route("GetCurrentTemperature")]
-		public TemperatureData GetCurrentTemperature()
+		public async Task<TemperatureData> GetCurrentTemperature()
 		{
-			return TemperatureUdp.TemperatureData;
+			return await TelemetryService.GetLastTemperature();
 		}
 	}
 }
