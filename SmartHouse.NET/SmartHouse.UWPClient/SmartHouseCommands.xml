@@ -24,6 +24,20 @@
       <Feedback> Please wait </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
+
+    <Command Name="smartHouseVolumeUp">
+      <Example> Volume up </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> volume up</ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+
+    <Command Name="smartHouseVolumeDown">
+      <Example> Volume up </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> volume down</ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
     
     <Command Name="smartHouseMode">
       <Example> Set Normal mode </Example>

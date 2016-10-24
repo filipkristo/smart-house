@@ -91,6 +91,12 @@ namespace SmartHouse.UWPClient.VoiceCommands
                         case "smartHouseTurnOffCommand":
                             await ExecuteSmarthouseCommands("Turn off");
                             break;
+                        case "smartHouseVolumeUp":                            
+                            await ExecuteSmarthouseCommands("Volume up");
+                            break;
+                        case "smartHouseVolumeDown":                            
+                            await ExecuteSmarthouseCommands("Volume down");
+                            break;
                         case "smartHouseMode":
                             var mode = voiceCommand.Properties["mode"][0];
                             await SetSmartHouseMode(mode);
@@ -129,11 +135,17 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     break;
                 case "Volume up":
                     result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    await CompleteMessage(result.Message);
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+                    await CompleteMessage("");
                     break;
                 case "Volume down":
                     result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    await CompleteMessage(result.Message);
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+                    await CompleteMessage("");
                     break;
                 default:
                     LaunchAppInForeground();
@@ -147,7 +159,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
             await ShowProgressScreen($"Setting {mode} mode");
 
             var result = await smartHouse.SetMode(mode);
-            await CompleteMessage(result.Message);
+            await CompleteMessage("");
         }
 
         private async Task SetSmartHouseSetInput(string input)
@@ -156,7 +168,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
             await ShowProgressScreen($"Setting {input} input");
 
             var result = await smartHouse.SetInput(input);
-            await CompleteMessage(result.Message);
+            await CompleteMessage("");
         }
 
         private async Task ExecutePandoraCommands(string command)
