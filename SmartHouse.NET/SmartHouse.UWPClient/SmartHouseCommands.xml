@@ -32,6 +32,13 @@
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
     
+    <Command Name="smartHouseInput">
+      <Example> TV input </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {input} input</ListenFor>
+      <Feedback> Setting TV input </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+    
     <PhraseList Label="command">
       <Item>Play</Item>
       <Item>Stop</Item>
@@ -43,6 +50,12 @@
         <Item>Quite</Item>
         <Item>Normal</Item>
         <Item>Loud</Item>        
+    </PhraseList>
+  
+    <PhraseList Label="input">
+        <Item>Pandora</Item>
+        <Item>XBox</Item>
+        <Item>TV</Item>        
     </PhraseList>
   
   </CommandSet>

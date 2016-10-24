@@ -38,8 +38,11 @@ namespace SmartHouse.WebApiMono
 			await YamahaService.SetInput("AV2");
 			sb.AppendLine("Setting AV2 input");
 
-			PandoraService.Play();
-			sb.AppendLine("Playing pandora radio");
+			if (!PandoraService.IsPlaying())
+			{
+				PandoraService.Play();
+				sb.AppendLine("Playing pandora radio");	
+			}
 
 			await SmartHouseService.SaveState(SmartHouseState.Music);
 
@@ -154,12 +157,48 @@ namespace SmartHouse.WebApiMono
 			}
 
 			if (PandoraService.IsPlaying())
+			{
 				PandoraService.Pause();
+				sb.AppendLine("Pausing pandora radio");
+			}				
 
 			await YamahaService.SetInput("HDMI2");
 			sb.AppendLine("Set HDMI2 input");
 
 			await SmartHouseService.SaveState(SmartHouseState.XBox);
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
+		[HttpGet]
+		[Route("Pandora")]
+		public async Task<Result> Pandora()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.StandBy)
+			{
+				await YamahaService.TurnOn();
+				sb.AppendLine("Yamaha Turn on");
+				await Task.Delay(TimeSpan.FromSeconds(8));
+			}
+
+			if (!PandoraService.IsPlaying())
+			{
+				PandoraService.Play();
+				sb.AppendLine("Playing pandora radio");
+			}
+
+			await YamahaService.SetInput("AV2");
+			sb.AppendLine("Set AV2 input");
+
+			await SmartHouseService.SaveState(SmartHouseState.Music);
 
 			return new Result()
 			{

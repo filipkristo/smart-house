@@ -92,8 +92,12 @@ namespace SmartHouse.UWPClient.VoiceCommands
                             await ExecuteSmarthouseCommands("Turn off");
                             break;
                         case "smartHouseMode":
-                            var mode = voiceCommand.Properties["command"][0];
+                            var mode = voiceCommand.Properties["mode"][0];
                             await SetSmartHouseMode(mode);
+                            break;
+                        case "smartHouseInput":
+                            var input = voiceCommand.Properties["input"][0];
+                            await SetSmartHouseSetInput(input);
                             break;
                         default:                            
                             LaunchAppInForeground();
@@ -146,6 +150,15 @@ namespace SmartHouse.UWPClient.VoiceCommands
             await CompleteMessage(result.Message);
         }
 
+        private async Task SetSmartHouseSetInput(string input)
+        {
+            var smartHouse = new SmartHouseService();
+            await ShowProgressScreen($"Setting {input} input");
+
+            var result = await smartHouse.SetInput(input);
+            await CompleteMessage(result.Message);
+        }
+
         private async Task ExecutePandoraCommands(string command)
         {            
             var pandora = new PandoraService();
@@ -185,7 +198,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Tired);
                     await CompleteMessage("");
                     break;
-                case "Display":
+                case "Show":
                     var info = await pandora.ShowInfo();
                     await CompleteMessage($"Playing Song {info.Song}, from artist {info.Artist}, on album {info.Album}. {(info.Loved ? "You like this song." : "")}");
                     break;

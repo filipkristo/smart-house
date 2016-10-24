@@ -31,7 +31,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/GET/api/Pandora/CurrentSongInfo";
+                var uri = $"http://10.110.166.90:8081/api/Pandora/CurrentSongInfo";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<PandoraResult>(json);
