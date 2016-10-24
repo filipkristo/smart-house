@@ -44,6 +44,9 @@ namespace SmartHouse.WebApiMono
 				sb.AppendLine("Playing pandora radio");	
 			}
 
+			await SmartHouseService.SetMode(ModeEnum.Normal);
+			sb.AppendLine("Setting Normal mode");
+
 			await SmartHouseService.SaveState(SmartHouseState.Music);
 
 			return new Result()
