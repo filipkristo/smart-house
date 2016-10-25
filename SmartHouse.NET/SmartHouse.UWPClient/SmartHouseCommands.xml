@@ -54,10 +54,13 @@
     </Command>
     
     <PhraseList Label="command">
-      <Item>Play</Item>
+      <Item>Play</Item>      
       <Item>Stop</Item>
       <Item>Next</Item>
       <Item>Show</Item>
+      <Item>Love</Item>
+      <Item>Hate</Item>
+      <Item>Boring</Item>      
     </PhraseList>
   
     <PhraseList Label="mode">

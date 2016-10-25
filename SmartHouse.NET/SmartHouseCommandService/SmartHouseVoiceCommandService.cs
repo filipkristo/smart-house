@@ -1,4 +1,5 @@
-﻿using SmartHouse.UWPLib.BLL;
+﻿using SmartHouse.Lib;
+using SmartHouse.UWPLib.BLL;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -198,21 +199,21 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.VolumeDown);
                     await CompleteMessage("");
                     break;
-                case "Thumb up":
+                case "Love":
                     await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbUp);
                     await CompleteMessage("");
                     break;
-                case "Thumb down":
+                case "Hate":
                     await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbDown);
                     await CompleteMessage("");
                     break;
-                case "Tired of":
+                case "Boring":
                     await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Tired);
                     await CompleteMessage("");
                     break;
                 case "Show":
-                    var info = await pandora.ShowInfo();
-                    await CompleteMessage($"Playing Song {info.Song}, from artist {info.Artist}, on album {info.Album}. {(info.Loved ? "You like this song." : "")}");
+                    var info = await pandora.ShowInfo();                                        
+                    await CortanaResponseLoveSong(info);
                     break;
                 default:
                     LaunchAppInForeground();
@@ -251,6 +252,45 @@ namespace SmartHouse.UWPClient.VoiceCommands
             response.AppLaunchArgument = "";
 
             await voiceServiceConnection.RequestAppLaunchAsync(response);
+        }
+
+        private async Task CortanaResponseLoveSong(PandoraResult info)
+        {
+            var message = $"Playing Song: {info.Song}, from artist {info.Artist}, on album {info.Album}. {(info.Loved ? "You like this song." : "")}";            
+
+            if (info.Loved)
+            {
+                await CompleteMessage(message);
+            }
+            else
+            {
+                var userPrompt = new VoiceCommandUserMessage();
+                userPrompt.DisplayMessage = userPrompt.SpokenMessage = message + "Do you like this song";
+
+                var userReprompt = new VoiceCommandUserMessage();
+                var prompt = "Do you like this song?";
+                userReprompt.DisplayMessage = userReprompt.SpokenMessage = prompt;
+
+                var response = VoiceCommandResponse.CreateResponseForPrompt(userPrompt, userReprompt);
+                var voiceCommandConfirmation = await voiceServiceConnection.RequestConfirmationAsync(response);
+
+                if (voiceCommandConfirmation == null)
+                {
+                    response = VoiceCommandResponse.CreateResponse(userPrompt);
+                    await voiceServiceConnection.ReportSuccessAsync(response);
+                }
+                else if(voiceCommandConfirmation.Confirmed)
+                {
+                    var pandora = new PandoraService();
+                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbUp);
+
+                    await CompleteMessage("You liked this song");
+                }
+                else
+                {
+                    await CompleteMessage("");
+                }
+            }            
         }
 
         /// <summary>
