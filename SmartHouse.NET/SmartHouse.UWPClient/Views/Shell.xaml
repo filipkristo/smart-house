@@ -22,7 +22,7 @@
                     <SymbolIcon Width="48" Height="48"
                                 Symbol="Home" />
                     <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
-                               Text="Home" />
+                               Text="Main page" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
             <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:PandoraRemote" 
@@ -31,16 +31,25 @@
                     <SymbolIcon Width="48" Height="48"
                                 Symbol="MusicInfo" />
                     <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
-                               Text="Home" />
+                               Text="Pandora" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
-            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:Settings" 
+            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:SwaggerWebView" 
                                           AutomationProperties.Name="Blue">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"
-                                Symbol="Setting" />
+                                Symbol="World" />
                     <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
-                               Text="Settings" />
+                               Text="Swagger" />
+                </StackPanel>
+            </controls:HamburgerButtonInfo>
+            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:RemoteController" 
+                                          AutomationProperties.Name="Blue">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Remote" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Remote" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
         </controls:HamburgerMenu.PrimaryButtons>

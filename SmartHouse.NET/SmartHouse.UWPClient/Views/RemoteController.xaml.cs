@@ -20,20 +20,12 @@ namespace SmartHouse.UWPClient.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Settings : Page
+    public sealed partial class RemoteController : Page
     {
-        Template10.Services.SerializationService.ISerializationService _SerializationService;
-
-        public Settings()
+        public RemoteController()
         {
             this.InitializeComponent();
-            _SerializationService = Template10.Services.SerializationService.SerializationService.Json;
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            var index = int.Parse(_SerializationService.Deserialize(e.Parameter?.ToString()).ToString());
-            MyPivot.SelectedIndex = index;
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }
     }
 }

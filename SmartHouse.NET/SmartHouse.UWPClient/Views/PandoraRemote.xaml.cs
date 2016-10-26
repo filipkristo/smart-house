@@ -25,12 +25,18 @@ namespace SmartHouse.UWPClient.Views
         public PandoraRemote()
         {
             this.InitializeComponent();
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            webView.Navigate(new Uri("http://10.110.166.90/player/pandora.php"));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
+        {            
+            base.OnNavigatedTo(e);
+        }
+
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             webView.Navigate(new Uri("http://10.110.166.90/player/pandora.php"));
-            base.OnNavigatedTo(e);
         }
     }
 }

@@ -15,16 +15,25 @@
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <controls:PageHeader x:Name="pageHeader" Content="Smart House"
+        <controls:PageHeader x:Name="pageHeader" Content="Smart House - Main page"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" />
 
-        <WebView Name="webView" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="pageHeader" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True"/>
+        <StackPanel Margin="10, 0, 0, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="pageHeader" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
 
-        <!--<TextBlock x:Name="mainTextBlock" Margin="16,12,0,0"
-                   RelativePanel.AlignLeftWithPanel="True"
-                   RelativePanel.Below="pageHeader" Text="Hello World" />-->
+            <TextBlock Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 10, 0, 0" />
+            <TextBlock Text="{Binding PingStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 10, 0, 0" />
+
+            <TextBlock x:Name="LocationDisabledMessage"
+                 Visibility="{Binding VPNVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" TextWrapping="Wrap" >
+                    <Run Text="You are not connected to network. Try with " />
+                  <Hyperlink NavigateUri="ms-settings:ms-settings:network-wifi">
+                      <Run Text="VPN" />
+                  </Hyperlink>
+            </TextBlock>
+
+        </StackPanel>
 
     </RelativePanel>
 

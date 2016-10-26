@@ -38,14 +38,14 @@ namespace SmartHouse.WebApiMono
 			await YamahaService.SetInput("AV2");
 			sb.AppendLine("Setting AV2 input");
 
+			await SmartHouseService.SetMode(ModeEnum.Normal);
+			sb.AppendLine("Setting Normal mode");
+
 			if (!PandoraService.IsPlaying())
 			{
 				PandoraService.Play();
 				sb.AppendLine("Playing pandora radio");	
 			}
-
-			await SmartHouseService.SetMode(ModeEnum.Normal);
-			sb.AppendLine("Setting Normal mode");
 
 			await SmartHouseService.SaveState(SmartHouseState.Music);
 

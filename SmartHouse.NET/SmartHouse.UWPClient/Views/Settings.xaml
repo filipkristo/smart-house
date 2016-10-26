@@ -5,20 +5,145 @@
     xmlns:local="using:SmartHouse.UWPClient.Views"
     xmlns:controls="using:Template10.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:SmartHouse.UWPClient.ViewModels" mc:Ignorable="d">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
+    xmlns:vm="using:SmartHouse.UWPClient.ViewModels"
+    mc:Ignorable="d">
 
     <Page.DataContext>
-        <vm:MainPageViewModel x:Name="ViewModel" />
+        <vm:SettingsPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <controls:PageHeader x:Name="pageHeader" Content="Settings"
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for narrow view  -->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for normal view  -->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for wide view  -->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--  header  -->
+        <controls:PageHeader x:Name="pageHeader" Content="Settings Page"
+                             Frame="{x:Bind Frame}"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" />
-        
 
-    </Grid>
+        <!--  content  -->
+        <Pivot x:Name="MyPivot" Grid.Row="1"
+               RelativePanel.AlignBottomWithPanel="True"
+               RelativePanel.AlignLeftWithPanel="True"
+               RelativePanel.AlignRightWithPanel="True"
+               RelativePanel.Below="pageHeader">
+
+            <!--  settings  -->
+            <PivotItem DataContext="{Binding SettingsPartViewModel}" Header="Settings">
+                <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
+                              VerticalScrollBarVisibility="Auto">
+                    <RelativePanel HorizontalAlignment="Left">
+
+                        <ToggleSwitch x:Name="UseShellDrawnBackButtonToggleSwtich"
+                                      Header="Use shell-drawn back button"
+                                      IsOn="{Binding UseShellBackButton, Mode=TwoWay}"
+                                      OffContent="Back button in page header"
+                                      OnContent="Back button in titlebar or taskbar"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.AlignTopWithPanel="True" />
+
+                        <ToggleSwitch x:Name="UseLightThemeToggleSwitch" Header="Use Light Theme"
+                                      IsOn="{Binding UseLightThemeButton, Mode=TwoWay}"
+                                      OffContent="Dark theme" OnContent="Light theme"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.Below="UseShellDrawnBackButtonToggleSwtich" />
+
+                        <TextBox x:Name="txtHostIP" Header="Host IP"
+                                      Text="{Binding HostIP, Mode=TwoWay}"                                                                            
+                                      RelativePanel.AlignLeftWithPanel="True"    
+                                      MinWidth="180"
+                                      RelativePanel.Below="UseLightThemeToggleSwitch" />
+
+                        <TextBox x:Name="txtHostPort" Header="Host Port"
+                                      Text="{Binding HostPort, Mode=TwoWay}"                                         
+                                      MinWidth="180"
+                                      HorizontalAlignment="Left"
+                                      RelativePanel.AlignLeftWithPanel="True"                                      
+                                      RelativePanel.Below="txtHostIP" />
+
+                    </RelativePanel>
+
+                </ScrollViewer>
+            </PivotItem>
+
+            <!--  privacy  -->
+            <PivotItem DataContext="{Binding SettingsPartViewModel}"
+                       Header="Privacy statement" Padding="0">
+                <ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
+                    <TextBlock Margin="0,12,24,12" LineHeight="24"
+                               TextWrapping="Wrap">
+                    </TextBlock>
+                </ScrollViewer>
+            </PivotItem>
+
+            <!--  about  -->
+            <PivotItem Header="About">
+                <RelativePanel DataContext="{Binding AboutPartViewModel}">
+
+                    <Border x:Name="LogoImage" HorizontalAlignment="Right"
+                            VerticalAlignment="Top" BorderBrush="DimGray"
+                            BorderThickness="1" IsHitTestVisible="False"
+                            RelativePanel.AlignRightWithPanel="True"
+                            RelativePanel.AlignTopWithPanel="True">
+                        <Border.Background>
+                            <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
+                        </Border.Background>
+                        <Image Margin="12" Source="{Binding Logo}"
+                               Stretch="None" />
+                    </Border>
+
+                    <TextBlock x:Name="DisplayNameTextBlock" Margin="0,0,0,12"
+                               FontSize="24" RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.AlignRightWith="LogoImage"
+                               RelativePanel.AlignTopWithPanel="True"
+                               Text="{Binding DisplayName}" />
+
+                    <TextBlock x:Name="PublisherTextBlock"
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.Below="DisplayNameTextBlock"
+                               Text="{Binding Publisher}" />
+
+                    <TextBlock x:Name="VersionTextBlock"
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.Below="PublisherTextBlock">
+                        <Run>Version</Run>
+                        <Run Text="{Binding Version}" />
+                    </TextBlock>
+
+                </RelativePanel>
+            </PivotItem>
+        </Pivot>
+
+    </RelativePanel>
 </Page>

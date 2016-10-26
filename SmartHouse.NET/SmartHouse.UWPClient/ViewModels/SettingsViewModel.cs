@@ -1,28 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Template10.Mvvm;
-using Windows.UI.Xaml.Navigation;
+using Template10.Services.SettingsService;
+using Windows.UI.Xaml;
+
 
 namespace SmartHouse.UWPClient.ViewModels
 {
-    public class SettingsViewModel : BaseViewModel
+    public class SettingsPageViewModel : BaseViewModel
     {
-        public SettingsViewModel()
-        {
+        public SettingsPartViewModel SettingsPartViewModel { get; } = new SettingsPartViewModel();
+        public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
+    }
 
+    public class SettingsPartViewModel : BaseViewModel
+    {
+        Services.SettingsServices.SettingsService _settings;
+
+        public SettingsPartViewModel()
+        {
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                // designtime
+            }
+            else
+            {
+                _settings = Services.SettingsServices.SettingsService.Instance;
+            }
         }
 
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public bool UseShellBackButton
         {
-            await Task.CompletedTask;
+            get { return _settings.UseShellBackButton; }
+            set { _settings.UseShellBackButton = value; base.RaisePropertyChanged(); }
         }
 
-        public override async Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
+        public string HostIP
         {
-            await Task.CompletedTask;
+            get { return _settings.HostIP; }
+            set { _settings.HostIP = value; }
         }
+
+        public string HostPort
+        {
+            get { return _settings.HostPort; }
+            set { _settings.HostPort = value; }
+        }
+
+
+        public bool UseLightThemeButton
+        {
+            get { return _settings.AppTheme.Equals(ApplicationTheme.Light); }
+            set { _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; base.RaisePropertyChanged(); }
+        }                
+    }
+
+    public class AboutPartViewModel : BaseViewModel
+    {
+        public Uri Logo => Windows.ApplicationModel.Package.Current.Logo;
+
+        public string DisplayName => Windows.ApplicationModel.Package.Current.DisplayName;
+
+        public string Publisher => Windows.ApplicationModel.Package.Current.PublisherDisplayName;
+
+        public string Version
+        {
+            get
+            {
+                var v = Windows.ApplicationModel.Package.Current.Id.Version;
+                return $"{v.Major}.{v.Minor}.{v.Build}.{v.Revision}";
+            }
+        }
+
+        public Uri RateMe => new Uri("http://aka.ms/template10");
     }
 }

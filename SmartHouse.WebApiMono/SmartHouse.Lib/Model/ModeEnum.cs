@@ -3,7 +3,7 @@ namespace SmartHouse.Lib
 {
 	public enum ModeEnum
 	{
-		Quiet,
+		Quiete,
 		Normal,
 		Loud,
 		ExtraLoud
