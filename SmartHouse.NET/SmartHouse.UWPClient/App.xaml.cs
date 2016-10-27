@@ -1,3 +1,4 @@
+using SmartHouse.UWPClient.Services.SettingsServices;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -34,12 +35,14 @@ namespace SmartHouse.UWPClient
                 {
                     DisableBackButtonWhenModal = true,
                     Content = new Views.Shell(nav),
-                    ModalContent = new Views.Busy(),
+                    ModalContent = new Views.Busy()
                 };
-            }                        
+            }
 
+            RequestedTheme = SettingsService.Instance.AppTheme;
+            
             try
-            {
+            {                
                 Debug.WriteLine("Initialize Cortana file");
 
                 var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"SmartHouseCommands.xml");

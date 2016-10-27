@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartHouse.UWPClient.Services.SettingsServices;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace SmartHouse.UWPClient.Views
 
             webView.PermissionRequested += webView_PermissionRequested;
             webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
-            webView.Navigate(new Uri("http://10.110.166.90:8081/swagger"));
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}:{SettingsService.Instance.HostPort}/swagger"));
         }
 
         private void webView_PermissionRequested(WebView sender, WebViewPermissionRequestedEventArgs args)
@@ -62,7 +63,7 @@ namespace SmartHouse.UWPClient.Views
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            webView.Navigate(new Uri("http://10.110.166.90:8081/swagger"));
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}:{SettingsService.Instance.HostPort}/swagger"));
         }
     }
 }
