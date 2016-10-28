@@ -251,5 +251,13 @@ namespace SmartHouse.WebApiMono
 			var state = await SmartHouseService.GetCurrentState();
 			return state.ToString();
 		}
+
+		[HttpGet]
+		[Route("RestartOpenVPN")]
+		public async Task<Result> RestartOpenVPN()
+		{
+			var result = await SmartHouseService.RestartOpenVPNServiceTcp();
+			return result;
+		}
 	}
 }

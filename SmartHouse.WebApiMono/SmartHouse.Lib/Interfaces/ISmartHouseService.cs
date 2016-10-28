@@ -5,6 +5,10 @@ namespace SmartHouse.Lib
 {
 	public interface ISmartHouseService
 	{
+		Task<Result> RestartOpenVPNService();
+
+		Task<Result> RestartOpenVPNServiceTcp();
+
 		Task<Result> SetMode(ModeEnum mode);
 
 		Task SaveState(SmartHouseState state);

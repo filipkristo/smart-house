@@ -64,5 +64,25 @@ namespace SmartHouse.Lib
 				return (SmartHouseState)Enum.Parse(typeof(SmartHouseState), state);
 			}
 		}
+
+		public async Task<Result> RestartOpenVPNService()
+		{
+			BashHelper.ExecBashCommand("sudo service openvpn stop USVPN");
+			await Task.Delay(500);
+			BashHelper.ExecBashCommand("sudo service openvpn start USVPN");
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = "OK",
+				Ok = true
+			};
+		}
+
+		public async Task<Result> RestartOpenVPNServiceTcp()
+		{
+			var tcp = new TcpServer();
+			return await tcp.SendCommandToServer<Result>(TcpCommands.SmartHouse.RESTART_VPN);
+		}
 	}
 }

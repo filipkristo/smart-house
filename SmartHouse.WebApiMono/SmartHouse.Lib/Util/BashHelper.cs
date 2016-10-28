@@ -15,6 +15,8 @@ namespace SmartHouse.Lib
 				proc.StartInfo.RedirectStandardInput = true;
 				proc.StartInfo.RedirectStandardOutput = true;
 				proc.Start();	
+
+				proc.WaitForExit();
 			}
 		}
 
@@ -27,7 +29,9 @@ namespace SmartHouse.Lib
 				proc.StartInfo.UseShellExecute = false;
 				proc.StartInfo.RedirectStandardInput = true;
 				proc.StartInfo.RedirectStandardOutput = true;
-				proc.Start();	
+				proc.Start();
+
+				proc.WaitForExit();
 			}
 		}
 	}

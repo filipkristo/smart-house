@@ -42,6 +42,9 @@ namespace SmartHouse.Lib
 							readBytes = await netStream.ReadAsync(buffer, 0, buffer.Length);
 							payload += Encoding.UTF8.GetString(buffer, 0, readBytes);
 
+							if (!netStream.DataAvailable)
+								await Task.Delay(50);
+
 						} while (netStream.DataAvailable);
 
 						Logger.LogInfoMessage($"Payload: {payload}");
@@ -96,6 +99,9 @@ namespace SmartHouse.Lib
 					var size = await stream.ReadAsync(buffer, 0, buffer.Length);
 					var str = Encoding.UTF8.GetString(buffer, 0, size);
 					response += str;
+
+					if (!stream.DataAvailable)
+						await Task.Delay(50);
 
 				} while (stream.DataAvailable);
 
