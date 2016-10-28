@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,13 +27,34 @@ namespace SmartHouse.UWPClient.Views
         public PandoraRemote()
         {
             this.InitializeComponent();
+
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/player/pandora.php"));
+
+            webView.PermissionRequested += webView_PermissionRequested;
+            webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {            
-            base.OnNavigatedTo(e);
+        private void webView_PermissionRequested(WebView sender, WebViewPermissionRequestedEventArgs args)
+        {
+            if (args.PermissionRequest.PermissionType == WebViewPermissionType.Geolocation)
+            {
+                args.PermissionRequest.Allow();
+            }
+        }
+
+        private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
+        {
+            var applicationView = ApplicationView.GetForCurrentView();
+
+            if (sender.ContainsFullScreenElement)
+            {
+                applicationView.TryEnterFullScreenMode();
+            }
+            else if (applicationView.IsFullScreenMode)
+            {
+                applicationView.ExitFullScreenMode();
+            }
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)

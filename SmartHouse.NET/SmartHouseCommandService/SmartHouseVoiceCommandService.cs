@@ -106,6 +106,15 @@ namespace SmartHouse.UWPClient.VoiceCommands
                             var input = voiceCommand.Properties["input"][0];
                             await SetSmartHouseSetInput(input);
                             break;
+                        case "smartHouseCurrentInput":
+                            await SmartHouseGetInput();
+                            break;
+                        case "smartHouseRestartVPN":
+                            await SmartHouseRestartVPN();
+                            break;
+                        case "smartHousePlayBitch":
+                            await PlayMyShit();
+                            break;
                         default:                            
                             LaunchAppInForeground();
                             break;
@@ -154,6 +163,15 @@ namespace SmartHouse.UWPClient.VoiceCommands
             }
         }
 
+        private async Task SmartHouseRestartVPN()
+        {
+            var smartHouse = new SmartHouseService();
+            await ShowProgressScreen("Please Wait...");
+
+            var result = await smartHouse.RestartOpenVPN();
+            await CompleteMessage("");
+        }
+
         private async Task SetSmartHouseMode(string mode)
         {
             var smartHouse = new SmartHouseService();
@@ -169,6 +187,24 @@ namespace SmartHouse.UWPClient.VoiceCommands
             await ShowProgressScreen($"Setting {input} input");
 
             var result = await smartHouse.SetInput(input);
+            await CompleteMessage("");
+        }
+
+        private async Task SmartHouseGetInput()
+        {
+            var smartHouse = new SmartHouseService();
+            await ShowProgressScreen("Please wait...");
+
+            var result = await smartHouse.GetCurrentState();
+            await CompleteMessage($"Connected input: {result}");
+        }
+
+        private async Task PlayMyShit()
+        {
+            var pandora = new PandoraService();
+            await ShowProgressScreen($"Yes master, ready to work");
+
+            await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Play);
             await CompleteMessage("");
         }
 

@@ -17,6 +17,13 @@
       <Feedback> Please wait </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
+
+    <Command Name="smartHousePlayBitch">
+      <Example> Bitch play my shit </Example>
+      <ListenFor> you bitch, play my shit </ListenFor>
+      <Feedback> Yes master, ready to work </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
     
     <Command Name="smartHouseTurnOffCommand">
       <Example> Turn off </Example>
@@ -50,6 +57,20 @@
       <Example> TV input </Example>
       <ListenFor RequireAppName="BeforeOrAfterPhrase"> {input} input</ListenFor>
       <Feedback> Setting TV input </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+    
+    <Command Name="smartHouseCurrentInput">
+      <Example> Get Current input </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> Get Current input </ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+    
+    <Command Name="smartHouseRestartVPN">
+      <Example> Restart Open VPN </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> Restart Open VPN </ListenFor>
+      <Feedback> Please wait </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
     

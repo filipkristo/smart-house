@@ -145,6 +145,7 @@
     <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Help.htm" />
     <Content Include="images\Home-Server-icon.png" />
+    <Content Include="images\Home-Server-icon_300.png" />
     <Content Include="images\NewStoreLogo.scale-100.png" />
     <Content Include="images\NewStoreLogo.scale-125.png" />
     <Content Include="images\NewStoreLogo.scale-150.png" />

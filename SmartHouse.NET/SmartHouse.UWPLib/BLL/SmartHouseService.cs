@@ -25,6 +25,19 @@ namespace SmartHouse.UWPLib.BLL
             }
         }
 
+        public async Task<Result> RestartOpenVPN()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://10.110.166.90:8081/api/SmartHouse/RestartOpenVPN";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
+
         public async Task<Result> SetMode(string mode)
         {
             using (var client = new HttpClient())
@@ -48,6 +61,19 @@ namespace SmartHouse.UWPLib.BLL
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
+
+        public async Task<string> GetCurrentState()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = "http://10.110.166.90:8081/api/SmartHouse/GetCurrentState";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<string>(json);
             }
         }
     }

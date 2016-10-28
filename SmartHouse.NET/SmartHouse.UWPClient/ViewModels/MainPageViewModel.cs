@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel;
 using Windows.Networking.Sockets;
 using Windows.UI.Xaml;
+using SmartHouse.UWPClient.Services.SettingsServices;
 
 namespace SmartHouse.UWPClient.ViewModels
 {
@@ -27,12 +28,14 @@ namespace SmartHouse.UWPClient.ViewModels
             try
             {
                 Status = "Checking server";
+                PingStatus = "";
+
                 VPNVisible = Visibility.Collapsed;
 
                 using (var tcpClient = new StreamSocket())
                 {
                     await tcpClient.ConnectAsync(
-                        new Windows.Networking.HostName("10.110.166.90"),
+                        new Windows.Networking.HostName(SettingsService.Instance.HostIP),
                         "80",
                         SocketProtectionLevel.PlainSocket);
 
@@ -49,7 +52,9 @@ namespace SmartHouse.UWPClient.ViewModels
             }
 
             Status = "";
-        }    
+        }
+
+
     }
 }
 

@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Template10.Controls;
+using Template10.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.VoiceCommands;
@@ -39,8 +40,9 @@ namespace SmartHouse.UWPClient
                 };
             }
 
-            RequestedTheme = SettingsService.Instance.AppTheme;
-            
+            (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();
+            Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);
+
             try
             {                
                 Debug.WriteLine("Initialize Cortana file");

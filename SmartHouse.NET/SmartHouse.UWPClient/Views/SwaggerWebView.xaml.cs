@@ -27,11 +27,12 @@ namespace SmartHouse.UWPClient.Views
         public SwaggerWebView()
         {
             this.InitializeComponent();
+
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}:{SettingsService.Instance.HostPort}/swagger"));
 
             webView.PermissionRequested += webView_PermissionRequested;
-            webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}:{SettingsService.Instance.HostPort}/swagger"));
+            webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;            
         }
 
         private void webView_PermissionRequested(WebView sender, WebViewPermissionRequestedEventArgs args)
@@ -40,12 +41,7 @@ namespace SmartHouse.UWPClient.Views
             {
                 args.PermissionRequest.Allow();
             }
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-
-        }
+        }        
 
         private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
         {
