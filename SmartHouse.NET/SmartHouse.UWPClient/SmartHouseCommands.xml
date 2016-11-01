@@ -40,7 +40,7 @@
     </Command>
 
     <Command Name="smartHouseVolumeDown">
-      <Example> Volume up </Example>
+      <Example> Volume Down </Example>
       <ListenFor RequireAppName="BeforeOrAfterPhrase"> volume down</ListenFor>
       <Feedback> Please wait </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>

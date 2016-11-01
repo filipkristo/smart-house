@@ -27,6 +27,12 @@ namespace SmartHouse.UWPClient.ViewModels
         {
             try
             {
+                if(String.IsNullOrWhiteSpace(SettingsService.Instance.HostIP) || String.IsNullOrWhiteSpace(SettingsService.Instance.HostPort))
+                {
+                    Status = "Host IP or port are empty";
+                    return;
+                }
+
                 Status = "Checking server";
                 PingStatus = "";
 

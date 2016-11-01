@@ -22,14 +22,14 @@ namespace SmartHouse.UWPClient.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class PandoraRemote : Page
+    public sealed partial class Location : Page
     {
-        public PandoraRemote()
+        public Location()
         {
             this.InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
 
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/player/pandora.php"));
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/location.php"));
             webView.PermissionRequested += webView_PermissionRequested;
             webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
         }
@@ -58,7 +58,7 @@ namespace SmartHouse.UWPClient.Views
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/player/pandora.php"));
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/location.php"));
         }
     }
 }
