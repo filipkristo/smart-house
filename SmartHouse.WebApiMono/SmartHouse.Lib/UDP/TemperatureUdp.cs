@@ -12,9 +12,7 @@ namespace SmartHouse.Lib
 		private TelemetryService service = new TelemetryService();
 
 		public async Task StartListen()
-		{
-			await service.InitializeAzure();
-
+		{			
 			await Task.Run(async () =>
 			{
 				var sensors = new TelemetryService();
