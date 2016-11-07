@@ -77,6 +77,7 @@
     <Compile Include="Model\Room.cs" />
     <Compile Include="Service\TelemetryService.cs" />
     <Compile Include="Interfaces\ITelemetryService.cs" />
+    <Compile Include="BLL\AlarmClock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
@@ -89,9 +90,16 @@
     <Folder Include="TCP\" />
     <Folder Include="Model\Sensors\" />
     <Folder Include="UDP\" />
+    <Folder Include="BLL\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MPDClientLib\MPDClientLib.csproj">
+      <Project>{3403C873-97B2-4EC1-BA45-3E396B9F865B}</Project>
+      <Name>MPDClientLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

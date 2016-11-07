@@ -10,11 +10,11 @@ namespace SmartHouse.Lib
 
 		Result Pause();
 
-		Result Start();
+		Task<Result> Start();
 
 		Result Stop();
 
-		Result Restart();
+		Task<Result> Restart();
 
 		Task<Result> StartTcp();
 

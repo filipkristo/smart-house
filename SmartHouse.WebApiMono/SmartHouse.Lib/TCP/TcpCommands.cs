@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 namespace SmartHouse.Lib
 {
 	public class TcpCommands
@@ -15,16 +17,16 @@ namespace SmartHouse.Lib
 			public const string RESTART_VPN = "Smart House - Restart VPN"; 
 		}
 
-		public Result ExecuteTcpCommand(string command)
+		public async Task<Result> ExecuteTcpCommand(string command)
 		{
 			switch (command)
 			{
 				case Pandora.PANDORA_START:
-					return new PandoraService().Start();
+					return await new PandoraService().Start();
 				case Pandora.PANDORA_STOP:
 					return new PandoraService().Stop();
 				case Pandora.PANDORA_RESTART:
-					return new PandoraService().Restart();
+					return await new PandoraService().Restart();
 				case SmartHouse.RESTART_VPN:
 					return new SmartHouseService().RestartOpenVPNService().Result;
 				default:

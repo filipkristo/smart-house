@@ -44,7 +44,7 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "BundlerMinifier.Core": "2.2.281"
+    "BundlerMinifier.Core": "2.2.301"
   },
 
   "tools": {

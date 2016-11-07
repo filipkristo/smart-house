@@ -53,7 +53,7 @@ namespace SmartHouse.Lib
 						try
 						{
 							var command = new TcpCommands();
-							result = command.ExecuteTcpCommand(payload);
+							result = await command.ExecuteTcpCommand(payload);
 						}
 						catch (Exception ex)
 						{

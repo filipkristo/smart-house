@@ -22,12 +22,12 @@ namespace SmartHouse.Lib
 			return CommandExecuter(PandoraCommandEnum.Pause);
 		}
 
-		public Result Start()
+		public async Task<Result> Start()
 		{
 			var result = CommandExecuter(PandoraCommandEnum.Start);
 
-			Task.Delay(TimeSpan.FromSeconds(4)).Wait();
-			BashHelper.ExecBashCommand("echo '1' >> /home/pi/.config/pianobar/ctl");
+			await Task.Delay(TimeSpan.FromSeconds(4));
+			BashHelper.ExecBashCommandNoWait("echo '1' >> /home/pi/.config/pianobar/ctl");
 
 			return result;
 		}
@@ -37,12 +37,12 @@ namespace SmartHouse.Lib
 			return CommandExecuter(PandoraCommandEnum.Stop);
 		}
 
-		public Result Restart()
+		public async Task<Result> Restart()
 		{
 			var result = Stop();
-			Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+			await Task.Delay(TimeSpan.FromSeconds(1));
 
-			result.Message += Start().Message;
+			await Start();
 			return result;
 		}
 

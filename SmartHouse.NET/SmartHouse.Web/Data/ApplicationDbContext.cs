@@ -10,6 +10,9 @@ namespace SmartHouse.Web.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Room> Room { get; set; }
+        public DbSet<TemperatureData> TemperatureData { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
