@@ -39,9 +39,10 @@ namespace SmartHouse.Lib
 				TemperatureData.Humidity = Convert.ToDecimal(data.Split(';')[1]);
 				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);
 				TemperatureData.Measured = DateTime.Now;
-			}				
+			}
 
-			return await SaveTemperature(TemperatureData);
+			return await Task.FromResult<Result>(new Result());
+			//return await SaveTemperature(TemperatureData);
 		}
 
 		private async Task<string> SendRequestToCustomWebsite(decimal temp, decimal humi, decimal heatindex)

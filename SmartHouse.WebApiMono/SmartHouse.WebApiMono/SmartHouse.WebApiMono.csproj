@@ -104,6 +104,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\YamahaController.cs" />
     <Compile Include="Controllers\SensorController.cs" />
+    <Compile Include="Controllers\MPDController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -129,6 +130,10 @@
     <ProjectReference Include="..\SmartHouse.Lib\SmartHouse.Lib.csproj">
       <Project>{CEF8FE44-20C2-460E-9909-7DD0277C45B7}</Project>
       <Name>SmartHouse.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPDClientLib\MPDClientLib.csproj">
+      <Project>{3403C873-97B2-4EC1-BA45-3E396B9F865B}</Project>
+      <Name>MPDClientLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -78,6 +78,9 @@
     <Compile Include="Service\TelemetryService.cs" />
     <Compile Include="Interfaces\ITelemetryService.cs" />
     <Compile Include="BLL\AlarmClock.cs" />
+    <Compile Include="Model\Settings\MPDSettings.cs" />
+    <Compile Include="Service\MPDService.cs" />
+    <Compile Include="Interfaces\IMPDService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
