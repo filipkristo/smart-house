@@ -52,6 +52,15 @@
                                Text="IP Location" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
+            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:MPDClient" 
+                                          AutomationProperties.Name="Blue">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="MusicInfo" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="MPD Remote" />
+                </StackPanel>
+            </controls:HamburgerButtonInfo>
             <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:RemoteController" 
                                           AutomationProperties.Name="Blue">
                 <StackPanel Orientation="Horizontal">

@@ -106,6 +106,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\LocationViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\MPDClientViewModel.cs" />
     <Compile Include="ViewModels\PandoraRemoteViewModel.cs" />
     <Compile Include="ViewModels\RemoteControllerViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -118,6 +119,9 @@
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MPDClient.xaml.cs">
+      <DependentUpon>MPDClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PandoraRemote.xaml.cs">
       <DependentUpon>PandoraRemote.xaml</DependentUpon>
@@ -230,6 +234,10 @@
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MPDClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PandoraRemote.xaml">
       <SubType>Designer</SubType>

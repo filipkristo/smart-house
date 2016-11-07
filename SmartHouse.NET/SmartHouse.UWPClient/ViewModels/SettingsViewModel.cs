@@ -75,4 +75,6 @@ namespace SmartHouse.UWPClient.ViewModels
 
         public Uri RateMe => new Uri("http://aka.ms/template10");
     }
+
+
 }
