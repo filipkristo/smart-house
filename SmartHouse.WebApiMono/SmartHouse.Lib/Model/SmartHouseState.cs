@@ -5,6 +5,7 @@ namespace SmartHouse.Lib
 	{
 		Unknown,
 		Music,
+		Pandora,
 		WirelessAdapter,
 		XBox,
 		TV

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -16,7 +17,9 @@ namespace SmartHouse.Lib
 		{
 		}
 
+#pragma warning disable RECS0135 // Function does not reach its end or a 'return' statement by any of possible execution paths
 		public async Task StartTcpServer()
+#pragma warning restore RECS0135 // Function does not reach its end or a 'return' statement by any of possible execution paths
 		{
 			var ipAddress = IPAddress.Parse(IpAddress);
 			var tcpServerListener = new TcpListener(ipAddress, Port);
@@ -24,93 +27,65 @@ namespace SmartHouse.Lib
 
 			while (true)
 			{
-				using (var serverSocket = await tcpServerListener.AcceptSocketAsync())
+				using (var tcpClient = await tcpServerListener.AcceptTcpClientAsync())
+				using (var netStream = tcpClient.GetStream())
+				using (var streamReader = new StreamReader(netStream, Encoding.UTF8))
+				using (var streamWritter = new StreamWriter(netStream, Encoding.UTF8) { AutoFlush = true })
 				{
-					if (serverSocket.Connected)
+					tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+					tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+
+					Logger.LogDebugMessage("StartTcpServer: Reading data from network stream reader");
+					var payload = await streamReader.ReadLineAsync();
+
+					Result result = null;
+					try
 					{
-						Logger.LogInfoMessage("Server socket Connected");
-
-						var payload = String.Empty;
-
-						var buffer = new byte[512];
-						int readBytes = 0;
-
-						var netStream = new NetworkStream(serverSocket);
-
-						do
+						var command = new TcpCommands();
+						result = await command.ExecuteTcpCommand(payload);
+					}
+					catch (Exception ex)
+					{
+						result = new Result()
 						{
-							readBytes = await netStream.ReadAsync(buffer, 0, buffer.Length);
-							payload += Encoding.UTF8.GetString(buffer, 0, readBytes);
-
-							if (!netStream.DataAvailable)
-								await Task.Delay(50);
-
-						} while (netStream.DataAvailable);
-
-						Logger.LogInfoMessage($"Payload: {payload}");
-						Result result = null;
-
-						try
-						{
-							var command = new TcpCommands();
-							result = await command.ExecuteTcpCommand(payload);
-						}
-						catch (Exception ex)
-						{
-							result = new Result()
-							{
-								ErrorCode = -1,
-								Message = ex.Message,
-								Ok = false
-							};
-						}
-
-						var json = JsonConvert.SerializeObject(result);
-						var buffOut = Encoding.UTF8.GetBytes(json);
-
-						SocketError errors;
-						serverSocket.Send(buffOut, 0, buffOut.Length, SocketFlags.None, out errors);
-
-						Logger.LogInfoMessage($"Socket result {errors.ToString()}");
+							ErrorCode = -1,
+							Message = ex.Message,
+							Ok = false
+						};
 					}
 
-					serverSocket.Close();
+					var json = JsonConvert.SerializeObject(result);
+
+					Logger.LogDebugMessage($"TCP Server Length: {json.Length}");
+					await streamWritter.WriteLineAsync(json);
+					Logger.LogDebugMessage($"Socket finished");
 				}
 			}
+
 		}
 
 		public async Task<T> SendCommandToServer<T>(string data) where T : class
 		{
-			var buffer = new byte[512];
-
-			using (var tcpClient = new TcpClient())
+			using (var tcpClient = new TcpClient(IpAddress, Port))
 			{
-				tcpClient.Connect(IpAddress, Port);
-
-				var stream = tcpClient.GetStream();
-
-				var bytes = Encoding.UTF8.GetBytes(data);
-				await stream.WriteAsync(bytes, 0, bytes.Length);
-
-				var response = string.Empty;
-
-				do
+				using (var netStream = tcpClient.GetStream())
+				using (var streamReader = new StreamReader(netStream, Encoding.UTF8))
+				using (var streamWritter = new StreamWriter(netStream, Encoding.UTF8) { AutoFlush = true })
 				{
-					var size = await stream.ReadAsync(buffer, 0, buffer.Length);
-					var str = Encoding.UTF8.GetString(buffer, 0, size);
-					response += str;
+					tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+					tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
 
-					if (!stream.DataAvailable)
-						await Task.Delay(50);
+					Logger.LogDebugMessage($"SendCommandToServer: Writing data to network stream writter");
+					await streamWritter.WriteLineAsync(data);
 
-				} while (stream.DataAvailable);
+					Logger.LogDebugMessage($"SendCommandToServer: Reading data from network stream reader");
+					var response = await streamReader.ReadLineAsync();
+					Logger.LogDebugMessage($"SendCommandToServer: TCP Client length: {response.Length}");
 
-				Logger.LogInfoMessage($"Result: {response}");
-
-				var result = JsonConvert.DeserializeObject(response) as T;
-				return result;
+					var result = JsonConvert.DeserializeObject(response) as T;
+					return result;
+				}
 			}
-
 		}
 	}
 }

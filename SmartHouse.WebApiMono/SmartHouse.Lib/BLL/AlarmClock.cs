@@ -7,12 +7,12 @@ namespace SmartHouse.Lib
 	public class AlarmClock
 	{
 		private System.Timers.Timer timer;
-		private DateTime alarmTime;
+		private TimeSpan alarmTime;
 		private bool enabled;
 
 		public event EventHandler Alarm;
 
-		public AlarmClock(DateTime alarmTime)
+		public AlarmClock(TimeSpan alarmTime)
 		{
 			this.alarmTime = alarmTime;
 
@@ -26,7 +26,7 @@ namespace SmartHouse.Lib
 
 		void timer_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			if (enabled && DateTime.Now > alarmTime)
+			if (enabled && (DateTime.Now - DateTime.Now.Date) > alarmTime)
 			{
 				enabled = false;
 				OnAlarm();

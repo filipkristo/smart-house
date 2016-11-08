@@ -47,5 +47,16 @@ namespace SmartHouse.Lib
 				proc.WaitForExit();
 			}
 		}
+
+		public static void PlayAudio(string file)
+		{
+			var proc = new System.Diagnostics.Process();
+			proc.EnableRaisingEvents = false;
+			proc.StartInfo.FileName = "mplayer";
+			proc.StartInfo.Arguments = $"{file}";
+			proc.Start();
+
+			proc.WaitForExit();
+		}
 	}
 }

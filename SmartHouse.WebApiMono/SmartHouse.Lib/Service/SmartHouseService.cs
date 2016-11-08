@@ -84,5 +84,30 @@ namespace SmartHouse.Lib
 			var tcp = new TcpServer();
 			return await tcp.SendCommandToServer<Result>(TcpCommands.SmartHouse.RESTART_VPN);
 		}
+
+		public Result PlayAlarm()
+		{
+			//using (var soundPlayer = new System.Media.SoundPlayer("redalert.wav"))
+			//{
+			//	soundPlayer.Load();
+			//	soundPlayer.PlaySync();
+			//	soundPlayer.Stop();
+			//}
+
+			BashHelper.PlayAudio("redalert.wav");
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = "Ok",
+				Ok = true
+			};
+		}
+
+		public async Task<Result> PlayAlarmTcp()
+		{
+			var tcp = new TcpServer();
+			return await tcp.SendCommandToServer<Result>(TcpCommands.SmartHouse.PLAY_ALARM);
+		}
 	}
 }

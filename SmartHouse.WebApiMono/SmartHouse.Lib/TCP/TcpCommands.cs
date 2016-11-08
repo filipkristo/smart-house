@@ -15,6 +15,7 @@ namespace SmartHouse.Lib
 		public class SmartHouse
 		{
 			public const string RESTART_VPN = "Smart House - Restart VPN"; 
+			public const string PLAY_ALARM = "Smart House - Play Alarm";
 		}
 
 		public async Task<Result> ExecuteTcpCommand(string command)
@@ -28,7 +29,9 @@ namespace SmartHouse.Lib
 				case Pandora.PANDORA_RESTART:
 					return await new PandoraService().Restart();
 				case SmartHouse.RESTART_VPN:
-					return new SmartHouseService().RestartOpenVPNService().Result;
+					return await new SmartHouseService().RestartOpenVPNService();
+				case SmartHouse.PLAY_ALARM:
+					return new SmartHouseService().PlayAlarm();
 				default:
 					throw new Exception($"Command {command} is not defined");
 			}

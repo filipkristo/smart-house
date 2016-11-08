@@ -12,13 +12,15 @@ namespace SmartHouse.WebApiMono
 		private readonly IYamahaService YamahaService;
 		private readonly IPanodraService PandoraService;
 		private readonly ISmartHouseService SmartHouseService;
+		private readonly IMPDService MpdService;
 
-		public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService) 
+		public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService) 
 			: base(service)
 		{
 			YamahaService = yamahaService;
 			PandoraService = pandoraService;
 			SmartHouseService = smartHouseService;
+			MpdService = mpdService;
 		}
 
 		[HttpGet]
@@ -192,14 +194,53 @@ namespace SmartHouse.WebApiMono
 				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
 
+			if (MpdService.GetStatus().State == Libmpc.MpdState.Play)
+				MpdService.Stop();
+
 			if (!PandoraService.IsPlaying())
 			{
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+				PandoraService.StartTcp();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
 				PandoraService.Play();
 				sb.AppendLine("Playing pandora radio");
 			}
 
 			await YamahaService.SetInput("AV2");
 			sb.AppendLine("Set AV2 input");
+
+			await SmartHouseService.SaveState(SmartHouseState.Pandora);
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
+		[HttpGet]
+		[Route("Music")]
+		public async Task<Result> Music()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.StandBy)
+			{
+				await YamahaService.TurnOn();
+				sb.AppendLine("Yamaha Turn on");
+				await Task.Delay(TimeSpan.FromSeconds(8));
+			}
+
+			await PandoraService.StopTcp();
+			sb.AppendLine("Stopping pandora radio");
+
+			await YamahaService.SetInput("AV2");
+			sb.AppendLine("Set AV2 input");
+
+			MpdService.Play();
 
 			await SmartHouseService.SaveState(SmartHouseState.Music);
 
@@ -257,6 +298,14 @@ namespace SmartHouse.WebApiMono
 		public async Task<Result> RestartOpenVPN()
 		{
 			var result = await SmartHouseService.RestartOpenVPNServiceTcp();
+			return result;
+		}
+
+		[HttpGet]
+		[Route("PlayAlarm")]
+		public async Task<Result> PlayAlarm()
+		{
+			var result = await SmartHouseService.PlayAlarmTcp();
 			return result;
 		}
 	}

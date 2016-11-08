@@ -27,7 +27,12 @@ namespace SmartHouse.WebApiMono
 		[Route("Start")]
 		public async Task<Result> Start()
 		{
-			return await PandoraService.StartTcp();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+			PandoraService.StartTcp();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+			await Task.Delay(1000);
+			return null;
 		}
 
 		[HttpGet]

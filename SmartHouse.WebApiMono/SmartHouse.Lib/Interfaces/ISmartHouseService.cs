@@ -14,5 +14,9 @@ namespace SmartHouse.Lib
 		Task SaveState(SmartHouseState state);
 
 		Task<SmartHouseState> GetCurrentState();
+
+		Result PlayAlarm();
+
+		Task<Result> PlayAlarmTcp();
 	}
 }
