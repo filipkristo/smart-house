@@ -94,6 +94,7 @@
         <Item>Pandora</Item>
         <Item>XBox</Item>
         <Item>TV</Item>        
+        <Item>Music</Item>
     </PhraseList>
   
   </CommandSet>
