@@ -43,13 +43,23 @@ namespace SmartHouse.WebApiMono
 			await SmartHouseService.SetMode(ModeEnum.Normal);
 			sb.AppendLine("Setting Normal mode");
 
-			if (!PandoraService.IsPlaying())
+			var state = await SmartHouseService.GetCurrentState();
+
+			if (state == SmartHouseState.Music && MpdService.GetStatus().State != Libmpc.MpdState.Play)
 			{
-				PandoraService.Play();
-				sb.AppendLine("Playing pandora radio");	
+				PandoraService.StopTcp().Wait(1000);
+				MpdService.Play();
+				sb.AppendLine("Playing MPD");
+				await SmartHouseService.SaveState(SmartHouseState.Music);
 			}
 
-			await SmartHouseService.SaveState(SmartHouseState.Music);
+			else if (!PandoraService.IsPlaying())
+			{
+				PandoraService.StartTcp().Wait(1000);
+				PandoraService.Play();
+				sb.AppendLine("Playing pandora radio");	
+				await SmartHouseService.SaveState(SmartHouseState.Pandora);
+			}
 
 			return new Result()
 			{
@@ -70,6 +80,12 @@ namespace SmartHouse.WebApiMono
 			{
 				PandoraService.Pause();
 				sb.AppendLine("Pausing pandora radio");	
+			}
+
+			if (MpdService.GetStatus().State == Libmpc.MpdState.Play)
+			{
+				MpdService.Stop();
+				sb.AppendLine("Stopping MPD");
 			}
 
 			if (powerStatus == PowerStatusEnum.On)
@@ -161,6 +177,12 @@ namespace SmartHouse.WebApiMono
 				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
 
+			if (MpdService.GetStatus().State == Libmpc.MpdState.Play)
+			{
+				MpdService.Stop();
+				sb.AppendLine("Stopping MPD");
+			}
+
 			if (PandoraService.IsPlaying())
 			{
 				PandoraService.Pause();
@@ -195,13 +217,15 @@ namespace SmartHouse.WebApiMono
 			}
 
 			if (MpdService.GetStatus().State == Libmpc.MpdState.Play)
+			{
 				MpdService.Stop();
+				sb.AppendLine("Stopping MPD");
+			}
+
 
 			if (!PandoraService.IsPlaying())
 			{
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-				PandoraService.StartTcp();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+				PandoraService.StartTcp().Wait(1000);
 
 				PandoraService.Play();
 				sb.AppendLine("Playing pandora radio");
@@ -264,6 +288,12 @@ namespace SmartHouse.WebApiMono
 				await YamahaService.TurnOn();
 				sb.AppendLine("Yamaha Turn on");
 				await Task.Delay(TimeSpan.FromSeconds(8));
+			}
+
+			if (MpdService.GetStatus().State == Libmpc.MpdState.Play)
+			{
+				MpdService.Stop();
+				sb.AppendLine("Stopping MPD");
 			}
 
 			if (PandoraService.IsPlaying())

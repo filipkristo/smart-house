@@ -23,6 +23,9 @@ namespace SmartHouse.WebApiMono
 
 			byte[] responseMessage;
 
+			if (response.Content == null)
+				return response;
+
 			if (response.IsSuccessStatusCode)
 				responseMessage = await response.Content.ReadAsByteArrayAsync();
 			else
