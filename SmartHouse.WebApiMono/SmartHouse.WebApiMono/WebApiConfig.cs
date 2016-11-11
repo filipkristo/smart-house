@@ -31,7 +31,7 @@ namespace SmartHouse.WebApiMono
 
 			SetupDI(config);
 
-			config.MessageHandlers.Add(new MessageLoggingHandler());
+			//config.MessageHandlers.Add(new MessageLoggingHandler());
 			config.Filters.Add(new ExceptionFilter());
 
 			var formatters = config.Formatters;

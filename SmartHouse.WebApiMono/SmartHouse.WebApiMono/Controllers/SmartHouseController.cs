@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Libmpc;
 using SmartHouse.Lib;
 
 namespace SmartHouse.WebApiMono
@@ -143,6 +144,76 @@ namespace SmartHouse.WebApiMono
 			else
 			{
 				sb.AppendLine("Yamaha is turned off");	
+			}
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
+		[HttpGet]
+		[Route("Next")]
+		public async Task<Result> Next()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.On)
+			{
+				var mpdState = MpdService.GetStatus().State;
+
+				if (mpdState == MpdState.Play || mpdState == MpdState.Pause)
+				{
+					MpdService.Next();
+					sb.AppendLine("MPD Next song");
+				}
+				else
+				{
+					PandoraService.Next();
+					sb.AppendLine("Pandora next song");
+				}
+			}
+			else
+			{
+				sb.AppendLine("Yamaha is turned off. Operation canceled");
+			}
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
+		[HttpGet]
+		[Route("Prev")]
+		public async Task<Result> Prev()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.On)
+			{
+				var mpdState = MpdService.GetStatus().State;
+
+				if (mpdState == MpdState.Play || mpdState == MpdState.Pause)
+				{
+					MpdService.Previous();
+					sb.AppendLine("MPD Previous song");
+				}
+				else
+				{
+					PandoraService.Next();
+					sb.AppendLine("Pandora next song. Pandora can't go previous");
+				}
+			}
+			else
+			{
+				sb.AppendLine("Yamaha is turned off. Operation canceled");
 			}
 
 			return new Result()

@@ -48,6 +48,20 @@ namespace SmartHouse.Lib
 			}
 		}
 
+		public static void ExecBashScriptNoWait(string script)
+		{
+			using (var proc = new Process())
+			{
+				proc.StartInfo.FileName = "/bin/bash";
+				proc.StartInfo.Arguments = script;
+				proc.StartInfo.UseShellExecute = false;
+				proc.StartInfo.RedirectStandardInput = true;
+				proc.StartInfo.RedirectStandardOutput = true;
+				proc.Start();
+			}
+		}
+
+
 		public static void PlayAudio(string file)
 		{
 			var proc = new System.Diagnostics.Process();

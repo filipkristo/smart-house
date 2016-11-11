@@ -164,11 +164,11 @@ namespace SmartHouse.Lib
 					message = "Play/Pause";
 					break;
 				case PandoraCommandEnum.Start:
-					BashHelper.ExecBashScript("./pandora.sh start");
+					BashHelper.ExecBashScriptNoWait("./pandora.sh start");
 					message = "Start";
 					break;
 				case PandoraCommandEnum.Stop:
-					BashHelper.ExecBashScript("./pandora.sh stop");
+					BashHelper.ExecBashScriptNoWait("./pandora.sh stop");
 					message = "Stop";
 					break;				
 				case PandoraCommandEnum.Next:
