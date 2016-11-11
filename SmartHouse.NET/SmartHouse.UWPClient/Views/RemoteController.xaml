@@ -19,8 +19,15 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True">
-            
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="AppBarButton_Click" Label="Refresh" />
+            </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
+
+        <WebView Name="webView" RelativePanel.AlignLeftWithPanel="True" 
+                 RelativePanel.Below="pageHeader" 
+                 RelativePanel.AlignRightWithPanel="True" 
+                 RelativePanel.AlignBottomWithPanel="True"/>
 
     </RelativePanel>
     
