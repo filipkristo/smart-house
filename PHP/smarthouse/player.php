@@ -1,17 +1,7 @@
-    
-	<div class="row">
-		
-		<div id="nowPlaying" class="col-md-6">
-			
-		</div>
-		
-		<div id="songInfo" class="col-md-6">
-		
-		</div>
-		
-	</div>		
+    	
 	
 	<br />
+	
 	<div id="control-buttons" class="row" style="text-align: center;">
 		
 		<div class="btn-group">
@@ -22,7 +12,13 @@
 				<span class="glyphicon glyphicon-stop"></span>
 			</button>
 		</div>
-	
+		
+		<div class="btn-group">
+		<button title="Song info" class="btn btn-default" id="btnMusicInfo">
+				<span class="glyphicon glyphicon-music"></span>
+			</button>
+		</div>
+
     	<div class="btn-group">  
 
 			<button title="Go to prev track" class="btn btn-default bfunc" id="prev" data-command="Prev">
@@ -38,6 +34,7 @@
 			</button>
 
 		</div>
+
 		<div class="btn-group">        						
 			
 			<button title="Volume down" class="btn btn-default button-down bfunc volume" id="voldown" data-command="VolumeDown">
@@ -50,4 +47,12 @@
 			
 		</div>		
 		
+		<div class="btn-group">        						
+			
+			<button title="Timer" class="btn btn-default button-down" id="btnTimer" data-target="#timer-dialog" data-toggle="modal">
+				<span class="glyphicon glyphicon-time"</span>
+			</button>						
+			
+		</div>		
+
     </div>

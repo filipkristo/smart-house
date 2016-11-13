@@ -7,6 +7,7 @@
   	<title>Smart House</title>
   	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/Site.css" rel="stylesheet">
+	<link rel="icon" href="favicon.ico">
 </head>
 <body>
  

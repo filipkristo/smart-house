@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta name="author" content="Filip Krišto">
   	<title>Smart House</title>
+
   	<link href="css/bootstrap.min.css" rel="stylesheet">	
 	<link href="css/Site.css" rel="stylesheet">
+	<link rel="icon" href="favicon.ico">
+
 </head>
 <body>
 
@@ -20,33 +23,39 @@
 
 		<br />		
 
+			<div id="infoPanel">
+
+			</div>			
+
+		<br />
+
 		<div class="tab-content">
 		  	<div role="tabpanel" class="tab-pane active" id="main">
 
 				<div class="row">
 
 					<div class="col-md-3 col-xs-3">
-						<a href = "#" class = "bfunc thumbnail smartInput" data-command="Pandora">
+						<a href = "#" class = "bfunc thumbnail smartInput prog" data-command="Pandora">
 				 			<img src = "/smarthouse/img/pandora.png" alt = "Pandora input">
-							</a>
+						</a>
 					</div>
 
 					<div class="col-md-3 col-xs-3">
-						<a href = "#" class = "bfunc thumbnail smartInput" data-command="Music">
+						<a href = "#" class = "bfunc thumbnail smartInput prog" data-command="Music">
 				 			<img src = "/smarthouse/img/music.png" alt = "Music input">
-							</a>
+						</a>
 					</div>
 
 					<div class="col-md-3 col-xs-3">
-						<a href = "#" class = "bfunc thumbnail smartInput" data-command="XBox">
+						<a href = "#" class = "bfunc thumbnail smartInput prog" data-command="XBox">
 				 			<img src = "/smarthouse/img/xbox.png" alt = "XBox input">
-							</a>
+						</a>
 					</div>
 
 					<div class="col-md-3 col-xs-3">
-						<a href = "#" class = "bfunc thumbnail smartInput" data-command="TV">
+						<a href = "#" class = "bfunc thumbnail smartInput prog" data-command="TV">
 				 			<img src = "/smarthouse/img/TV.png" alt = "TV input">
-							</a>
+						</a>
 					</div>
 
 				</div>
@@ -106,17 +115,43 @@
                            
                         </div>
 
+				</div>
+
 			</div>
+
+			<div role="tabpanel" class="tab-pane" id="action">
+		  		<div class="row">
+		            <div class="list-group table-of-contents">
+		              <a id="restartVPN" class="list-group-item" href="#">Restart VPN</a>
+		              <a id="playAlarm" class="list-group-item" href="#">Play alarm sound</a>
+		              <a id="pandoraState" class="list-group-item" href="#">Pandora state</a>
+		              <a id="yamahaState" class="list-group-item" href="#">Yamaha state</a>
+		              <a id="mpdState" class="list-group-item" href="#">MPD state</a>
+		              <a id="mpdSong" class="list-group-item" href="#">MPD song</a>
+		              <a id="turnOffTimer" data-target="#timer-dialog" data-toggle="modal" class="list-group-item" href="#">Turn off timer</a>
+		            </div>
+      			</div>
+
+  				<div class="row">
+  					<h4>Result:</h4>
+  				</div>				
+
+      			<div class="row">
+					<div class="col-md-12">
+						<textarea class="form-control shadow" id="response" rows="30"></textarea>
+					</div>
+				</div>
+
+			</div>			
 
 			<div role="tabpanel" class="tab-pane" id="settings">
-		  		Sample for Settings
+			  		Sample for Settings
 			</div>
-
-		</div>
-
 
 		<?php include 'player.php';?>
         <?php include 'footer.php';?>
+        <?php include 'timerDialog.php';?>
+        <?php include 'infoDialog.php';?>
 </div> 
  
 <script src="js/jquery-2.1.3.min.js"></script>
@@ -189,18 +224,20 @@
 
 
 		$('.bfunc').click(function() {
-		
+			
+			var button = $(this);
 			var command = $(this).data("command");
-			$(this).attr('disabled', 'disabled');
 
-			if($(this).hasClass('prog'))
+			button.attr('disabled', 'disabled');
+
+			if(button.hasClass('prog'))
 				waitingDialog.show('Please wait...');
 
 			runSmartHouseCommand(command).done(function(){
 				
-				$(this).removeAttr('disabled', 'disabled');
+				button.removeAttr('disabled', 'disabled');
 				
-				if($(this).hasClass('prog'))
+				if(button.hasClass('prog'))
 					waitingDialog.hide();
 
 				yamahaState();
@@ -231,12 +268,119 @@
 
 		});
 
-		$('.volume').click(function(){
+		$('#restartVPN').click(function(){
 
+			restartVPN();
+		});
+
+		$('#playAlarm').click(function(){
+			
+			playAlarm();
+		});
+
+		$('#pandoraState').click(function(){
+
+			pandoraState();
+		});
+
+		$('#yamahaState').click(function(){
+
+			yamahaState();
+		});
+
+		$('#mpdState').click(function(){
+
+			musicState();
+		});
+
+		$('#mpdSong').click(function(){
+
+			mpdCurrentSong();
+		});
+
+		$('#btnTimerOk').click(function(){
+
+			var value = Number($('#timerSeconds').val());
+			turnOffTimer(value);
+
+		});
+
+		$('#btnMusicInfo').click(function(){
+
+			smartHouseState().done(function(result){
+
+				var state = result;	
+
+				$('#loved').hide();
+				$('#imagePic').hide();
+				$('#extrabutton').empty();
+
+				if(state == 'Music'){					
+					musicState().done(function(mpdResult){
+
+						mpdCurrentSong().done(function(mpdSong){
+
+							$('#currentArtist').html('Artist: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.artist + '</strong>');
+							$('#currentAlbum').html('Album: &nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.album + '</strong>');
+							$('#currentRadio').html('Genre: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.genre + '</strong>');
+							$('#currentSong').html('Song: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.title + '</strong>');
+
+							$('#extrabutton').append('<div class="row"><label>Position:  ' + mpdSong.track + '/ ' + mpdResult.playlistLength +' </label></div>');
+
+							$('#infoModalLabel').text(state);
+							$('#info-dialog').modal();
+
+						});
+
+					});
+				}	
+
+				else if(state == 'Pandora'){
+
+					pandoraState().done(function(result){
+
+						$('#currentArtist').html('Artist: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + result.artist + '</strong>');
+						$('#currentAlbum').html('Album: &nbsp&nbsp&nbsp&nbsp <strong>' + result.album + '</strong>');
+						$('#currentRadio').html('Radio: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + result.radio + '</strong>');
+						$('#currentSong').html('Song: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + result.song + '</strong>');
+
+						$('#imagePic').show();
+						$('#imagePic').attr('src', result.albumUri);
+
+						if(result.loved == true){
+
+							$('#loved').show();
+
+						}
+						else{
+
+							$('#extrabutton').append('<br/><div class="row"><button title="Thumb up" class="btn btn-default button-down" id="btnThumpUp"><span class="glyphicon glyphicon-thumbs-up"</span></button></div>');
+
+							$('#btnThumpUp').click(function(){
+
+								pandoraThumbUp().done(function(thumbResult){
+
+									if(thumbResult.ok == true)
+										$('#extrabutton').empty();
+
+								});
+
+							});
+						}
+
+						$('#infoModalLabel').text(state);
+						$('#info-dialog').modal();
+
+					});
+
+				}			
+
+			});
 
 		});
 
 		$('.bfunc').attr('disabled', 'disabled');
+		disableKnob();
 
 		refreshAll();
 		setTemperatureTimer();

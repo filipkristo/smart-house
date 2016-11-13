@@ -17,7 +17,16 @@ function yamahaState(){
 			if(data.main_Zone.basic_Status.power_Control.power != "Standby")
 			{
 				$('.bfunc').removeAttr("disabled");
+				enableKnob();
+				setInfo('Smart House is turn on');
 			}
+			else
+			{
+				setError('Smart House is turn off');
+			}
+
+			$("#response").text(JSON.stringify(data,null,4));
+
 		});
 }
 
@@ -31,7 +40,21 @@ function musicState(){
 		cache: false,
 		}).done(function(data) {
 						
+			$("#response").text(JSON.stringify(data,null,4));
+		});
+}
+
+function mpdCurrentSong(){
+
+	var uri = baseUrl + 'MPD/GetCurrentSong';
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
 						
+			$("#response").text(JSON.stringify(data,null,4));
 		});
 }
 
@@ -45,7 +68,22 @@ function pandoraState(){
 		cache: false,
 		}).done(function(data) {
 			
-					
+			$("#response").text(JSON.stringify(data,null,4));		
+		});
+}
+
+function pandoraThumbUp(){
+
+	var uri = baseUrl + 'Pandora/ThumbUp';
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			$("#response").text(JSON.stringify(data,null,4));		
+
 		});
 }
 
@@ -61,6 +99,8 @@ function smartHouseState(){
 			
 			$('.smartInput').removeClass('active');
 			$('*[data-command="' + data + '"]').addClass('active');
+
+			$("#response").text(data);		
 
 		});
 }
@@ -117,6 +157,53 @@ function getTemperature(){
 		});
 }
 
+function restartVPN(){
+
+	var uri = baseUrl + 'SmartHouse/RestartOpenVPN';
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			$("#response").text(JSON.stringify(data,null,4));		
+
+		});
+
+}
+
+function playAlarm(){
+
+	var uri = baseUrl + 'SmartHouse/PlayAlarm';
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			$("#response").text(JSON.stringify(data,null,4));		
+
+		});
+
+}
+
+function turnOffTimer(value){
+
+	var uri = baseUrl + 'SmartHouse/TurnOfTimer?minutes=' + value;
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			$("#response").text(JSON.stringify(data,null,4));		
+
+		});	
+}
+
 function refreshAll(){
 
 	var dtemp = getTemperature();
@@ -138,6 +225,41 @@ function setTemperatureTimer(){
 
 	setInterval(getTemperature, 15000);
 
+}
+
+function enableKnob(){
+
+	$('#volumeKnob').trigger(
+        'configure',
+        {
+            "readonly":false
+        }
+    );
+}
+
+function setInfo(info){
+
+	$('#infoPanel').empty();
+	$('#infoPanel').append('<div class="alert alert-success"><strong>' + info + '</strong></div>');
+
+}
+
+function setError(error){
+	
+	$('#infoPanel').empty();
+	$('#infoPanel').append('<div class="alert alert-danger"><strong>' + error + '</strong></div>');
+}
+
+function disableKnob(){
+	
+	$('#volumeKnob').data('readOnly', 'true');
+
+	$('#volumeKnob').trigger(
+        'configure',
+        {
+            "readonly":true
+        }
+    );    
 }
 
 function guid() {
