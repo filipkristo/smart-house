@@ -162,9 +162,7 @@
 
 <script>
 
-	var smarthouseState;
-	var pandoraState;
-	var yamahaState;
+	var timer = null;
 
  	$(document).ready(function(){
 		
@@ -309,30 +307,67 @@
 
 			smartHouseState().done(function(result){
 
+
 				var state = result;	
 
 				$('#loved').hide();
 				$('#imagePic').hide();
 				$('#extrabutton').empty();
 
-				if(state == 'Music'){					
-					musicState().done(function(mpdResult){
+				if(state == 'Music'){	
 
-						mpdCurrentSong().done(function(mpdSong){
+					var delegateMusic = function(){
 
-							$('#currentArtist').html('Artist: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.artist + '</strong>');
-							$('#currentAlbum').html('Album: &nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.album + '</strong>');
-							$('#currentRadio').html('Genre: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.genre + '</strong>');
-							$('#currentSong').html('Song: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.title + '</strong>');
+						musicState().done(function(mpdResult){
 
-							$('#extrabutton').append('<div class="row"><label>Position:  ' + mpdSong.track + '/ ' + mpdResult.playlistLength +' </label></div>');
+							mpdCurrentSong().done(function(mpdSong){
 
-							$('#infoModalLabel').text(state);
-							$('#info-dialog').modal();
+								var elapsed = (Number(mpdResult.timeElapsed) / 60).toFixed(2);
+								var total = (Number(mpdResult.timeTotal) / 60).toFixed(2);
+
+								console.log('Duration ' + elapsed + '/ ' + total)
+
+								$('#currentArtist').html('Artist: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.artist + '</strong>');
+								$('#currentAlbum').html('Album: &nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.album + '</strong>');
+								$('#currentRadio').html('Genre: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.genre + '</strong>');
+								$('#currentSong').html('Song: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.title + '</strong>');
+
+								if($('#lblDuration').length == 0){
+
+									$('#extrabutton').append('<div class="row"><div class="progress"><div role="progressbar" class="progress-bar progress-bar-success"></div></div></div>')
+									$('#extrabutton').append('<div class="row"><label id="lblDuration">Duration ' + elapsed + '/ ' + total +' </label></div>');
+									$('#extrabutton').append('<div class="row"><label id="lblPosition">Position: ' + (Number(mpdSong.pos) + 1) + '/ ' + mpdResult.playlistLength +' </label></div>');							
+								}							
+								else{
+									$('#lblDuration').html('Duration ' + elapsed + '/ ' + total);
+									$('#lblPosition').html('Position: ' + (Number(mpdSong.pos) + 1) + '/ ' + mpdResult.playlistLength);
+
+									var perc = 100 / (mpdResult.timeTotal / mpdResult.timeElapsed);
+
+									$('.progress-bar').attr('aria-valuemin', 0);
+									$('.progress-bar').attr('aria-valuemax', mpdResult.timeTotal);
+									$('.progress-bar').attr('aria-valuenow', mpdResult.timeElapsed);
+									$('.progress-bar').css('width', perc+'%');
+
+									//var valeur = (total / elapsed) * 100;						
+									//$('.progress-bar').css('width', valeur+'%').attr('aria-valuenow', valeur);
+								}
+
+								if(!$('#infoModalLabel').is(':visible')){
+
+									console.log('show dialog');
+									$('#infoModalLabel').text(state);
+									$('#info-dialog').modal();
+								}
+
+							});
 
 						});
 
-					});
+					};
+
+					delegateMusic();
+					timer = setInterval(delegateMusic, 1000); 
 				}	
 
 				else if(state == 'Pandora'){
@@ -384,6 +419,14 @@
 
 		refreshAll();
 		setTemperatureTimer();
+
+		$('#info-dialog').on('hidden.bs.modal', function () {
+
+    		console.log('dialog closed ' + new Date());
+
+    		clearInterval(timer);
+      		timer = null
+		});
 
 	});
 	
