@@ -32,13 +32,20 @@ namespace SmartHouse.Lib
 				case SmartHouse.RESTART_VPN:
 					return await new SmartHouseService().RestartOpenVPNService();
 				case SmartHouse.PLAY_ALARM:
+					RunTimer();
 					return new SmartHouseService().PlayAlarm();
 				case SmartHouse.TIMER:
-					new Timer().RunCommand();
 					return new Result() { Ok = true, ErrorCode = 0, Message = "Ok" };
 				default:
 					throw new Exception($"Command {command} is not defined");
 			}
+		}
+
+#pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
+		private async void RunTimer()
+#pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
+		{
+			await new Timer().RunCommand();
 		}
 	}
 }

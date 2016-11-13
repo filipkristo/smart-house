@@ -78,6 +78,11 @@ namespace SmartHouse.Lib
 			return MpdClient.Status();
 		}
 
+		public MpdFile GetCurrentSong()
+		{
+			return MpdClient.CurrentSong();
+		}
+
 		public void Dispose()
 		{
 			MpdClient?.Connection.Disconnect();

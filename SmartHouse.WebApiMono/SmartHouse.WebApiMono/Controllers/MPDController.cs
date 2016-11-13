@@ -56,5 +56,12 @@ namespace SmartHouse.WebApiMono
 		{
 			return MpdService.GetStatus();
 		}
+
+		[HttpGet]
+		[Route("GetCurrentSong")]
+		public MpdFile GetCurrentSong()
+		{
+			return MpdService.GetCurrentSong();
+		}
 	}
 }

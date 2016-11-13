@@ -16,5 +16,7 @@ namespace SmartHouse.Lib
 		Result Previous();
 
 		MpdStatus GetStatus();
+
+		MpdFile GetCurrentSong();
 	}
 }

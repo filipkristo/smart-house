@@ -13,9 +13,7 @@ namespace SmartHouse.Lib
 			
 		}
 
-#pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
-		public async void RunCommand()
-#pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
+		public async Task RunCommand()
 		{
 			await Task.Delay(TimeSpan.FromMinutes(TimeoutMinutes));
 
