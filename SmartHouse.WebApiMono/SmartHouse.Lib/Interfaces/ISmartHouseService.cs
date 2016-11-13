@@ -8,6 +8,7 @@ namespace SmartHouse.Lib
 		Task<Result> RestartOpenVPNService();
 
 		Task<Result> RestartOpenVPNServiceTcp();
+		Task<Result> TimerTcp();
 
 		Task<Result> SetMode(ModeEnum mode);
 

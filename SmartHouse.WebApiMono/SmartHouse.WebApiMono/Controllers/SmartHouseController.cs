@@ -91,7 +91,7 @@ namespace SmartHouse.WebApiMono
 
 			if (powerStatus == PowerStatusEnum.On)
 			{
-				await Task.Delay(TimeSpan.FromSeconds(2));
+				await Task.Delay(TimeSpan.FromSeconds(1));
 				await YamahaService.TurnOff();
 				sb.AppendLine("Yamaha Turn Off");
 			}
@@ -188,6 +188,44 @@ namespace SmartHouse.WebApiMono
 				Ok = true
 			};
 		}
+
+		[HttpGet]
+		[Route("Play")]
+		public async Task<Result> Play()
+		{
+			var sb = new StringBuilder();
+			var powerStatus = await YamahaService.PowerStatus();
+
+			if (powerStatus == PowerStatusEnum.On)
+			{
+				var state = await SmartHouseService.GetCurrentState();
+
+				if (state == SmartHouseState.Pandora)
+				{
+					PandoraService.Play();
+					sb.AppendLine("Starting to play/pause Pandora");
+				}
+				else if(state == SmartHouseState.Music)
+				{
+					if (MpdService.GetStatus().State == MpdState.Play)
+						MpdService.Pause();
+					else if (MpdService.GetStatus().State == MpdState.Pause)
+						MpdService.Play();
+				}
+			}
+			else
+			{
+				sb.AppendLine("Yamaha is turned off. Operation canceled");
+			}
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = sb.ToString(),
+				Ok = true
+			};
+		}
+
 
 		[HttpGet]
 		[Route("Prev")]
@@ -407,6 +445,15 @@ namespace SmartHouse.WebApiMono
 		public async Task<Result> PlayAlarm()
 		{
 			var result = await SmartHouseService.PlayAlarmTcp();
+			return result;
+		}
+
+		[HttpGet]
+		[Route("TurnOfTimer")]
+		public async Task<Result> TurnOfTimer(int minutes)
+		{
+			Timer.TimeoutMinutes = minutes;
+			var result = await SmartHouseService.TimerTcp();
 			return result;
 		}
 	}

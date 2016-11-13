@@ -81,6 +81,7 @@
     <Compile Include="Model\Settings\MPDSettings.cs" />
     <Compile Include="Service\MPDService.cs" />
     <Compile Include="Interfaces\IMPDService.cs" />
+    <Compile Include="BLL\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

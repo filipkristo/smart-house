@@ -109,5 +109,11 @@ namespace SmartHouse.Lib
 			var tcp = new TcpServer();
 			return await tcp.SendCommandToServer<Result>(TcpCommands.SmartHouse.PLAY_ALARM);
 		}
+
+		public async Task<Result> TimerTcp()
+		{
+			var tcp = new TcpServer();
+			return await tcp.SendCommandToServer<Result>(TcpCommands.SmartHouse.TIMER);
+		}
 	}
 }
