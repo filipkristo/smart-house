@@ -28,8 +28,7 @@ namespace SmartHouse.UWPClient.Views
         {
             this.InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/player/pandora.php"));
+            
             webView.PermissionRequested += webView_PermissionRequested;
             webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
         }
@@ -40,6 +39,11 @@ namespace SmartHouse.UWPClient.Views
             {
                 args.PermissionRequest.Allow();
             }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/player/pandora.php"));
         }
 
         private void webView_ContainsFullScreenElementChanged(WebView sender, object args)

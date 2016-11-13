@@ -28,8 +28,7 @@ namespace SmartHouse.UWPClient.Views
         {
             this.InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/MPD3/"));
+            
             webView.PermissionRequested += webView_PermissionRequested;
             webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
         }
@@ -54,6 +53,11 @@ namespace SmartHouse.UWPClient.Views
             {
                 applicationView.ExitFullScreenMode();
             }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/MPD3/"));
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
