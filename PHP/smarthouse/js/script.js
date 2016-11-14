@@ -23,9 +23,7 @@ function yamahaState(){
 			else
 			{
 				setError('Smart House is turn off');
-			}
-
-			$("#response").text(JSON.stringify(data,null,4));
+			}			
 
 		});
 }
@@ -40,7 +38,7 @@ function musicState(){
 		cache: false,
 		}).done(function(data) {
 						
-			$("#response").text(JSON.stringify(data,null,4));
+			
 		});
 }
 
@@ -54,7 +52,7 @@ function mpdCurrentSong(){
 		cache: false,
 		}).done(function(data) {
 						
-			$("#response").text(JSON.stringify(data,null,4));
+			
 		});
 }
 
@@ -68,7 +66,7 @@ function pandoraState(){
 		cache: false,
 		}).done(function(data) {
 			
-			$("#response").text(JSON.stringify(data,null,4));		
+			
 		});
 }
 
@@ -82,7 +80,7 @@ function pandoraThumbUp(){
 		cache: false,
 		}).done(function(data) {
 			
-			$("#response").text(JSON.stringify(data,null,4));		
+			
 
 		});
 }
@@ -100,7 +98,7 @@ function smartHouseState(){
 			$('.smartInput').removeClass('active');
 			$('*[data-command="' + data + '"]').addClass('active');
 
-			$("#response").text(data);		
+			
 
 		});
 }
@@ -115,7 +113,7 @@ function setVolume(volume){
 		cache: false,
 		}).done(function(data) {
 						
-			$('#output').text(data.Message);
+			
 			
 		});	
 }
@@ -132,7 +130,7 @@ function runSmartHouseCommand(name){
 		cache: false,
 		}).done(function(msg) {
 			
-			$('#output').text(msg.Message);
+			
 			
 		});
 
@@ -153,7 +151,7 @@ function getTemperature(){
 
 	        $('#updated').text(new Date(data.measured).toLocaleString());
 
-			console.log(JSON.stringify(data));	
+			
 		});
 }
 

@@ -278,28 +278,38 @@
 
 		$('#pandoraState').click(function(){
 
-			pandoraState();
+			pandoraState().done(function(data){
+				$("#response").text(JSON.stringify(data,null,4));
+			});
 		});
 
 		$('#yamahaState').click(function(){
 
-			yamahaState();
+			yamahaState().done(function(data){
+				$("#response").text(JSON.stringify(data,null,4));
+			});
 		});
 
 		$('#mpdState').click(function(){
 
-			musicState();
+			musicState().done(function(data){
+				$("#response").text(JSON.stringify(data,null,4));
+			});
 		});
 
 		$('#mpdSong').click(function(){
 
-			mpdCurrentSong();
+			mpdCurrentSong().done(function(data){
+				$("#response").text(JSON.stringify(data,null,4));
+			});
 		});
 
 		$('#btnTimerOk').click(function(){
 
 			var value = Number($('#timerSeconds').val());
-			turnOffTimer(value);
+			turnOffTimer(value).done(function(data){
+				$("#response").text(JSON.stringify(data,null,4));
+			});
 
 		});
 
@@ -307,7 +317,7 @@
 
 			smartHouseState().done(function(result){
 
-
+				var dialogShow = false;
 				var state = result;	
 
 				$('#loved').hide();
@@ -347,15 +357,14 @@
 									$('.progress-bar').attr('aria-valuemin', 0);
 									$('.progress-bar').attr('aria-valuemax', mpdResult.timeTotal);
 									$('.progress-bar').attr('aria-valuenow', mpdResult.timeElapsed);
-									$('.progress-bar').css('width', perc+'%');
-
-									//var valeur = (total / elapsed) * 100;						
-									//$('.progress-bar').css('width', valeur+'%').attr('aria-valuenow', valeur);
+									$('.progress-bar').css('width', perc+'%');									
 								}
 
-								if(!$('#infoModalLabel').is(':visible')){
+								if(!$('#infoModalLabel').is(':visible') && !dialogShow){
 
 									console.log('show dialog');
+									
+									dialogShow = true;
 									$('#infoModalLabel').text(state);
 									$('#info-dialog').modal();
 								}

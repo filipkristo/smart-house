@@ -32,7 +32,7 @@
                         <img id="imagePic" class="img-thumbnail" width="125" height="125">
                     </div>
                     
-                    <div class="row">
+                    <div class="row" style="padding-top: 10px;">
                         <img id="loved" class="img-thumbnail" src="./img/heart.png" width="25" height="25">
                     </div>                
                     
