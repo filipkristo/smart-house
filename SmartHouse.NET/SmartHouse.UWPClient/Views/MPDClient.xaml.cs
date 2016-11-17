@@ -31,6 +31,8 @@ namespace SmartHouse.UWPClient.Views
             
             webView.PermissionRequested += webView_PermissionRequested;
             webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
+
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/MPD3/"));
         }
 
         private void webView_PermissionRequested(WebView sender, WebViewPermissionRequestedEventArgs args)
@@ -57,7 +59,7 @@ namespace SmartHouse.UWPClient.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/MPD3/"));
+            
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)

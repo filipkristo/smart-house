@@ -24,6 +24,8 @@ namespace SmartHouse.UWPClient.Views
     /// </summary>
     public sealed partial class RemoteController : Page
     {
+        private bool loaded = false;
+
         public RemoteController()
         {
             this.InitializeComponent();
@@ -31,6 +33,14 @@ namespace SmartHouse.UWPClient.Views
             
             webView.PermissionRequested += webView_PermissionRequested;
             webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
+            webView.LoadCompleted += WebView_LoadCompleted;
+
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/smarthouse/"));
+        }
+
+        private void WebView_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            loaded = true;
         }
 
         private void webView_PermissionRequested(WebView sender, WebViewPermissionRequestedEventArgs args)
@@ -41,9 +51,10 @@ namespace SmartHouse.UWPClient.Views
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/smarthouse/"));
+            if(loaded)
+                await webView.InvokeScriptAsync("refreshAll", null);            
         }
 
         private void webView_ContainsFullScreenElementChanged(WebView sender, object args)

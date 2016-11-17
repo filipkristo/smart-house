@@ -31,10 +31,10 @@ namespace SmartHouse.Lib
 					return await new PandoraService().Restart();
 				case SmartHouse.RESTART_VPN:
 					return await new SmartHouseService().RestartOpenVPNService();
-				case SmartHouse.PLAY_ALARM:
-					RunTimer();
+				case SmartHouse.PLAY_ALARM:					
 					return new SmartHouseService().PlayAlarm();
 				case SmartHouse.TIMER:
+					RunTimer();
 					return new Result() { Ok = true, ErrorCode = 0, Message = "Ok" };
 				default:
 					throw new Exception($"Command {command} is not defined");

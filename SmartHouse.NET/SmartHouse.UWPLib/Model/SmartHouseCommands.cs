@@ -11,6 +11,8 @@ namespace SmartHouse.UWPLib.Model
         TurnOn = 0,
         TurnOff,
         VolumeUp,
-        VolumeDown
+        VolumeDown,
+        Play,
+        Next
     }
 }

@@ -22,6 +22,7 @@
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <HockeyAppResourceId>c7217e3f12be43108f4de5b1c9fdd02a</HockeyAppResourceId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -143,6 +144,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="Service References\HockeyApp\ConnectedService.json" />
     <None Include="SmartHouse.UWPClient_StoreKey.pfx" />
     <None Include="SmartHouse.UWPClient_TemporaryKey.pfx" />
   </ItemGroup>
@@ -269,6 +271,9 @@
       <Project>{fc96de58-0b41-4996-8030-84bf5684b4a0}</Project>
       <Name>SmartHouseCommandService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

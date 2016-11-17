@@ -16,14 +16,7 @@
       <ListenFor RequireAppName="BeforeOrAfterPhrase"> turn on</ListenFor>
       <Feedback> Please wait </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
-    </Command>
-
-    <Command Name="smartHousePlayBitch">
-      <Example> Bitch play my shit </Example>
-      <ListenFor> you bitch, play my shit </ListenFor>
-      <Feedback> Yes master, ready to work </Feedback>
-      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
-    </Command>
+    </Command>    
     
     <Command Name="smartHouseTurnOffCommand">
       <Example> Turn off </Example>

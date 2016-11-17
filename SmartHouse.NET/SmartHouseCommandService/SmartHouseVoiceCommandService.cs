@@ -111,10 +111,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                             break;
                         case "smartHouseRestartVPN":
                             await SmartHouseRestartVPN();
-                            break;
-                        case "smartHousePlayBitch":
-                            await PlayMyShit();
-                            break;
+                            break;                        
                         default:                            
                             LaunchAppInForeground();
                             break;
@@ -197,26 +194,18 @@ namespace SmartHouse.UWPClient.VoiceCommands
 
             var result = await smartHouse.GetCurrentState();
             await CompleteMessage($"Connected input: {result}");
-        }
-
-        private async Task PlayMyShit()
-        {
-            var pandora = new PandoraService();
-            await ShowProgressScreen($"Yes master, ready to work");
-
-            await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Play);
-            await CompleteMessage("");
-        }
+        }        
 
         private async Task ExecutePandoraCommands(string command)
         {            
             var pandora = new PandoraService();
+            var smartHouse = new SmartHouseService();
             await ShowProgressScreen($"Starting to {command} song");
 
             switch (command)
             {
                 case "Play":
-                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Play);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.Play);
                     await CompleteMessage("");
                     break;
                 case "Stop":
@@ -224,7 +213,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     await CompleteMessage("");
                     break;
                 case "Next":
-                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.Next);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.Next);
                     await CompleteMessage("");
                     break;
                 case "Volume up":
@@ -248,7 +237,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     await CompleteMessage("");
                     break;
                 case "Show":
-                    var info = await pandora.ShowInfo();                                        
+                    var info = await pandora.ShowInfo();
                     await CortanaResponseLoveSong(info);
                     break;
                 default:
