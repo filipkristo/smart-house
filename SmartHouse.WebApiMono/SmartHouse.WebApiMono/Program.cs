@@ -82,7 +82,7 @@ namespace SmartHouse.WebApiMono
 		{
 			try
 			{
-				var udp = new TemperatureUdp();
+				var udp = new TemperatureUdp(SignalRTemperature);
 				await udp.StartListen();
 			}
 			catch (Exception ex)
@@ -90,5 +90,15 @@ namespace SmartHouse.WebApiMono
 				Log.Error("UDP Server Error", ex);
 			}
 		}
+
+		private static void SignalRTemperature(TemperatureData temperature)
+		{
+			var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
+			if (context == null)
+				return;
+
+			context.Clients.All.temperature(temperature);
+		}
+
 	}
 }

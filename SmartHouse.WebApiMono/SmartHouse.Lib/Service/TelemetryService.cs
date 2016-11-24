@@ -8,14 +8,16 @@ namespace SmartHouse.Lib
 	{
 		private static TemperatureData TemperatureData { get; } = new TemperatureData();
 
-		public TelemetryService()
+		private Action<TemperatureData> SignalR;
+
+		public TelemetryService(Action<TemperatureData> signalR)
 		{
+			SignalR = signalR;
 		}
 
 		public async Task<TemperatureData> GetLastTemperature()
 		{			
 			await Task.FromResult<object>(null);
-
 			return TemperatureData;
 		}
 
@@ -33,7 +35,7 @@ namespace SmartHouse.Lib
 
 		public async Task<Result> SaveTemperatureUdp(string data)
 		{
-			var uri = "https://github.com/fsautomata/azure-iot-sdks/blob/master/c/doc/device_setup_raspberrypi2_rasbian.md";
+			//var uri = "https://github.com/fsautomata/azure-iot-sdks/blob/master/c/doc/device_setup_raspberrypi2_rasbian.md";
 
 			lock (TemperatureData)
 			{
@@ -41,6 +43,8 @@ namespace SmartHouse.Lib
 				TemperatureData.Humidity = Convert.ToDecimal(data.Split(';')[1]);
 				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);
 				TemperatureData.Measured = DateTime.Now;
+
+				SignalR?.Invoke(TemperatureData);
 			}
 
 			return await Task.FromResult<Result>(new Result());

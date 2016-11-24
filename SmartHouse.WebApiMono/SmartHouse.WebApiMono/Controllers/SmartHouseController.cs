@@ -62,6 +62,8 @@ namespace SmartHouse.WebApiMono
 				await SmartHouseService.SaveState(SmartHouseState.Pandora);
 			}
 
+			NotifyClients();
+
 			return new Result()
 			{
 				ErrorCode = 0,
@@ -96,6 +98,8 @@ namespace SmartHouse.WebApiMono
 				sb.AppendLine("Yamaha Turn Off");
 			}
 
+			NotifyClients();
+
 			return new Result()
 			{
 				ErrorCode = 0,
@@ -121,6 +125,8 @@ namespace SmartHouse.WebApiMono
 				sb.AppendLine("Yamaha is turned off");
 			}
 
+			NotifyClients();
+
 			return new Result()
 			{
 				ErrorCode = 0,
@@ -145,6 +151,8 @@ namespace SmartHouse.WebApiMono
 			{
 				sb.AppendLine("Yamaha is turned off");	
 			}
+
+			NotifyClients();
 
 			return new Result()
 			{
@@ -180,6 +188,8 @@ namespace SmartHouse.WebApiMono
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
 			}
+
+			NotifyClients();
 
 			return new Result()
 			{
@@ -218,6 +228,8 @@ namespace SmartHouse.WebApiMono
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
 			}
 
+			NotifyClients();
+
 			return new Result()
 			{
 				ErrorCode = 0,
@@ -253,6 +265,8 @@ namespace SmartHouse.WebApiMono
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
 			}
+
+			NotifyClients();
 
 			return new Result()
 			{
@@ -302,6 +316,7 @@ namespace SmartHouse.WebApiMono
 			sb.AppendLine("Set HDMI2 input");
 
 			await SmartHouseService.SaveState(SmartHouseState.XBox);
+			NotifyClients();
 
 			return new Result()
 			{
@@ -344,6 +359,7 @@ namespace SmartHouse.WebApiMono
 			sb.AppendLine("Set HDMI1 input");
 
 			await SmartHouseService.SaveState(SmartHouseState.Pandora);
+			NotifyClients();
 
 			return new Result()
 			{
@@ -376,6 +392,7 @@ namespace SmartHouse.WebApiMono
 			MpdService.Play();
 
 			await SmartHouseService.SaveState(SmartHouseState.Music);
+			NotifyClients();
 
 			return new Result()
 			{
@@ -415,6 +432,7 @@ namespace SmartHouse.WebApiMono
 			sb.AppendLine("Setting AUDIO1 input");
 
 			await SmartHouseService.SaveState(SmartHouseState.TV);
+			NotifyClients();
 
 			return new Result()
 			{

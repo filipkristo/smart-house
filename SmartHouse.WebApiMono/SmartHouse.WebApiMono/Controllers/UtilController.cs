@@ -26,6 +26,16 @@ namespace SmartHouse.WebApiMono
 			return DateTime.Now;
 		}
 
-
+		[HttpGet]
+		[Route("SignalRTest")]
+		public bool SignalRTest(string param = null)
+		{
+			var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
+			if (context == null)
+				return false;
+			
+			context.Clients.All.hello(param ?? "Call from server");
+			return true;
+		}
 	}
 }

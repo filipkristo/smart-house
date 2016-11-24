@@ -9,14 +9,17 @@ namespace SmartHouse.Lib
 {
 	public class TemperatureUdp
 	{
-		private TelemetryService service = new TelemetryService();
+		private TelemetryService service;
+
+		public TemperatureUdp(Action<TemperatureData> signalR)
+		{
+			service = new TelemetryService(signalR);
+		}
 
 		public async Task StartListen()
 		{			
 			await Task.Run(async () =>
 			{
-				var sensors = new TelemetryService();
-
 				using (var client = new UdpClient())
 				{
 					var localEp = new IPEndPoint(IPAddress.Any, 9876);
@@ -32,7 +35,7 @@ namespace SmartHouse.Lib
 							var buffer = client.Receive(ref localEp);
 							var data = Encoding.ASCII.GetString(buffer);
 
-							await sensors.SaveTemperatureUdp(data);
+							await service.SaveTemperatureUdp(data);
 						}
 						catch (Exception ex)
 						{

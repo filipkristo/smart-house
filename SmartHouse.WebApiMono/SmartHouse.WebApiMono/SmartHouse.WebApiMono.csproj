@@ -88,6 +88,19 @@
     <Reference Include="Validation">
       <HintPath>..\packages\Validation.2.3.7\lib\dotnet\Validation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -105,6 +118,7 @@
     <Compile Include="Controllers\YamahaController.cs" />
     <Compile Include="Controllers\SensorController.cs" />
     <Compile Include="Controllers\MPDController.cs" />
+    <Compile Include="SignalR\ServerHub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -122,12 +136,22 @@
     <None Include="redalert.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Scripts\jquery.signalR-2.2.1.min.js" />
+    <None Include="Scripts\jquery.signalR-2.2.1.js" />
+    <None Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <None Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <None Include="Scripts\jquery-3.1.1.slim.js" />
+    <None Include="Scripts\jquery-3.1.1.min.map" />
+    <None Include="Scripts\jquery-3.1.1.min.js" />
+    <None Include="Scripts\jquery-3.1.1.js" />
+    <None Include="Scripts\jquery-3.1.1-vsdoc.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />
     <Folder Include="Logging\" />
     <Folder Include="Controllers\" />
     <Folder Include="DI\" />
+    <Folder Include="SignalR\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SmartHouse.Lib\SmartHouse.Lib.csproj">

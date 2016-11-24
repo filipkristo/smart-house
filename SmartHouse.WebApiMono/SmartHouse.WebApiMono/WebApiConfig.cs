@@ -42,6 +42,8 @@ namespace SmartHouse.WebApiMono
 
 			SetupSwagger(config);
 
+			appBuilder.MapSignalR();
+			
 			config.EnsureInitialized();
 			appBuilder.UseWebApi(config);
 		}
@@ -81,11 +83,11 @@ namespace SmartHouse.WebApiMono
 				if (!String.IsNullOrWhiteSpace(origin) && !res.Headers.ContainsKey("Access-Control-Allow-Origin"))
 				{
 					res.Headers.Set("Access-Control-Allow-Origin", origin);
+					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Credentials", "true");
 				}
 
 				if (req.Method == "OPTIONS")
 				{
-
 					res.StatusCode = 200;
 					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Methods", "GET", "POST", "PUT", "DELETE");
 					res.Headers.AppendCommaSeparatedValues("Access-Control-Allow-Headers", "authorization", "content-type");
@@ -94,7 +96,8 @@ namespace SmartHouse.WebApiMono
 
 				await next();
 			});
-		}
+		}
+
 
 		private void SetupSwagger(HttpConfiguration config)
 		{
