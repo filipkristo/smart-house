@@ -82,6 +82,7 @@
     <Compile Include="Service\MPDService.cs" />
     <Compile Include="Interfaces\IMPDService.cs" />
     <Compile Include="BLL\Timer.cs" />
+    <Compile Include="BLL\InternetConnectionLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

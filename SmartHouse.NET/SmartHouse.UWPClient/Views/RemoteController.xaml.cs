@@ -1,9 +1,11 @@
 ﻿using SmartHouse.UWPClient.Services.SettingsServices;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Template10.Services.KeyboardService;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
@@ -36,6 +38,54 @@ namespace SmartHouse.UWPClient.Views
             webView.LoadCompleted += WebView_LoadCompleted;
 
             webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/smarthouse/"));
+
+            var KeyboardHelper = new KeyboardHelper();
+            KeyboardHelper.KeyDown = new Action<KeyboardEventArgs>(RemoteController_KeyDown);
+        }
+
+        private async void RemoteController_KeyDown(KeyboardEventArgs e)
+        {
+            Debug.WriteLine((int)e.VirtualKey);
+
+            var result = "";
+            var keyCode = (int)e.VirtualKey;
+
+            switch (keyCode)
+            {
+                case 179:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "Play" });
+                    break;
+                case 176:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "Next" });                   
+                    break;
+                case 177:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "Prev" });
+                    break;
+                case 175:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "VolumeUp" });                    
+                    break;
+                case 174:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "VolumeDown" });                    
+                    break;
+                case 49:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "Pandora" });                    
+                    break;
+                case 50:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "Music" });
+                    break;
+                case 51:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "XBox" });
+                    break;
+                case 52:
+                    result = await webView.InvokeScriptAsync("runCommand", new[] { "TV" });
+                    break;
+                case 76:
+                    result = await webView.InvokeScriptAsync("love", null);
+                    break;
+                case 73:
+                    result = await webView.InvokeScriptAsync("toogleDialog", null);
+                    break;
+            }
         }
 
         private void WebView_LoadCompleted(object sender, NavigationEventArgs e)

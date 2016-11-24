@@ -33,6 +33,8 @@ namespace SmartHouse.Lib
 
 		public async Task<Result> SaveTemperatureUdp(string data)
 		{
+			var uri = "https://github.com/fsautomata/azure-iot-sdks/blob/master/c/doc/device_setup_raspberrypi2_rasbian.md";
+
 			lock (TemperatureData)
 			{
 				TemperatureData.Temperature = Convert.ToDecimal(data.Split(';')[0]);

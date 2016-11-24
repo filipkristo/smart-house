@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouse.WebApiMono", "Sm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouse.Lib", "SmartHouse.Lib\SmartHouse.Lib.csproj", "{CEF8FE44-20C2-460E-9909-7DD0277C45B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouse.AzureIot", "SmartHouse.AzureIot\SmartHouse.AzureIot.csproj", "{2E7AB2DB-A705-4371-B116-79AB07120242}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPDClientLib", "MPDClientLib\MPDClientLib.csproj", "{3403C873-97B2-4EC1-BA45-3E396B9F865B}"
 EndProject
 Global
@@ -23,10 +21,6 @@ Global
 		{CEF8FE44-20C2-460E-9909-7DD0277C45B7}.Debug|x86.Build.0 = Debug|Any CPU
 		{CEF8FE44-20C2-460E-9909-7DD0277C45B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{CEF8FE44-20C2-460E-9909-7DD0277C45B7}.Release|x86.Build.0 = Release|Any CPU
-		{2E7AB2DB-A705-4371-B116-79AB07120242}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2E7AB2DB-A705-4371-B116-79AB07120242}.Debug|x86.Build.0 = Debug|Any CPU
-		{2E7AB2DB-A705-4371-B116-79AB07120242}.Release|x86.ActiveCfg = Release|Any CPU
-		{2E7AB2DB-A705-4371-B116-79AB07120242}.Release|x86.Build.0 = Release|Any CPU
 		{3403C873-97B2-4EC1-BA45-3E396B9F865B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{3403C873-97B2-4EC1-BA45-3E396B9F865B}.Debug|x86.Build.0 = Debug|Any CPU
 		{3403C873-97B2-4EC1-BA45-3E396B9F865B}.Release|x86.ActiveCfg = Release|Any CPU

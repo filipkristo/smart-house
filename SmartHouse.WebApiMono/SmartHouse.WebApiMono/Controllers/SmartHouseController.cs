@@ -38,8 +38,8 @@ namespace SmartHouse.WebApiMono
 				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
 
-			await YamahaService.SetInput("AV2");
-			sb.AppendLine("Setting AV2 input");
+			await YamahaService.SetInput("HDMI1");
+			sb.AppendLine("Setting HDMI1 input");
 
 			await SmartHouseService.SetMode(ModeEnum.Normal);
 			sb.AppendLine("Setting Normal mode");
@@ -340,8 +340,8 @@ namespace SmartHouse.WebApiMono
 				sb.AppendLine("Playing pandora radio");
 			}
 
-			await YamahaService.SetInput("AV2");
-			sb.AppendLine("Set AV2 input");
+			await YamahaService.SetInput("HDMI1");
+			sb.AppendLine("Set HDMI1 input");
 
 			await SmartHouseService.SaveState(SmartHouseState.Pandora);
 
@@ -370,8 +370,8 @@ namespace SmartHouse.WebApiMono
 			await PandoraService.StopTcp();
 			sb.AppendLine("Stopping pandora radio");
 
-			await YamahaService.SetInput("AV2");
-			sb.AppendLine("Set AV2 input");
+			await YamahaService.SetInput("HDMI1");
+			sb.AppendLine("Set HDMI1 input");
 
 			MpdService.Play();
 
