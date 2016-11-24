@@ -49,7 +49,7 @@ namespace SmartHouse.UWPClient.Views
 
             var result = "";
             var keyCode = (int)e.VirtualKey;
-
+            
             switch (keyCode)
             {
                 case 179:

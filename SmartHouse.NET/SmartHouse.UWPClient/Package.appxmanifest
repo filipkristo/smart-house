@@ -24,11 +24,15 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="green" />
       </uap:VisualElements>
       <Extensions>
-        <uap:Extension Category="windows.personalAssistantLaunch" />
         <uap:Extension Category="windows.appService" EntryPoint="SmartHouse.UWPClient.VoiceCommands.SmartHouseVoiceCommandService">
           <uap:AppService Name="SmartHouseVoiceCommandService" />
         </uap:Extension>
+        <uap:Extension Category="windows.personalAssistantLaunch" />
       </Extensions>
+      <uap:ApplicationContentUriRules>
+        <uap:Rule Match="http://10.110.166.90/" Type="include" WindowsRuntimeAccess="all" />
+        <uap:Rule Match="http://10.110.166.90:8081/" Type="include" WindowsRuntimeAccess="all" />
+      </uap:ApplicationContentUriRules>
     </Application>
   </Applications>
   <Capabilities>
