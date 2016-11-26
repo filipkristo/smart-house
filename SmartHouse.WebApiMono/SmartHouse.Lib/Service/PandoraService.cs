@@ -25,9 +25,7 @@ namespace SmartHouse.Lib
 		public async Task<Result> Start()
 		{
 			var result = CommandExecuter(PandoraCommandEnum.Start);
-
 			await Task.Delay(TimeSpan.FromSeconds(4));
-			//BashHelper.ExecBashCommandNoWait("echo '1' >> /home/pi/.config/pianobar/ctl");
 
 			return result;
 		}
@@ -111,18 +109,22 @@ namespace SmartHouse.Lib
 			var info = GetCurrentSongInfo();
 			var stations = GetStationList().ToList();
 
-			var station = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
-			var stationIndex = stations.IndexOf(station);
+			var currentStation = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
+			var currentStationIndex = stations.IndexOf(currentStation);
 
-			if (stationIndex == (stations.Count - 1))
-				ChangeStation(stations.Last().Key);
+			var nextStation = default(KeyValue);
+
+			if (currentStationIndex == stations.Count - 1)
+				currentStation = stations.First();
 			else
-				ChangeStation(stations[stationIndex + 1].Key);
+				currentStation = stations[currentStationIndex + 1];
+
+			ChangeStation(nextStation.Key);
 
 			return new Result()
 			{
 				ErrorCode = 0,
-				Message = "Ok",
+				Message = $"Starting to play {nextStation.Value} station",
 				Ok = true
 			};
 		}
@@ -132,18 +134,22 @@ namespace SmartHouse.Lib
 			var info = GetCurrentSongInfo();
 			var stations = GetStationList().ToList();
 
-			var station = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
-			var stationIndex = stations.IndexOf(station);
+			var currentStation = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
+			var currentStationIndex = stations.IndexOf(currentStation);
 
-			if (stationIndex == 0)
-				ChangeStation(stations.First().Key);
+			var nextStation = default(KeyValue);
+
+			if (currentStationIndex == 0)
+				currentStation = stations.Last();
 			else
-				ChangeStation(stations[stationIndex - 1].Key);
+				currentStation = stations[currentStationIndex - 1];
+
+			ChangeStation(nextStation.Key);
 
 			return new Result()
 			{
 				ErrorCode = 0,
-				Message = "Ok",
+				Message = $"Starting to play {nextStation.Value} station",
 				Ok = true
 			};
 		}

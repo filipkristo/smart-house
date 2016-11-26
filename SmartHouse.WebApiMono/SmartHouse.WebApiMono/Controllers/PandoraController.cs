@@ -119,7 +119,9 @@ namespace SmartHouse.WebApiMono
 		public Result NextStation()
 		{
 			var result = PandoraService.NextStation();
+
 			NotifyClients();
+			PushNotification(result.Message);
 
 			return result;
 		}
@@ -129,7 +131,9 @@ namespace SmartHouse.WebApiMono
 		public Result PrevStation()
 		{
 			var result = PandoraService.PrevStation();
+
 			NotifyClients();
+			PushNotification(result.Message);
 
 			return result;
 		}

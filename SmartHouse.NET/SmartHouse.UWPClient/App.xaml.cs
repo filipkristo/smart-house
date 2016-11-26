@@ -1,3 +1,4 @@
+using Microsoft.HockeyApp;
 using SmartHouse.UWPClient.Services.SettingsServices;
 using System;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using Template10.Utils;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.VoiceCommands;
+using Windows.Foundation.Metadata;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
@@ -15,12 +17,12 @@ namespace SmartHouse.UWPClient
 {
     /// Documentation on APIs used in this page:
     /// https://github.com/Windows-XAML/Template10/wiki
-
     [Bindable]
     sealed partial class App : Template10.Common.BootStrapper
     {
         public App()
         {
+            Microsoft.HockeyApp.HockeyClient.Current.Configure("c7217e3f12be43108f4de5b1c9fdd02a");
             InitializeComponent();
         }
 
@@ -30,41 +32,34 @@ namespace SmartHouse.UWPClient
             {
                 // create a new frame 
                 var nav = NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
-
                 // create modal root
-                Window.Current.Content = new ModalDialog
-                {
-                    DisableBackButtonWhenModal = true,
-                    Content = new Views.Shell(nav),
-                    ModalContent = new Views.Busy()
-                };
+                Window.Current.Content = new ModalDialog{DisableBackButtonWhenModal = true, Content = new Views.Shell(nav), ModalContent = new Views.Busy()};
             }
 
             (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();
-            Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);
+            Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);            
 
-            try
-            {                
-                Debug.WriteLine("Initialize Cortana file");
-
-                var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"SmartHouseCommands.xml");
-                await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
-
-                Debug.WriteLine("Initialized Cortana file");
-            }
-            catch (Exception ex)
+            if(ApiInformation.IsTypePresent("Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager"))
             {
-                Debug.WriteLine($"Failed initialized Cortana file: {ex.Message}");
-            }
-            
-        }        
+                try
+                {
+                    Debug.WriteLine("Initialize Cortana file");
+                    var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"SmartHouseCommands.xml");
+                    await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
+                    Debug.WriteLine("Initialized Cortana file");
+                }
+                catch (Exception ex)
+                {
+                    Microsoft.HockeyApp.HockeyClient.Current.TrackException(ex);
+                    Debug.WriteLine($"Failed initialized Cortana file: {ex.Message}");
+                }
+            }            
+        }
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
-        {            
-            NavigationService.Navigate(typeof(Views.MainPage));            
-            await Task.CompletedTask;            
+        {
+            NavigationService.Navigate(typeof (Views.MainPage));
+            await Task.CompletedTask;
         }
-        
     }
 }
-
