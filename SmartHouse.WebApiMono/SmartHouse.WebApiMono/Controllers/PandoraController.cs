@@ -27,12 +27,10 @@ namespace SmartHouse.WebApiMono
 		[Route("Start")]
 		public async Task<Result> Start()
 		{
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-			PandoraService.StartTcp();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
+			var result = await PandoraService.StartTcp();
 			await Task.Delay(1000);
-			return null;
+
+			return result;
 		}
 
 		[HttpGet]
@@ -60,7 +58,12 @@ namespace SmartHouse.WebApiMono
 		[Route("ThumbUp")]
 		public Result ThumbUp()
 		{
-			return PandoraService.ThumbUp();
+			var result = PandoraService.ThumbUp();
+
+			NotifyClients();
+			PushNotification("Thumb Up");
+
+			return result;
 		}
 
 		[HttpGet]
@@ -70,7 +73,7 @@ namespace SmartHouse.WebApiMono
 			var result = PandoraService.ThumbDown();
 
 			NotifyClients();
-			PushNotification("Thumb Up");
+			PushNotification("Thumb Down");
 
 			return result;
 		}
@@ -79,7 +82,12 @@ namespace SmartHouse.WebApiMono
 		[Route("Tired")]
 		public Result Tired()
 		{
-			return PandoraService.TiredOfThisSong();
+			var result = PandoraService.TiredOfThisSong();
+
+			NotifyClients();
+			PushNotification("Tired of this song");
+
+			return result;
 		}
 
 		[HttpGet]
@@ -108,7 +116,7 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("NextStation")]
-		public Result NextStation(string stationId)
+		public Result NextStation()
 		{
 			var result = PandoraService.NextStation();
 			NotifyClients();
@@ -118,7 +126,7 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("PrevStation")]
-		public Result PrevStation(string stationId)
+		public Result PrevStation()
 		{
 			var result = PandoraService.PrevStation();
 			NotifyClients();
