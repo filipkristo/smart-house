@@ -27,7 +27,7 @@ namespace SmartHouse.Lib
 			var result = CommandExecuter(PandoraCommandEnum.Start);
 
 			await Task.Delay(TimeSpan.FromSeconds(4));
-			BashHelper.ExecBashCommandNoWait("echo '1' >> /home/pi/.config/pianobar/ctl");
+			//BashHelper.ExecBashCommandNoWait("echo '1' >> /home/pi/.config/pianobar/ctl");
 
 			return result;
 		}
@@ -102,6 +102,48 @@ namespace SmartHouse.Lib
 			{
 				ErrorCode = 0,
 				Message = $"Changed station {stationId}",
+				Ok = true
+			};
+		}
+
+		public Result NextStation()
+		{
+			var info = GetCurrentSongInfo();
+			var stations = GetStationList().ToList();
+
+			var station = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
+			var stationIndex = stations.IndexOf(station);
+
+			if (stationIndex == (stations.Count - 1))
+				ChangeStation(stations.Last().Key);
+			else
+				ChangeStation(stations[stationIndex + 1].Key);
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = "Ok",
+				Ok = true
+			};
+		}
+
+		public Result PrevStation()
+		{
+			var info = GetCurrentSongInfo();
+			var stations = GetStationList().ToList();
+
+			var station = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
+			var stationIndex = stations.IndexOf(station);
+
+			if (stationIndex == 0)
+				ChangeStation(stations.First().Key);
+			else
+				ChangeStation(stations[stationIndex - 1].Key);
+
+			return new Result()
+			{
+				ErrorCode = 0,
+				Message = "Ok",
 				Ok = true
 			};
 		}

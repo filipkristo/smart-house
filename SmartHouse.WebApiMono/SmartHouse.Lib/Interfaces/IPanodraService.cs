@@ -36,6 +36,9 @@ namespace SmartHouse.Lib
 
 		Result ChangeStation(string stationId);
 
+		Result NextStation();
+		Result PrevStation();
+
 		PandoraResult GetCurrentSongInfo();
 
 		IEnumerable<KeyValue> GetStationList();

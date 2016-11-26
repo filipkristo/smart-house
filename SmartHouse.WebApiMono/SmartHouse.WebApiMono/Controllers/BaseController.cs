@@ -21,5 +21,14 @@ namespace SmartHouse.WebApiMono
 
 			context.Clients.All.refreshAll();
 		}
+
+		protected virtual void PushNotification(string message)
+		{
+			var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
+			if (context == null)
+				return;
+
+			context.Clients.All.notification(message);
+		}
 	}
 }

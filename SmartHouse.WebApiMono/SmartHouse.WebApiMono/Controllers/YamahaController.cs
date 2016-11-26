@@ -62,7 +62,10 @@ namespace SmartHouse.WebApiMono
 		public async Task<string> SetVolume(decimal volume)
 		{
 			var newVolume = (int)Math.Round(volume * 10, 0);
-			return await YamahaService.SetVolume(newVolume);
+			var result = await YamahaService.SetVolume(newVolume);
+			NotifyClients();
+
+			return result;
 		}
 	}
 }

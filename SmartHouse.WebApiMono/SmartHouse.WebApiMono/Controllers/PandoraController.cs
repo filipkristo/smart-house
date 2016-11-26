@@ -67,7 +67,12 @@ namespace SmartHouse.WebApiMono
 		[Route("ThumbDown")]
 		public Result ThumbDown()
 		{
-			return PandoraService.ThumbDown();
+			var result = PandoraService.ThumbDown();
+
+			NotifyClients();
+			PushNotification("Thumb Up");
+
+			return result;
 		}
 
 		[HttpGet]
@@ -95,7 +100,30 @@ namespace SmartHouse.WebApiMono
 		[Route("ChangeStation")]
 		public Result ChangeStation(string stationId)
 		{
-			return PandoraService.ChangeStation(stationId);
+			var result = PandoraService.ChangeStation(stationId);
+			NotifyClients();
+
+			return result;
+		}
+
+		[HttpGet]
+		[Route("NextStation")]
+		public Result NextStation(string stationId)
+		{
+			var result = PandoraService.NextStation();
+			NotifyClients();
+
+			return result;
+		}
+
+		[HttpGet]
+		[Route("PrevStation")]
+		public Result PrevStation(string stationId)
+		{
+			var result = PandoraService.PrevStation();
+			NotifyClients();
+
+			return result;
 		}
 
 		[HttpGet]

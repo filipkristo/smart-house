@@ -467,6 +467,14 @@ namespace SmartHouse.WebApiMono
 		}
 
 		[HttpGet]
+		[Route("Notify")]
+		public string Notify()
+		{
+			NotifyClients();
+			return "OK";
+		}
+
+		[HttpGet]
 		[Route("TurnOfTimer")]
 		public async Task<Result> TurnOfTimer(int minutes)
 		{
