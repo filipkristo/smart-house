@@ -63,7 +63,7 @@ namespace SmartHouse.WebApiMono
 			}
 
 			NotifyClients();
-			PushNotification(sb.ToString());
+			PushNotification("Turn on");
 
 			return new Result()
 			{
@@ -100,7 +100,7 @@ namespace SmartHouse.WebApiMono
 			}
 
 			NotifyClients();
-			PushNotification(sb.ToString());
+			PushNotification("Turn off");
 
 			return new Result()
 			{
@@ -320,7 +320,7 @@ namespace SmartHouse.WebApiMono
 			await SmartHouseService.SaveState(SmartHouseState.XBox);
 
 			NotifyClients();
-			PushNotification(sb.ToString());
+			PushNotification("XBox");
 
 			return new Result()
 			{
@@ -365,7 +365,7 @@ namespace SmartHouse.WebApiMono
 			await SmartHouseService.SaveState(SmartHouseState.Pandora);
 
 			NotifyClients();
-			PushNotification(sb.ToString());
+			PushNotification("Pandora");
 
 			return new Result()
 			{
@@ -400,7 +400,7 @@ namespace SmartHouse.WebApiMono
 			await SmartHouseService.SaveState(SmartHouseState.Music);
 
 			NotifyClients();
-			PushNotification(sb.ToString());
+			PushNotification("Music");
 
 			return new Result()
 			{
@@ -440,8 +440,9 @@ namespace SmartHouse.WebApiMono
 			sb.AppendLine("Setting AUDIO1 input");
 
 			await SmartHouseService.SaveState(SmartHouseState.TV);
+
 			NotifyClients();
-			PushNotification(sb.ToString());
+			PushNotification("TV");
 
 			return new Result()
 			{
@@ -484,7 +485,7 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("PushNotification")]
-		public void PushNotification(string message)
+		public void SendPushNotification(string message)
 		{
 			PushNotification(message);
 		}

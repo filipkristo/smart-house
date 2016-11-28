@@ -27,6 +27,8 @@ namespace SmartHouse.Lib
 			var result = CommandExecuter(PandoraCommandEnum.Start);
 			await Task.Delay(TimeSpan.FromSeconds(4));
 
+			BashHelper.ExecBashCommandNoWait("echo '1' >> /home/pi/.config/pianobar/ctl");
+
 			return result;
 		}
 
