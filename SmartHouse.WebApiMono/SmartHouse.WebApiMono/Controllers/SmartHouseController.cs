@@ -55,15 +55,15 @@ namespace SmartHouse.WebApiMono
 			}
 
 			else if (!PandoraService.IsPlaying())
-			{
-				PandoraService.StartTcp().Wait(1000);
+			{				
+				PandoraService.StartTcp().Wait(5000);
 				PandoraService.Play();
 				sb.AppendLine("Playing pandora radio");	
 				await SmartHouseService.SaveState(SmartHouseState.Pandora);
 			}
 
 			NotifyClients();
-			PushNotification("Turn on");
+			PushNotification("Smart house is turn on");
 
 			return new Result()
 			{
@@ -125,6 +125,7 @@ namespace SmartHouse.WebApiMono
 			else
 			{
 				sb.AppendLine("Yamaha is turned off");
+				PushNotification("Yamaha is turned off. Operation canceled");
 			}
 
 			NotifyClients();
@@ -152,6 +153,7 @@ namespace SmartHouse.WebApiMono
 			else
 			{
 				sb.AppendLine("Yamaha is turned off");	
+				PushNotification("Yamaha is turned off. Operation canceled");
 			}
 
 			NotifyClients();
@@ -189,6 +191,7 @@ namespace SmartHouse.WebApiMono
 			else
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
+				PushNotification("Yamaha is turned off. Operation canceled");
 			}
 
 			NotifyClients();
@@ -228,6 +231,7 @@ namespace SmartHouse.WebApiMono
 			else
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
+				PushNotification("Yamaha is turned off. Operation canceled");
 			}
 
 			NotifyClients();
@@ -266,6 +270,7 @@ namespace SmartHouse.WebApiMono
 			else
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
+				PushNotification("Yamaha is turned off. Operation canceled");
 			}
 
 			NotifyClients();
@@ -344,7 +349,7 @@ namespace SmartHouse.WebApiMono
 				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
 
-			if (MpdService.GetStatus().State == Libmpc.MpdState.Play)
+			if (MpdService.GetStatus().State == Libmpc.MpdState.Play || MpdService.GetStatus().State == MpdState.Pause)
 			{
 				MpdService.Stop();
 				sb.AppendLine("Stopping MPD");

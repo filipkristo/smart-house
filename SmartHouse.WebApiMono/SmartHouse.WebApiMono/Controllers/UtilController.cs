@@ -1,4 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using SmartHouse.Lib;
 
@@ -23,7 +27,38 @@ namespace SmartHouse.WebApiMono
 		[Route("ServerDate")]
 		public DateTime GetServerDate()
 		{
-			return DateTime.Now;
+			var date = DateTime.Now;
+			PushNotification(date.ToString());
+
+			return date;
+		}
+
+		[HttpGet]
+		[Route("DownloadLog")]
+		public HttpResponseMessage DownloadLog()
+		{
+			try
+			{
+				var path = "smarthouse.log";
+				var fileName = Path.GetFileName(path);
+
+				var result = new HttpResponseMessage(HttpStatusCode.OK);
+				var stream = new FileStream(path, FileMode.Open);
+
+				result.Content = new StreamContent(stream);
+				result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+				result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+				{
+					FileName = fileName
+				};
+
+				return result;
+			}
+			catch (Exception ex)
+			{
+				var response = this.Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+				throw new HttpResponseException(response);
+			}
 		}
 
 		[HttpGet]
