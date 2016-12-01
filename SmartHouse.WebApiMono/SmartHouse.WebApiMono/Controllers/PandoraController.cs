@@ -158,5 +158,16 @@ namespace SmartHouse.WebApiMono
 		{
 			return PandoraService.IsPlaying();
 		}
+
+		[HttpGet]
+		[Route("Refresh")]
+		public void Refresh()
+		{
+			var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
+			if (context == null)
+				return;
+
+			context.Clients.All.pandoraRefresh();
+		}
 	}
 }

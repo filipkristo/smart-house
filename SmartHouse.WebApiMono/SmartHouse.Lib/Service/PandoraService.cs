@@ -115,7 +115,7 @@ namespace SmartHouse.Lib
 		public Result NextStation()
 		{
 			var info = GetCurrentSongInfo();
-			var stations = GetStationList().ToList();
+			var stations = GetStationList().OrderBy(x => x.Value).ToList();
 
 			var currentStation = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
 			var currentStationIndex = stations.IndexOf(currentStation);
@@ -140,7 +140,7 @@ namespace SmartHouse.Lib
 		public Result PrevStation()
 		{
 			var info = GetCurrentSongInfo();
-			var stations = GetStationList().ToList();
+			var stations = GetStationList().OrderBy(x => x.Value).ToList();
 
 			var currentStation = stations.FirstOrDefault(x => x.Value.Contains(info.Radio));
 			var currentStationIndex = stations.IndexOf(currentStation);
