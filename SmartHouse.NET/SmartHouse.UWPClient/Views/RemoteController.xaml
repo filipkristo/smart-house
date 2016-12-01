@@ -21,6 +21,7 @@
                              RelativePanel.AlignTopWithPanel="True">
             <controls:PageHeader.SecondaryCommands>
                 <AppBarButton Click="AppBarButton_Click" Label="Refresh" />
+                <AppBarButton Click="AppBarButton_Click_1" Label="Refresh TV" />
             </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
 

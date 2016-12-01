@@ -55,8 +55,10 @@ namespace SmartHouse.UWPClient.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(loaded)
-                await webView.InvokeScriptAsync("refreshAll", null);            
+            if (loaded)
+            {
+                await webView.InvokeScriptAsync("refreshAll", null);                
+            }                
         }
 
         private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
@@ -76,6 +78,11 @@ namespace SmartHouse.UWPClient.Views
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/smarthouse/"));
+        }
+
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/smarthouseTV/"));
         }
     }
 }
