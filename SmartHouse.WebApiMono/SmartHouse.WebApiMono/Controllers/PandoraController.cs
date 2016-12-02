@@ -167,7 +167,8 @@ namespace SmartHouse.WebApiMono
 			if (context == null)
 				return;
 
-			context.Clients.All.pandoraRefresh();
+			var pandoraInfo = PandoraService.GetCurrentSongInfo();
+			context.Clients.All.pandoraRefresh(pandoraInfo);
 		}
 	}
 }

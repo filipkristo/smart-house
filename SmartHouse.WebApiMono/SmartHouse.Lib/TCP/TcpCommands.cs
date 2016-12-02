@@ -10,6 +10,7 @@ namespace SmartHouse.Lib
 			public const string PANDORA_START = "Pandora start";
 			public const string PANDORA_STOP = "Pandora stop";
 			public const string PANDORA_RESTART = "Pandora restart";
+			public const string PANDORA_SONG_INFO = "Pandora song info";
 		}
 
 		public class SmartHouse
@@ -39,6 +40,11 @@ namespace SmartHouse.Lib
 				default:
 					throw new Exception($"Command {command} is not defined");
 			}
+		}
+
+		public PandoraResult GetPandoraSongInfo()
+		{
+			return new PandoraService().GetCurrentSongInfo();
 		}
 
 #pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void

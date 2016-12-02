@@ -9,9 +9,19 @@ namespace SmartHouse.WebApiMono
 		{
 		}
 
-		public void Hello()
+		public void Hello(string param = null)
 		{
-			
+			Clients.All.hello(param ?? "Call from server");
+		}
+
+		public void NotifyClients()
+		{
+			Clients.All.refreshAll();
+		}
+
+		public void PushNotification(string message)
+		{
+			Clients.All.notification(message);
 		}
 	}
 }
