@@ -9,11 +9,11 @@ namespace SmartHouse.UWPLib.Model
     public enum PandoraCommands
     {
         Play,
-        Next,
-        VolumeUp,
-        VolumeDown,
+        Next,        
         Tired,
         ThumbUp,
-        ThumbDown
+        ThumbDown,
+        NextStation,
+        PrevStation
     }
 }

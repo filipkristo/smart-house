@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SmartHouse.UWPClient.Views"
+    xmlns:Ext="using:SmartHouse.UWPClient.Extensions"
     xmlns:vm="using:SmartHouse.UWPClient.ViewModels"
     xmlns:controls="using:Template10.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +11,7 @@
     mc:Ignorable="d">
 
     <Page.DataContext>
-        <vm:MainPageViewModel x:Name="ViewModel" />
+        <vm:PandoraRemoteViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -20,13 +21,18 @@
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True">
             <controls:PageHeader.SecondaryCommands>
-                <AppBarButton Click="AppBarButton_Click" Label="Refresh" />
+                <AppBarButton Click="{x:Bind ViewModel.Refresh}" Label="Refresh" />
             </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
 
-        <WebView Name="webView" RelativePanel.AlignLeftWithPanel="True" 
+        <WebView Name="webView"
+                 Ext:WebViewExtensions.UriSource="{Binding ItemUrl}"
+                 PermissionRequested ="{x:Bind ViewModel.webView_PermissionRequested}"
+                 ContainsFullScreenElementChanged ="{x:Bind ViewModel.webView_ContainsFullScreenElementChanged}" 
+                 Loaded="{x:Bind ViewModel.webView_Loaded}"
                  RelativePanel.Below="pageHeader" 
                  RelativePanel.AlignRightWithPanel="True" 
+                 RelativePanel.AlignLeftWithPanel="True" 
                  RelativePanel.AlignBottomWithPanel="True"/>
 
     </RelativePanel>

@@ -62,7 +62,7 @@ namespace SmartHouse.UWPLib.BLL
 
                 return JsonConvert.DeserializeObject<Result>(json);
             }
-        }
+        }        
 
         public async Task<string> GetCurrentState()
         {

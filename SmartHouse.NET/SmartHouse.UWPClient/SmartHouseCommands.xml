@@ -38,6 +38,20 @@
       <Feedback> Please wait </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
+
+    <Command Name="smartHouseNextStation">
+      <Example> Volume Down </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> next station</ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+
+    <Command Name="smartHousePrevStation">
+      <Example> Volume Down </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> previous station</ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
     
     <Command Name="smartHouseMode">
       <Example> Set Normal mode </Example>

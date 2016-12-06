@@ -82,7 +82,7 @@
                         <TextBox x:Name="txtHostIP" Header="Host IP"
                                       Text="{Binding HostIP, Mode=TwoWay}"                                                                            
                                       RelativePanel.AlignLeftWithPanel="True"    
-                                      MinWidth="180"
+                                      MinWidth="180"                                      
                                       RelativePanel.Below="UseLightThemeToggleSwitch" />
 
                         <TextBox x:Name="txtHostPort" Header="Host Port"

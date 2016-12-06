@@ -27,42 +27,7 @@ namespace SmartHouse.UWPClient.Views
         public Location()
         {
             this.InitializeComponent();
-            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
-            
-            webView.PermissionRequested += webView_PermissionRequested;
-            webView.ContainsFullScreenElementChanged += webView_ContainsFullScreenElementChanged;
-        }
-
-        private void webView_PermissionRequested(WebView sender, WebViewPermissionRequestedEventArgs args)
-        {
-            if (args.PermissionRequest.PermissionType == WebViewPermissionType.Geolocation)
-            {
-                args.PermissionRequest.Allow();
-            }
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/location.php"));
-        }
-
-        private void webView_ContainsFullScreenElementChanged(WebView sender, object args)
-        {
-            var applicationView = ApplicationView.GetForCurrentView();
-
-            if (sender.ContainsFullScreenElement)
-            {
-                applicationView.TryEnterFullScreenMode();
-            }
-            else if (applicationView.IsFullScreenMode)
-            {
-                applicationView.ExitFullScreenMode();
-            }
-        }
-
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            webView.Navigate(new Uri($"http://{SettingsService.Instance.HostIP}/location.php"));
-        }
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;                       
+        }        
     }
 }

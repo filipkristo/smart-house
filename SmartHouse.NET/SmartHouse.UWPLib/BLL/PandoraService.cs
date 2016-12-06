@@ -37,5 +37,31 @@ namespace SmartHouse.UWPLib.BLL
                 return JsonConvert.DeserializeObject<PandoraResult>(json);
             }
         }
+
+        public async Task<Result> NextStation()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://10.110.166.90:8081/api/Pandora/NextStation";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
+
+        public async Task<Result> PrevStation()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://10.110.166.90:8081/api/Pandora/PrevStation";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
     }
 }
