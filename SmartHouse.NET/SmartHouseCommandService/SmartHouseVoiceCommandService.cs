@@ -111,7 +111,13 @@ namespace SmartHouse.UWPClient.VoiceCommands
                             break;
                         case "smartHouseRestartVPN":
                             await SmartHouseRestartVPN();
-                            break;                        
+                            break;
+                        case "smartHouseNextStation":
+                            await ExecutePandoraCommands("NextStation");
+                            break;
+                        case "smartHousePrevStation":
+                            await ExecutePandoraCommands("PrevStation");
+                            break;
                         default:                            
                             LaunchAppInForeground();
                             break;
@@ -153,7 +159,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
                     result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
                     await CompleteMessage("");
-                    break;
+                    break;                
                 default:
                     LaunchAppInForeground();
                     break;
@@ -215,15 +221,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 case "Next":
                     await smartHouse.Run(UWPLib.Model.SmartHouseCommands.Next);
                     await CompleteMessage("");
-                    break;
-                case "Volume up":
-                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.VolumeUp);
-                    await CompleteMessage("");
-                    break;
-                case "Volume down":
-                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.VolumeDown);
-                    await CompleteMessage("");
-                    break;
+                    break;                
                 case "Love":
                     await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbUp);
                     await CompleteMessage("");
@@ -239,6 +237,14 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 case "Show":
                     var info = await pandora.ShowInfo();
                     await CortanaResponseLoveSong(info);
+                    break;
+                case "NextStation":
+                    var nextInfo = await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.NextStation);
+                    await CompleteMessage(nextInfo?.Message);
+                    break;
+                case "PrevStation":
+                    var prevInfo = await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.PrevStation);
+                    await CompleteMessage(prevInfo?.Message);
                     break;
                 default:
                     LaunchAppInForeground();
