@@ -30,7 +30,7 @@
                  Ext:WebViewExtensions.UriSource="{Binding ItemUrl}"
                  PermissionRequested ="{x:Bind ViewModel.webView_PermissionRequested}"
                  ContainsFullScreenElementChanged ="{x:Bind ViewModel.webView_ContainsFullScreenElementChanged}" 
-                 Loaded="{x:Bind ViewModel.webView_Loaded}"
+                 LoadCompleted="{x:Bind ViewModel.webView_Loaded}"                 
                  RelativePanel.Below="pageHeader" 
                  RelativePanel.AlignRightWithPanel="True" 
                  RelativePanel.AlignLeftWithPanel="True" 

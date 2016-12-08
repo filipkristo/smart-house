@@ -10,6 +10,8 @@ namespace SmartHouse.UWPClient.ViewModels
 {
     public class RemoteControllerViewModel : BaseWebViewViewModel
     {
+        private bool refreshed;
+
         public RemoteControllerViewModel()
             :base($"http://{SettingsService.Instance.HostIP}/smarthouse/")
         {
@@ -18,15 +20,26 @@ namespace SmartHouse.UWPClient.ViewModels
 
         public override async void Refresh()
         {
+            refreshed = false;
             base.Refresh();
-            await WebView?.InvokeScriptAsync("refreshAll", null);
+
+            if(refreshed)
+                await WebView?.InvokeScriptAsync("refreshAll", null);
+
+            refreshed = true;
         }
 
         public async void RefreshTV()
         {
+            refreshed = false;
             ItemUrl = null;
+
             ItemUrl = $"http://{SettingsService.Instance.HostIP}/smarthouseTV/";
-            await WebView?.InvokeScriptAsync("refreshAll", null);
+
+            if(refreshed)
+                await WebView?.InvokeScriptAsync("refreshAll", null);
+
+            refreshed = true;
         }
     }
 }

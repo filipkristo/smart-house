@@ -15,6 +15,7 @@ namespace SmartHouse.UWPClient.ViewModels
         public string ItemUrl { get { return Get<string>(); } set { Set(value); } }
         public string PageUrl { get; private set; }
         public WebView WebView { get; private set; }
+        public bool Loaded { get; private set; }
 
         public BaseWebViewViewModel(string Url)
         {
@@ -51,8 +52,8 @@ namespace SmartHouse.UWPClient.ViewModels
             }
         }
 
-        public void webView_Loaded(object sender, RoutedEventArgs e)
-        {
+        public void webView_Loaded(object sender, NavigationEventArgs e)
+        {            
             WebView = sender as WebView;
         }
 
