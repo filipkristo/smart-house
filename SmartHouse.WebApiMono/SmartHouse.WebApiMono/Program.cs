@@ -96,7 +96,7 @@ namespace SmartHouse.WebApiMono
 			var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
 			if (context == null)
 				return;
-
+			
 			context.Clients.All.temperature(temperature);
 		}
 

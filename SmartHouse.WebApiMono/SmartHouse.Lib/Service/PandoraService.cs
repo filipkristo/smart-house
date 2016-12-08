@@ -25,7 +25,7 @@ namespace SmartHouse.Lib
 		public async Task<Result> Start()
 		{
 			var result = CommandExecuter(PandoraCommandEnum.Start);
-			await Task.Delay(TimeSpan.FromSeconds(4));
+			await Task.Delay(TimeSpan.FromSeconds(6));
 
 			var info = GetCurrentSongInfo();
 			var stations = GetStationList().ToList();
