@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using SmartHouse.Lib;
@@ -21,9 +23,17 @@ namespace SmartHouse.WebApiMono
 
 		[HttpPost]
 		[Route("SaveSettings")]
-		public async Task SaveSettings(Settings Settings)
+		public async Task<HttpResponseMessage> SaveSettings(Settings Settings)
 		{
-			await SettingsService.SaveSettings(Settings);
+			if (ModelState.IsValid)
+			{
+				await SettingsService.SaveSettings(Settings);
+				return new HttpResponseMessage(HttpStatusCode.OK);
+			}
+			else
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);	
+			}				
 		}
 	}
 }

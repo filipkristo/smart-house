@@ -43,6 +43,7 @@
     <Reference Include="Xml.Net">
       <HintPath>..\packages\Xml.Net.1.0.6\lib\net45\Xml.Net.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
