@@ -19,5 +19,7 @@ namespace SmartHouse.Lib
 		Result PlayAlarm();
 
 		Task<Result> PlayAlarmTcp();
+
+		Task CheckVPNInternet();
 	}
 }

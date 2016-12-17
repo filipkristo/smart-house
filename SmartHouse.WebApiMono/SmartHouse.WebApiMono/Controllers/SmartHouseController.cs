@@ -38,6 +38,8 @@ namespace SmartHouse.WebApiMono
 				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
 
+			await SmartHouseService.CheckVPNInternet();
+
 			await YamahaService.SetInput("HDMI1");
 			sb.AppendLine("Setting HDMI1 input");
 
@@ -355,6 +357,7 @@ namespace SmartHouse.WebApiMono
 				sb.AppendLine("Stopping MPD");
 			}
 
+			await SmartHouseService.CheckVPNInternet();
 
 			if (!PandoraService.IsPlaying())
 			{
@@ -393,6 +396,8 @@ namespace SmartHouse.WebApiMono
 				sb.AppendLine("Yamaha Turn on");
 				await Task.Delay(TimeSpan.FromSeconds(8));
 			}
+
+			await SmartHouseService.CheckVPNInternet();
 
 			await PandoraService.StopTcp();
 			sb.AppendLine("Stopping pandora radio");

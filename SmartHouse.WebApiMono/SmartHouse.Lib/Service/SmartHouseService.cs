@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.IO;
 using System.Text;
+using System.Net.Http;
 
 namespace SmartHouse.Lib
 {
@@ -114,6 +115,27 @@ namespace SmartHouse.Lib
 		{
 			var tcp = new TcpServer();
 			return await tcp.SendCommandToServer<Result>(TcpCommands.SmartHouse.TIMER);
+		}
+
+		public async Task CheckVPNInternet()
+		{
+			try
+			{
+				using (var client = new HttpClient())
+				{
+					client.Timeout = TimeSpan.FromSeconds(2);
+					var response = await client.GetAsync("http://wwww.google.com");
+
+					if (!response.IsSuccessStatusCode)
+						await RestartOpenVPNServiceTcp();
+				}
+			}
+			catch (Exception ex)
+			{
+				Logger.LogErrorMessage("", ex);
+				RestartOpenVPNServiceTcp().Wait(TimeSpan.FromSeconds(4));
+			}
+
 		}
 	}
 }
