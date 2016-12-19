@@ -16,7 +16,7 @@
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <controls:PageHeader x:Name="pageHeader" Content="Location"
+        <controls:PageHeader x:Name="pageHeader" Content="MPD"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True">

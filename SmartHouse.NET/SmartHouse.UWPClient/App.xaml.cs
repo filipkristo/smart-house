@@ -37,23 +37,7 @@ namespace SmartHouse.UWPClient
             }
 
             (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();
-            Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);            
-
-            if(ApiInformation.IsTypePresent("Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager"))
-            {
-                try
-                {
-                    Debug.WriteLine("Initialize Cortana file");
-                    var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"SmartHouseCommands.xml");
-                    await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
-                    Debug.WriteLine("Initialized Cortana file");
-                }
-                catch (Exception ex)
-                {
-                    Microsoft.HockeyApp.HockeyClient.Current.TrackException(ex);
-                    Debug.WriteLine($"Failed initialized Cortana file: {ex.Message}");
-                }
-            }            
+            Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);
         }
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
