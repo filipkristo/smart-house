@@ -44,6 +44,9 @@
       <HintPath>..\packages\Xml.Net.1.0.6\lib\net45\Xml.Net.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="IF.Lastfm.Core">
+      <HintPath>..\packages\Inflatable.Lastfm.1.0.0.294\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,6 +87,9 @@
     <Compile Include="Interfaces\IMPDService.cs" />
     <Compile Include="BLL\Timer.cs" />
     <Compile Include="BLL\InternetConnectionLog.cs" />
+    <Compile Include="Interfaces\ILastFMService.cs" />
+    <Compile Include="Service\LastFMService.cs" />
+    <Compile Include="Model\SongDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />

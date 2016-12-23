@@ -10,10 +10,12 @@ namespace SmartHouse.WebApiMono
 	public class PandoraController : BaseController
 	{
 		private IPanodraService PandoraService;
+		private ILastFMService LastFMService;
 
-		public PandoraController(ISettingsService service, IPanodraService pandoraService) : base(service)
+		public PandoraController(ISettingsService service, IPanodraService pandoraService, ILastFMService lastFMService) : base(service)
 		{
 			PandoraService = pandoraService;
+			LastFMService = lastFMService;
 		}
 
 		[HttpGet]
@@ -169,6 +171,36 @@ namespace SmartHouse.WebApiMono
 
 			var pandoraInfo = PandoraService.GetCurrentSongInfo();
 			context.Clients.All.pandoraRefresh(pandoraInfo);
+		}
+
+		[HttpGet]
+		[Route("StartScrobble")]
+		public async Task<string> StartScrobble()
+		{
+			var pandoraInfo = PandoraService.GetCurrentSongInfo();
+			var song = new SongDetails()
+			{
+				Album = pandoraInfo.Album,
+				Artist = pandoraInfo.Artist,
+				Song = pandoraInfo.Song
+			};
+
+			return await LastFMService.StartScrobble(song);
+		}
+
+		[HttpGet]
+		[Route("UpdateNowPlaying")]
+		public async Task<string> UpdateNowPlaying()
+		{
+			var pandoraInfo = PandoraService.GetCurrentSongInfo();
+			var song = new SongDetails()
+			{
+				Album = pandoraInfo.Album,
+				Artist = pandoraInfo.Artist,
+				Song = pandoraInfo.Song
+			};
+
+			return await LastFMService.UpdateNowPlaying(song);
 		}
 	}
 }

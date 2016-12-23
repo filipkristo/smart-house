@@ -8,5 +8,6 @@ namespace SmartHouse.Lib
 		YamahaSettings YamahaSettings { get; set; }
 		KodiSettings KodiSettings { get; set; }
 		List<ModeSettings> ModeSettings { get; set; }
+		bool LastFM { get; set; }
 	}
 }

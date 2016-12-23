@@ -65,6 +65,7 @@ namespace SmartHouse.WebApiMono
 			unity.RegisterType<ISmartHouseService, SmartHouseService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<ITelemetryService, TelemetryService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IMPDService, MPDService>(new HierarchicalLifetimeManager());
+			unity.RegisterType<ILastFMService, LastFMService>(new HierarchicalLifetimeManager());
 
 			config.DependencyResolver = new UnityResolver(unity);
 		}
