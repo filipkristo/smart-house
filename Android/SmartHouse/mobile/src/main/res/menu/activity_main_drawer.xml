@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main_page"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Main page" />
+        <item
+            android:id="@+id/nav_pandora"
+            android:icon="@drawable/ic_playlist_play_black_24dp"
+            android:title="Pandora" />
+        <item
+            android:id="@+id/nav_swagger"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Swagger" />
+        <item
+            android:id="@+id/nav_ip_location"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="IP Location" />
+        <item
+            android:id="@+id/nav_mpd_remote"
+            android:icon="@drawable/ic_playlist_play_black_24dp"
+            android:title="MPD Remote" />
+        <item
+            android:id="@+id/nav_remote"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Remote" />
+        <item
+            android:id="@+id/nav_torrent"
+            android:icon="@drawable/ic_playlist_play_black_24dp"
+            android:title="Torrent" />
+    </group>
+
+
+</menu>
