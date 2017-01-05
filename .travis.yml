@@ -1,2 +1,2 @@
 language: csharp
-solution: SmartHouse.WebApiMono.sln
+solution: ./SmartHouse.WebApiMono/SmartHouse.WebApiMono.sln
