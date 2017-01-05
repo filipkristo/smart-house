@@ -14,14 +14,16 @@ namespace SmartHouse.WebApiMono
 		private readonly IPanodraService PandoraService;
 		private readonly ISmartHouseService SmartHouseService;
 		private readonly IMPDService MpdService;
+        private readonly ITVService TVService;
 
-		public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService) 
+        public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService) 
 			: base(service)
 		{
 			YamahaService = yamahaService;
 			PandoraService = pandoraService;
 			SmartHouseService = smartHouseService;
 			MpdService = mpdService;
+            TVService = tvService;
 		}
 
 		[HttpGet]
@@ -35,7 +37,10 @@ namespace SmartHouse.WebApiMono
 			{
 				await YamahaService.TurnOn();
 				sb.AppendLine("Yamaha Turn on");
-				await Task.Delay(TimeSpan.FromSeconds(8));
+
+                await TVService.Power();
+
+                await Task.Delay(TimeSpan.FromSeconds(8));
 			}
 
 			await SmartHouseService.CheckVPNInternet();
@@ -52,17 +57,20 @@ namespace SmartHouse.WebApiMono
 			{
 				PandoraService.StopTcp().Wait(1000);
 				MpdService.Play();
-				sb.AppendLine("Playing MPD");
-				await SmartHouseService.SaveState(SmartHouseState.Music);
+				sb.AppendLine("Playing MPD");				
 			}
 
-			else if (!PandoraService.IsPlaying())
+			else if (state == SmartHouseState.Pandora && !PandoraService.IsPlaying())
 			{				
 				PandoraService.StartTcp().Wait(5000);
 				PandoraService.Play();
-				sb.AppendLine("Playing pandora radio");	
-				await SmartHouseService.SaveState(SmartHouseState.Pandora);
+				sb.AppendLine("Playing pandora radio");					
 			}
+            else if(state == SmartHouseState.TV)
+            {
+                await TVService.Home();
+                sb.AppendLine("TV Home IR button");
+            }
 
 			NotifyClients();
 			PushNotification("Smart house is turn on");
@@ -99,6 +107,8 @@ namespace SmartHouse.WebApiMono
 				await Task.Delay(TimeSpan.FromSeconds(1));
 				await YamahaService.TurnOff();
 				sb.AppendLine("Yamaha Turn Off");
+
+                await TVService.Power();
 			}
 
 			NotifyClients();
@@ -178,17 +188,23 @@ namespace SmartHouse.WebApiMono
 			if (powerStatus == PowerStatusEnum.On)
 			{
 				var mpdState = MpdService.GetStatus().State;
+                var smartHouseState = await SmartHouseService.GetCurrentState();
 
-				if (mpdState == MpdState.Play || mpdState == MpdState.Pause)
+				if (smartHouseState == SmartHouseState.Music && (mpdState == MpdState.Play || mpdState == MpdState.Pause))
 				{
 					MpdService.Next();
 					sb.AppendLine("MPD Next song");
 				}
-				else
+				else if(smartHouseState == SmartHouseState.Pandora)
 				{
 					PandoraService.Next();
 					sb.AppendLine("Pandora next song");
 				}
+                else if(smartHouseState == SmartHouseState.TV)
+                {
+                    await TVService.Forward();
+                    sb.AppendLine("TV forward");
+                }
 			}
 			else
 			{
@@ -217,7 +233,7 @@ namespace SmartHouse.WebApiMono
 			{
 				var state = await SmartHouseService.GetCurrentState();
 
-				if (state == SmartHouseState.Pandora)
+                if (state == SmartHouseState.Pandora)
 				{
 					PandoraService.Play();
 					sb.AppendLine("Starting to play/pause Pandora");
@@ -229,6 +245,10 @@ namespace SmartHouse.WebApiMono
 					else if (MpdService.GetStatus().State == MpdState.Pause)
 						MpdService.Play();
 				}
+                else if(state == SmartHouseState.TV)
+                {
+                    await TVService.Play();
+                }
 			}
 			else
 			{
@@ -257,17 +277,23 @@ namespace SmartHouse.WebApiMono
 			if (powerStatus == PowerStatusEnum.On)
 			{
 				var mpdState = MpdService.GetStatus().State;
+                var state = await SmartHouseService.GetCurrentState();
 
-				if (mpdState == MpdState.Play || mpdState == MpdState.Pause)
+                if (state == SmartHouseState.Music && (mpdState == MpdState.Play || mpdState == MpdState.Pause))
 				{
 					MpdService.Previous();
 					sb.AppendLine("MPD Previous song");
 				}
-				else
+				else if(state == SmartHouseState.Pandora)
 				{
 					PandoraService.Next();
 					sb.AppendLine("Pandora next song. Pandora can't go previous");
 				}
+                else if(state == SmartHouseState.TV)
+                {
+                    await TVService.Rewind();
+                    sb.AppendLine("TV Rewind");
+                }
 			}
 			else
 			{
@@ -326,7 +352,11 @@ namespace SmartHouse.WebApiMono
 
 			await SmartHouseService.SaveState(SmartHouseState.XBox);
 
-			NotifyClients();
+            await TVService.Source();
+            await Task.Delay(1000);
+            await TVService.Ok();
+
+            NotifyClients();
 			PushNotification("XBox");
 
 			return new Result()
@@ -372,7 +402,11 @@ namespace SmartHouse.WebApiMono
 
 			await SmartHouseService.SaveState(SmartHouseState.Pandora);
 
-			NotifyClients();
+            await TVService.Source();
+            await Task.Delay(1000);
+            await TVService.Ok();
+
+            NotifyClients();
 			PushNotification("Pandora");
 
 			return new Result()
@@ -409,7 +443,11 @@ namespace SmartHouse.WebApiMono
 
 			await SmartHouseService.SaveState(SmartHouseState.Music);
 
-			NotifyClients();
+            await TVService.Source();
+            await Task.Delay(1000);
+            await TVService.Ok();
+
+            NotifyClients();
 			PushNotification("Music");
 
 			return new Result()
@@ -450,6 +488,8 @@ namespace SmartHouse.WebApiMono
 			sb.AppendLine("Setting AUDIO1 input");
 
 			await SmartHouseService.SaveState(SmartHouseState.TV);
+
+            await TVService.Home();
 
 			NotifyClients();
 			PushNotification("TV");

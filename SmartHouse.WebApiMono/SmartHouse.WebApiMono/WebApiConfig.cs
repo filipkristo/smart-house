@@ -66,8 +66,9 @@ namespace SmartHouse.WebApiMono
 			unity.RegisterType<ITelemetryService, TelemetryService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IMPDService, MPDService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<ILastFMService, LastFMService>(new HierarchicalLifetimeManager());
+            unity.RegisterType<ITVService, TVService>(new HierarchicalLifetimeManager());
 
-			config.DependencyResolver = new UnityResolver(unity);
+            config.DependencyResolver = new UnityResolver(unity);
 		}
 
 		private void EnableCors(IAppBuilder appBuilder)

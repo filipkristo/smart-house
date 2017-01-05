@@ -9,11 +9,11 @@ namespace SmartHouse.Lib
 {
 	public class LastFMService : ILastFMService
 	{
-		private const string API_KEY = "XXXX";
-		private const string API_SECRET = "XXX";
+		private const string API_KEY = "f6efd05dff7733d006993bdb97bbdb06";
+		private const string API_SECRET = "6fe8591b91d15471d484e3842fa96b96";
 
-		private const string USERNAME = "XXX";
-		private const string PASSWORD = "XXXX";
+		private const string USERNAME = "filip_kristo";
+		private const string PASSWORD = "itmMI4:rNAoPm";
 
 		public LastFMService()
 		{
@@ -63,7 +63,7 @@ namespace SmartHouse.Lib
 			{
 				await client.Auth.GetSessionTokenAsync(USERNAME, PASSWORD);
 
-				var response = await client.Track.GetInfoAsync(trackName, artistName, "");
+				var response = await client.Track.GetInfoAsync(trackName, artistName, USERNAME);
 
 				return response.Content;
 			}

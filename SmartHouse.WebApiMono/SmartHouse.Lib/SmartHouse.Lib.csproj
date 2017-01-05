@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -49,8 +49,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ITVService.cs" />
+    <Compile Include="Model\IRCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Result.cs" />
+    <Compile Include="Service\TVService.cs" />
     <Compile Include="Util\BashHelper.cs" />
     <Compile Include="Model\PandoraCommandEnum.cs" />
     <Compile Include="Interfaces\ISettings.cs" />
@@ -91,19 +94,7 @@
     <Compile Include="Service\LastFMService.cs" />
     <Compile Include="Model\SongDetails.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Util\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Service\" />
-    <Folder Include="Model\Yamaha\" />
-    <Folder Include="Model\Settings\" />
-    <Folder Include="Model\Pandora\" />
-    <Folder Include="TCP\" />
-    <Folder Include="Model\Sensors\" />
-    <Folder Include="UDP\" />
-    <Folder Include="BLL\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
