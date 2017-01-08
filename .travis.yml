@@ -1,0 +1,5 @@
+language: csharp
+solution: ./SmartHouse.WebApiMono/SmartHouse.WebApiMono.sln
+
+install:
+  - nuget restore ./SmartHouse.WebApiMono/SmartHouse.WebApiMono.sln
