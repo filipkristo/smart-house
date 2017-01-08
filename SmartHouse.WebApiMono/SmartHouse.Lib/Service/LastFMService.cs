@@ -9,11 +9,11 @@ namespace SmartHouse.Lib
 {
 	public class LastFMService : ILastFMService
 	{
-		private const string API_KEY = "f6efd05dff7733d006993bdb97bbdb06";
-		private const string API_SECRET = "6fe8591b91d15471d484e3842fa96b96";
+		private const string API_KEY = "XXXX";
+		private const string API_SECRET = "XXXX";
 
-		private const string USERNAME = "filip_kristo";
-		private const string PASSWORD = "itmMI4:rNAoPm";
+		private const string USERNAME = "XXXX";
+		private const string PASSWORD = "XXXX";
 
 		public LastFMService()
 		{

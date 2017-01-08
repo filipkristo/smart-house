@@ -36,5 +36,6 @@ namespace SmartHouse.Lib
         Task<Result> KEY_8();
         Task<Result> KEY_9();
         Task<Result> KEY_0();
+        Task<string> SendCommand(IRCommands irCommand);
     }
 }

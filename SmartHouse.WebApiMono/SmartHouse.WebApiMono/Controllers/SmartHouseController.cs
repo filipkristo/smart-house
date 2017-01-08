@@ -26,6 +26,18 @@ namespace SmartHouse.WebApiMono
             TVService = tvService;
 		}
 
+        [HttpGet]
+        [Route("Power")]
+        public async Task<Result> Power()
+        {
+            var powerStatus = await YamahaService.PowerStatus();
+
+            if (powerStatus == PowerStatusEnum.On)
+                return await TurnOff();
+            else
+                return await TurnOn();
+        }
+
 		[HttpGet]
 		[Route("TurnOn")]
 		public async Task<Result> TurnOn()
@@ -353,7 +365,8 @@ namespace SmartHouse.WebApiMono
 			await SmartHouseService.SaveState(SmartHouseState.XBox);
 
             await TVService.Source();
-            await Task.Delay(1000);
+            await Task.Delay(2000);
+            await TVService.Ok();
             await TVService.Ok();
 
             NotifyClients();
@@ -403,7 +416,8 @@ namespace SmartHouse.WebApiMono
 			await SmartHouseService.SaveState(SmartHouseState.Pandora);
 
             await TVService.Source();
-            await Task.Delay(1000);
+            await Task.Delay(2000);
+            await TVService.Ok();
             await TVService.Ok();
 
             NotifyClients();
@@ -444,7 +458,8 @@ namespace SmartHouse.WebApiMono
 			await SmartHouseService.SaveState(SmartHouseState.Music);
 
             await TVService.Source();
-            await Task.Delay(1000);
+            await Task.Delay(2000);
+            await TVService.Ok();
             await TVService.Ok();
 
             NotifyClients();
@@ -501,6 +516,17 @@ namespace SmartHouse.WebApiMono
 				Ok = true
 			};
 		}
+
+        [HttpGet]
+        [Route("TVCommand")]
+        public async Task TVCommand(string c)
+        {
+            if (string.IsNullOrWhiteSpace(c))
+                return;
+
+            var commandEnum = (IRCommands)Enum.Parse(typeof(IRCommands), c.Trim(), true);
+            await TVService.SendCommand(commandEnum);
+        }
 
 		[HttpGet]
 		[Route("GetCurrentState")]

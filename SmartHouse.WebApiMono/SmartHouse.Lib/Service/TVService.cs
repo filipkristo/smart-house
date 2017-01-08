@@ -346,7 +346,7 @@ namespace SmartHouse.Lib
             };
         }
 
-        private async Task<string> SendCommand(IRCommands irCommand)
+        public async Task<string> SendCommand(IRCommands irCommand)
         {
             try
             {
