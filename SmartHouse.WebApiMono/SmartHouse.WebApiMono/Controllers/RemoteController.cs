@@ -80,6 +80,58 @@ namespace SmartHouse.WebApiMono.Controllers
         }
 
         [HttpGet]
+        [Route("Stop")]
+        public async Task Stop()
+        {
+            var powerStatus = await YamahaService.PowerStatus();
+            var smartHouseState = await SmartHouseService.GetCurrentState();
+
+            if (powerStatus == PowerStatusEnum.StandBy)
+                return;
+
+            if (smartHouseState == SmartHouseState.Pandora)
+            {
+                await PandoraService.StopTcp();
+                PushNotification("Pianobar has exited");
+            }
+            else if(smartHouseState == SmartHouseState.Music)
+            {
+                MpdService.Stop();
+            }
+            else if(smartHouseState == SmartHouseState.TV)
+            {
+                await TVService.Stop();
+            } 
+        }
+
+        [HttpGet]
+        [Route("Pause")]
+        public async Task Pause()
+        {
+            var powerStatus = await YamahaService.PowerStatus();
+            var smartHouseState = await SmartHouseService.GetCurrentState();
+
+            if (powerStatus == PowerStatusEnum.StandBy)
+                return;
+
+            if (smartHouseState == SmartHouseState.Pandora)
+            {
+                PandoraService.Pause();
+                PushNotification("Pianobar has exited");
+            }
+            else if (smartHouseState == SmartHouseState.Music)
+            {
+                MpdService.Pause();
+            }
+            else if (smartHouseState == SmartHouseState.TV)
+            {
+                await TVService.Pause();
+            }
+
+            NotifyClients();
+        }
+
+        [HttpGet]
         [Route("Love")]
         public async Task Love()
         {

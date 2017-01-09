@@ -29,6 +29,10 @@ while True:
             requests.get('http://10.110.166.90:8081/api/SmartHouse/Power')
         elif "KEY_PLAY" in codeIR[0]:
             requests.get('http://10.110.166.90:8081/api/SmartHouse/Play')
+        elif "KEY_PAUSE" in codeIR[0]:
+            requests.get('http://10.110.166.90:8081/api/Remote/Pause')
+        elif "KEY_STOP" in codeIR[0]:
+            requests.get('http://10.110.166.90:8081/api/Remote/Stop')
         elif "KEY_UP" in codeIR[0]:
             requests.get('http://10.110.166.90:8081/api/Remote/Up')
         elif "KEY_DOWN" in codeIR[0]:
