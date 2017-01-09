@@ -37,6 +37,12 @@ while True:
             requests.get('http://10.110.166.90:8081/api/Remote/Up')
         elif "KEY_DOWN" in codeIR[0]:
             requests.get('http://10.110.166.90:8081/api/Remote/Down')
+        elif "KEY_LEFT" in codeIR[0]:
+            requests.get('http://10.110.166.90:8081/api/Remote/Left')
+        elif "KEY_RIGHT" in codeIR[0]:
+            requests.get('http://10.110.166.90:8081/api/Remote/Right')
+        elif "KEY_OK" in codeIR[0]:
+            requests.get('http://10.110.166.90:8081/api/Remote/Ok')
         elif "KEY_FN_F1" in codeIR[0]:
             requests.get('http://10.110.166.90:8081/api/SmartHouse/Pandora')
         elif "KEY_FN_F2" in codeIR[0]:

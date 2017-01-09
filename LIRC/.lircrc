@@ -1,0 +1,194 @@
+begin
+remote = uni
+button = KEY_UP
+prog = dev
+config = KEY_UP
+end
+begin
+remote = uni
+button = KEY_DOWN
+prog = dev
+config = KEY_DOWN
+end
+begin
+remote = uni
+button = KEY_LEFT
+prog = dev
+config = KEY_LEFT
+end
+begin
+remote = uni
+button = KEY_RIGHT
+prog = dev
+config = KEY_RIGHT
+end
+begin
+remote = uni
+button = KEY_OK
+prog = dev
+config = KEY_OK
+end
+begin
+remote = uni
+button = KEY_PLAY
+prog = dev
+config = KEY_PLAY
+end
+begin
+remote = uni
+button = KEY_PAUSE
+prog = dev
+config = KEY_PAUSE
+end
+begin
+remote = uni
+button = KEY_STOP
+prog = dev
+config = KEY_STOP
+end
+begin
+remoet = uni
+button = KEY_POWER
+prog = dev
+config = KEY_POWER
+end
+begin
+remote = uni
+button = KEY_1
+prog = dev
+config = KEY_1
+end
+begin
+remote = uni
+button = KEY_2
+prog = dev
+config = KEY_2
+end
+begin
+remote = uni
+button = KEY_3
+prog = dev
+config = KEY_3
+end
+begin
+remote = uni
+button = KEY_4
+prog = dev
+config = KEY_4
+end
+begin
+remote = uni
+button = KEY_5
+prog = dev
+config = KEY_5
+end
+begin
+remote = uni
+button = KEY_6
+prog = dev
+config = KEY_6
+end
+begin
+remote = uni
+button = KEY_7
+prog = dev
+config = KEY_7
+end
+begin
+remote = uni
+button = KEY_8
+prog = dev
+config = KEY_8
+end
+begin
+remote = uni
+button = KEY_9
+prog = dev
+config = KEY_9
+end
+begin
+remote = uni
+button = KEY_VOLUMEUP
+repeat = 1
+prog = dev
+config = KEY_VOLUMEUP
+end
+begin
+remote = uni
+button = KEY_VOLUMEDOWN
+repeat = 1
+prog = dev
+config = KEY_VOLUMEDOWN
+end
+begin
+remote = uni
+button = KEY_FN_F1
+prog = dev
+config = KEY_FN_F1
+end
+begin
+remote = uni
+button = KEY_FN_F2
+prog = dev
+config = KEY_FN_F2
+end
+begin
+remote = uni
+button = KEY_FN_F3
+prog = dev
+config = KEY_FN_F3
+end
+begin
+remote = uni
+button = KEY_FN_F4
+prog = dev
+config = KEY_FN_F4
+end
+begin
+remote = uni
+button = KEY_HOME
+prog = dev
+config = KEY_HOME
+end
+begin
+remote = uni
+button = KEY_INFO
+prog = dev
+config = KEY_INFO
+end
+begin
+remote = uni
+button = KEY_OPTION
+prog = dev
+config = KEY_OPTION
+end
+begin
+remote = uni
+button = KEY_BACK
+prog = dev
+config = KEY_BACK
+end
+begin
+remote = uni
+button = KEY_FORWARD
+prog = dev
+config = KEY_FORWARD
+end
+begin
+remote = uni
+button = KEY_REWIND
+prog = dev
+config = KEY_REWIND
+end
+begin
+remote = uni
+button = KEY_KP1
+prog = dev
+config = KEY_KP1
+end
+begin
+remote = uni
+button = KEY_KP2
+prog = dev
+config = KEY_KP2
+end
