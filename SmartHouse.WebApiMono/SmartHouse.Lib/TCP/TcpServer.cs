@@ -82,7 +82,7 @@ namespace SmartHouse.Lib
 					var response = await streamReader.ReadLineAsync();
 					Logger.LogDebugMessage($"SendCommandToServer: TCP Client length: {response.Length}");
 
-					var result = JsonConvert.DeserializeObject(response) as T;
+					var result = JsonConvert.DeserializeObject(response, typeof(T)) as T;
 					return result;
 				}
 			}
