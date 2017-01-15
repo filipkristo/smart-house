@@ -98,9 +98,7 @@ namespace SmartHouse.WebApiMono.Controllers
             {
                 sb.AppendLine("Yamaha is turned off. Operation canceled");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            }
-
-            NotifyClients();
+            } 
 
             return new Result()
             {
@@ -142,9 +140,7 @@ namespace SmartHouse.WebApiMono.Controllers
             {
                 sb.AppendLine("Yamaha is turned off. Operation canceled");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            }
-
-            NotifyClients();
+            }            
 
             return new Result()
             {
@@ -186,9 +182,7 @@ namespace SmartHouse.WebApiMono.Controllers
             {
                 sb.AppendLine("Yamaha is turned off. Operation canceled");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            }
-
-            NotifyClients();
+            }            
 
             return new Result()
             {
@@ -245,16 +239,23 @@ namespace SmartHouse.WebApiMono.Controllers
             else if (smartHouseState == SmartHouseState.TV)
             {
                 await TVService.Pause();
-            }
-
-            NotifyClients();
+            }            
         }
 
         [HttpGet]
         [Route("Love")]
-        public async Task Love()
+        public async Task<Result> Love()
         {
             var smartHouseState = await SmartHouseService.GetCurrentState();
+            var pandoraInfo = PandoraService.GetCurrentSongInfo();
+
+            if (pandoraInfo.Loved)
+                return new Result()
+                {
+                    Ok = true,
+                    ErrorCode = 0,
+                    Message = "You already liked this song"
+                };
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
@@ -262,7 +263,21 @@ namespace SmartHouse.WebApiMono.Controllers
 
                 NotifyClients();
                 PushNotification("Thumb Up");
+
+                return new Result
+                {
+                    Ok = true,
+                    ErrorCode = 0,
+                    Message = $"You liked {pandoraInfo.Song} song"
+                };
             }
+
+            return new Result()
+            {
+                ErrorCode = 0,
+                Message = "You can like only on Pandora input",
+                Ok = true
+            };
         }
 
         [HttpGet]

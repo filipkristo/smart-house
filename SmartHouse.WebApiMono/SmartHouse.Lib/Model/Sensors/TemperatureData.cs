@@ -1,11 +1,25 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace SmartHouse.Lib
 {
 	public class TemperatureData
 	{
-		public decimal Temperature { get; set; }
-		public decimal Humidity { get; set; }
-		public decimal HeatIndex { get; set; }
-		public DateTime Measured { get; set; }
+        [Required]
+        [JsonProperty(PropertyName = "temperature")]
+        public decimal Temperature { get; set; }
+
+        [Required]
+        [JsonProperty(PropertyName = "humidity")]
+        public decimal Humidity { get; set; }
+
+        [Required]
+        [JsonProperty(PropertyName = "heatIndex")]
+        public decimal HeatIndex { get; set; }
+
+        [Required]
+        [JsonProperty(PropertyName = "measured")]
+        public DateTime Measured { get; set; }
 	}
 }

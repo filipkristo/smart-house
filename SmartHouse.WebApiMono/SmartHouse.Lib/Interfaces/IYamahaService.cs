@@ -20,5 +20,7 @@ namespace SmartHouse.Lib
 		Task<string> SetVolume(int volume);
 
 		Task<PowerStatusEnum> PowerStatus();
-	}
+        Task<short> GetVolume();
+
+    }
 }

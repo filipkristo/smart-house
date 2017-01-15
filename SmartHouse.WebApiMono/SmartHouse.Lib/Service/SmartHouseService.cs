@@ -54,7 +54,7 @@ namespace SmartHouse.Lib
 			if (!File.Exists(stateFile))
 				return SmartHouseState.Unknown;
 
-			using (var fileStream = File.Open(stateFile, FileMode.Open, FileAccess.Read))
+			using (var fileStream = File.Open(stateFile, FileMode.Open, FileAccess.Read, FileShare.None))
 			{
 				var bytes = new byte[fileStream.Length];
 				await fileStream.ReadAsync(bytes, 0, bytes.Length);

@@ -27,6 +27,14 @@ namespace SmartHouse.WebApiMono
 		}
 
         [HttpGet]
+        [Route("IsTurnOn")]
+        public async Task<bool> IsTurnOn()
+        {
+            var powerStatus = await YamahaService.PowerStatus();
+            return powerStatus == PowerStatusEnum.On;            
+        }
+
+        [HttpGet]
         [Route("Power")]
         public async Task<Result> Power()
         {
@@ -144,17 +152,20 @@ namespace SmartHouse.WebApiMono
 			if (powerStatus == PowerStatusEnum.On)
 			{
 				await YamahaService.VolumeUp();
-				sb.AppendLine("Yamaha Volume Up");
+				sb.AppendLine("Yamaha Volume Up.");
 			}
 			else
 			{
 				sb.AppendLine("Yamaha is turned off");
-				PushNotification("Yamaha is turned off. Operation canceled");
+				PushNotification("Yamaha is turned off. Operation canceled.");
 			}
 
-			NotifyClients();
+            var volume = await YamahaService.GetVolume();
+            VolumeChangeNotify(volume);
 
-			return new Result()
+            sb.Append($"{volume} db");
+
+            return new Result()
 			{
 				ErrorCode = 0,
 				Message = sb.ToString(),
@@ -172,17 +183,20 @@ namespace SmartHouse.WebApiMono
 			if (powerStatus == PowerStatusEnum.On)
 			{
 				await YamahaService.VolumeDown();
-				sb.AppendLine("Yamaha Volume Down");
+				sb.AppendLine("Yamaha Volume Down.");
 			}
 			else
 			{
-				sb.AppendLine("Yamaha is turned off");	
+				sb.AppendLine("Yamaha is turned off.");	
 				PushNotification("Yamaha is turned off. Operation canceled");
 			}
 
-			NotifyClients();
+            var volume = await YamahaService.GetVolume();
+            VolumeChangeNotify(volume);
 
-			return new Result()
+            sb.Append($"{volume} db");
+
+            return new Result()
 			{
 				ErrorCode = 0,
 				Message = sb.ToString(),
@@ -222,9 +236,7 @@ namespace SmartHouse.WebApiMono
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
 				PushNotification("Yamaha is turned off. Operation canceled");
-			}
-
-			NotifyClients();
+			}			
 
 			return new Result()
 			{
@@ -266,9 +278,7 @@ namespace SmartHouse.WebApiMono
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
 				PushNotification("Yamaha is turned off. Operation canceled");
-			}
-
-			NotifyClients();
+			}			
 
 			return new Result()
 			{
@@ -311,9 +321,7 @@ namespace SmartHouse.WebApiMono
 			{
 				sb.AppendLine("Yamaha is turned off. Operation canceled");
 				PushNotification("Yamaha is turned off. Operation canceled");
-			}
-
-			NotifyClients();
+			}	
 
 			return new Result()
 			{

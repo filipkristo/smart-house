@@ -30,5 +30,14 @@ namespace SmartHouse.WebApiMono
 
 			context.Clients.All.notification(message);
 		}
-	}
+
+        protected virtual void VolumeChangeNotify(short currentVolume)
+        {
+            var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
+            if (context == null)
+                return;
+
+            context.Clients.All.volumeChange(currentVolume);
+        }
+    }
 }

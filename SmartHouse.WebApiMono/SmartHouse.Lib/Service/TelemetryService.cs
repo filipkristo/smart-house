@@ -1,14 +1,24 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
 	public class TelemetryService : ITelemetryService
 	{
-		private static TemperatureData TemperatureData { get; } = new TemperatureData();
+        private const string tempFile = "temperature";
+
+        private static TemperatureData TemperatureData { get; } = new TemperatureData();
 
 		private Action<TemperatureData> SignalR;
+
+        public TelemetryService()
+        {
+
+        }
 
 		public TelemetryService(Action<TemperatureData> signalR)
 		{
@@ -16,18 +26,15 @@ namespace SmartHouse.Lib
 		}
 
 		public async Task<TemperatureData> GetLastTemperature()
-		{			
-			await Task.FromResult<object>(null);
-			return TemperatureData;
+		{
+            return await GetTemperatureFromFile();		
 		}
 
-		public async Task<Result> SaveTemperature(TemperatureData data)
-		{
-			await SendRequestToCustomWebsite(TemperatureData.Temperature, TemperatureData.Humidity, TemperatureData.HeatIndex);
-
+		public Result SaveTemperature(TemperatureData data)
+		{			
 			return new Result()
 			{
-				Message = $"Inserted temperature {data.Temperature}, humidity: {data.Humidity}, heatindex: {data.HeatIndex}",
+				Message = $"Temperature {data.Temperature}, humidity: {data.Humidity}, heatindex: {data.HeatIndex}",
 				ErrorCode = 0,
 				Ok = true
 			};
@@ -42,25 +49,42 @@ namespace SmartHouse.Lib
 				TemperatureData.Temperature = Convert.ToDecimal(data.Split(';')[0]);
 				TemperatureData.Humidity = Convert.ToDecimal(data.Split(';')[1]);
 				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);
-				TemperatureData.Measured = DateTime.Now;
+				TemperatureData.Measured = DateTime.Now;                
 
 				SignalR?.Invoke(TemperatureData);
 			}
 
-			return await Task.FromResult<Result>(new Result());
-			//return await SaveTemperature(TemperatureData);
+            await SaveTemperatureToFile(TemperatureData);
+
+            return new Result() { Ok = true, ErrorCode = 0, Message = "Saved temperature"};			
 		}
 
-		private async Task<string> SendRequestToCustomWebsite(decimal temp, decimal humi, decimal heatindex)
-		{
-			using (var client = new HttpClient())
-			{
-				var result = await client.GetStringAsync($"http://piautomation.dx.am/api.php?RoomId=1&Temp={temp}&Humi={humi}&HeatIndex={heatindex}&id={Guid.NewGuid()}");
-				return result;
-			}
-		}
+        private async Task SaveTemperatureToFile(TemperatureData data)
+        {
+            using (var fileStream = File.Open(tempFile, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                var JSON = JsonConvert.SerializeObject(data);
+                var bytes = Encoding.UTF8.GetBytes(JSON);
+                await fileStream.WriteAsync(bytes, 0, bytes.Length);
+            }
+        }
 
-		public void Dispose()
+        private async Task<TemperatureData> GetTemperatureFromFile()
+        {            
+            if (!File.Exists(tempFile))
+                return null;
+
+            using (var fileStream = File.Open(tempFile, FileMode.Open, FileAccess.Read, FileShare.None))
+            {
+                var bytes = new byte[fileStream.Length];
+                await fileStream.ReadAsync(bytes, 0, bytes.Length);
+
+                var JSON = Encoding.UTF8.GetString(bytes);                
+                return JsonConvert.DeserializeObject(JSON, typeof(TemperatureData)) as TemperatureData;
+            }
+        }
+
+        public void Dispose()
 		{
 			
 		}

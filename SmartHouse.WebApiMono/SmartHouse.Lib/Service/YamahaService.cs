@@ -34,10 +34,15 @@ namespace SmartHouse.Lib
 			return xmlResponse;
 		}
 
+        public async Task<short> GetVolume()
+        {
+            var info = await GetInfo();
+            return info.Main_Zone.Basic_Status.Volume.Lvl.Val;
+        }
+
 		public async Task<string> VolumeUp()
-		{
-			var info = await GetInfo();
-			var volume = info.Main_Zone.Basic_Status.Volume.Lvl.Val;
+		{			
+			var volume = await GetVolume();
 
 			var xmlResponse = await YamahaHelper.DoRequest($"<?xml version=\"1.0\" encoding=\"utf-8\"?><YAMAHA_AV cmd=\"PUT\"><Main_Zone><Volume><Lvl><Val>{volume + 5}</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume></Main_Zone></YAMAHA_AV>");
 			return xmlResponse;
@@ -45,10 +50,9 @@ namespace SmartHouse.Lib
 
 		public async Task<string> VolumeDown()
 		{
-			var info = await GetInfo();
-			var volume = info.Main_Zone.Basic_Status.Volume.Lvl.Val;
+            var volume = await GetVolume();
 
-			var xmlResponse = await YamahaHelper.DoRequest($"<?xml version=\"1.0\" encoding=\"utf-8\"?><YAMAHA_AV cmd=\"PUT\"><Main_Zone><Volume><Lvl><Val>{volume - 5}</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume></Main_Zone></YAMAHA_AV>");
+            var xmlResponse = await YamahaHelper.DoRequest($"<?xml version=\"1.0\" encoding=\"utf-8\"?><YAMAHA_AV cmd=\"PUT\"><Main_Zone><Volume><Lvl><Val>{volume - 5}</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume></Main_Zone></YAMAHA_AV>");
 			return xmlResponse;
 		}
 
