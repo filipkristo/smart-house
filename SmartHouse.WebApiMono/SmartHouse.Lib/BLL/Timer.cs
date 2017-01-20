@@ -15,9 +15,11 @@ namespace SmartHouse.Lib
 
 		public async Task RunCommand()
 		{
+            Logger.LogInfoMessage($"Turning of smart house for {TimeoutMinutes} minutes");
 			await Task.Delay(TimeSpan.FromMinutes(TimeoutMinutes));
 
-			using (var client = new HttpClient())
+            Logger.LogInfoMessage($"Starting to turn off smartHouse");
+            using (var client = new HttpClient())
 			{
 				await client.GetStringAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff");
 			}

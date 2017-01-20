@@ -28,10 +28,11 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.Serialization" />
@@ -49,10 +50,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IOrvibioService.cs" />
     <Compile Include="Interfaces\ITVService.cs" />
     <Compile Include="Model\IRCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Result.cs" />
+    <Compile Include="Service\OrvibioService.cs" />
     <Compile Include="Service\TVService.cs" />
     <Compile Include="Util\BashHelper.cs" />
     <Compile Include="Model\PandoraCommandEnum.cs" />
@@ -89,7 +92,6 @@
     <Compile Include="Service\MPDService.cs" />
     <Compile Include="Interfaces\IMPDService.cs" />
     <Compile Include="BLL\Timer.cs" />
-    <Compile Include="BLL\InternetConnectionLog.cs" />
     <Compile Include="Interfaces\ILastFMService.cs" />
     <Compile Include="Service\LastFMService.cs" />
     <Compile Include="Model\SongDetails.cs" />
@@ -102,6 +104,10 @@
     <ProjectReference Include="..\MPDClientLib\MPDClientLib.csproj">
       <Project>{3403C873-97B2-4EC1-BA45-3E396B9F865B}</Project>
       <Name>MPDClientLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrviboController.Common\OrviboController.Common.csproj">
+      <Project>{3e5bf144-bd4e-4b43-91ec-ef5e5e8bf2f6}</Project>
+      <Name>OrviboController.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

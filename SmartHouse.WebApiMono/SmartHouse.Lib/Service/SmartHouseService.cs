@@ -124,6 +124,8 @@ namespace SmartHouse.Lib
 				using (var client = new HttpClient())
 				{
 					client.Timeout = TimeSpan.FromSeconds(2);
+                    client.DefaultRequestHeaders.Host = "google.com";
+
 					var response = await client.GetAsync("http://wwww.google.com");
 
 					if (!response.IsSuccessStatusCode)

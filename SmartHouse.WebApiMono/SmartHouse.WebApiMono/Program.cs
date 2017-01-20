@@ -3,6 +3,7 @@ using System.Net;
 using log4net;
 using Microsoft.Owin.Hosting;
 using SmartHouse.Lib;
+using System.Threading;
 
 namespace SmartHouse.WebApiMono
 {
@@ -31,6 +32,7 @@ namespace SmartHouse.WebApiMono
 
 				StartTcpServer();
 				StartUdpTemperature();
+                StartAlarmClock();
 
 				StartSelfHosting();
 
@@ -90,6 +92,27 @@ namespace SmartHouse.WebApiMono
 				Log.Error("UDP Server Error", ex);
 			}
 		}
+
+        private static async void StartAlarmClock()
+        {
+            var timeSpan = new TimeSpan(4, 30, 0);
+            Action action = () =>
+            {
+                var smartHouse = new SmartHouseService();
+
+                using (var orvibioService = new OrvibioService())
+                {
+                    orvibioService.TurnOff();
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
+                    orvibioService.TurnOn();
+
+                    Thread.Sleep(TimeSpan.FromSeconds(30));
+                    smartHouse.RestartOpenVPNService().Wait(TimeSpan.FromSeconds(15));
+                }                    
+            };
+            var alarmClock = new AlarmClock(DateTime.Today.AddDays(1).Date.AddTicks(timeSpan.Ticks), action);
+            await alarmClock.Start();         
+        }
 
 		private static void SignalRTemperature(TemperatureData temperature)
 		{

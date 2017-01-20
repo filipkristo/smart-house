@@ -50,16 +50,9 @@ namespace SmartHouse.WebApiMono
 
 		private void SetupDI(HttpConfiguration config)
 		{
-			var unity = new UnityContainer();
-			unity.RegisterType<BaseController>();
-			unity.RegisterType<PandoraController>();
-			unity.RegisterType<YamahaController>();
-			unity.RegisterType<SmartHouseController>();
-			unity.RegisterType<UtilController>();
-			unity.RegisterType<SettingsController>();
-			unity.RegisterType<SensorController>();
+			var unity = new UnityContainer();			
 
-			unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
+            unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<IYamahaService, YamahaService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<ISmartHouseService, SmartHouseService>(new HierarchicalLifetimeManager());
@@ -67,6 +60,7 @@ namespace SmartHouse.WebApiMono
 			unity.RegisterType<IMPDService, MPDService>(new HierarchicalLifetimeManager());
 			unity.RegisterType<ILastFMService, LastFMService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ITVService, TVService>(new HierarchicalLifetimeManager());
+            unity.RegisterType<IOrvibioService, OrvibioService>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(unity);
 		}

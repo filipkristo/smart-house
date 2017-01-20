@@ -1,43 +1,46 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace SmartHouse.Lib
 {
 	public class AlarmClock
 	{
-		private System.Timers.Timer timer;
-		private TimeSpan alarmTime;
-		private bool enabled;
+        private DateTime TargetTime;
+        private Action MyAction;
+        private const int MinSleepMilliseconds = 250;
 
-		public event EventHandler Alarm;
+        public AlarmClock(DateTime targetTime, Action myAction)
+        {
+            TargetTime = targetTime;
+            MyAction = myAction;
+        }
 
-		public AlarmClock(TimeSpan alarmTime)
-		{
-			this.alarmTime = alarmTime;
+        public Task Start()
+        {
+            return Task.Run(() => ProcessTimer());
+        }
 
-			timer = new System.Timers.Timer();
-			timer.Elapsed += timer_Elapsed;
-			timer.Interval = 1000;
-			timer.Start();
+        private void ProcessTimer()
+        {
+            var now = DateTime.Now;
 
-			enabled = true;
-		}
+            Logger.LogInfoMessage($"Timer started to execute - {now}");
+            Logger.LogInfoMessage($"Timer will be executed on: {TargetTime}");
 
-		void timer_Elapsed(object sender, ElapsedEventArgs e)
-		{
-			if (enabled && (DateTime.Now - DateTime.Now.Date) > alarmTime)
-			{
-				enabled = false;
-				OnAlarm();
-				timer.Stop();
-			}
-		}
+            while (now < TargetTime)
+            {
+                var SleepMilliseconds = (int)Math.Round((TargetTime - now).TotalMilliseconds / 2);                
+                Thread.Sleep(SleepMilliseconds > MinSleepMilliseconds ? SleepMilliseconds : MinSleepMilliseconds);
+                now = DateTime.Now;
+            }
 
-		protected virtual void OnAlarm()
-		{
-			Alarm?.Invoke(this, EventArgs.Empty);
-		}
+            Logger.LogInfoMessage("Starting to execute action");
+            MyAction();
 
-	}
+            TargetTime = TargetTime.AddDays(1);
+            ProcessTimer();
+        }
+    }
 }
