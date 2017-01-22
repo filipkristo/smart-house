@@ -114,7 +114,7 @@ namespace SmartHouse.WebApiMono
                     var turnOnResult = orvibioService.TurnOn();
                     Logger.LogInfoMessage($"TurnOn result: {turnOnResult.Message}");
 
-                    Thread.Sleep(TimeSpan.FromSeconds(30));
+                    Thread.Sleep(TimeSpan.FromMinutes(5));
 
                     Logger.LogInfoMessage("Starting to restart VPN");
                     smartHouse.RestartOpenVPNService().Wait(TimeSpan.FromSeconds(15));
