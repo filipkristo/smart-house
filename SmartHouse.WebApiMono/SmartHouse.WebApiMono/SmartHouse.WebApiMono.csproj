@@ -149,7 +149,9 @@
     <Compile Include="Controllers\LastFMController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.manifest" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.config" />
     <None Include="mdpstatus.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

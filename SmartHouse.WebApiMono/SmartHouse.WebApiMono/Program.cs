@@ -4,6 +4,7 @@ using log4net;
 using Microsoft.Owin.Hosting;
 using SmartHouse.Lib;
 using System.Threading;
+using System.Net.Http;
 
 namespace SmartHouse.WebApiMono
 {
@@ -98,16 +99,26 @@ namespace SmartHouse.WebApiMono
             var timeSpan = new TimeSpan(4, 30, 0);
             Action action = () =>
             {
-                var smartHouse = new SmartHouseService();
+                using (var client = new HttpClient())
+                    client.GetAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff");
+
+                var smartHouse = new SmartHouseService();                
 
                 using (var orvibioService = new OrvibioService())
                 {
-                    orvibioService.TurnOff();
+                    var turnOffResult = orvibioService.TurnOff();
+                    Logger.LogInfoMessage($"TurnOff result: {turnOffResult.Message}");
+
                     Thread.Sleep(TimeSpan.FromSeconds(10));
-                    orvibioService.TurnOn();
+
+                    var turnOnResult = orvibioService.TurnOn();
+                    Logger.LogInfoMessage($"TurnOn result: {turnOnResult.Message}");
 
                     Thread.Sleep(TimeSpan.FromSeconds(30));
+
+                    Logger.LogInfoMessage("Starting to restart VPN");
                     smartHouse.RestartOpenVPNService().Wait(TimeSpan.FromSeconds(15));
+                    Logger.LogInfoMessage("VPN Restarted");
                 }                    
             };
             var alarmClock = new AlarmClock(DateTime.Today.AddDays(1).Date.AddTicks(timeSpan.Ticks), action);

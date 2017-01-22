@@ -21,7 +21,7 @@ namespace SmartHouse.Lib
             Logger.LogInfoMessage($"Starting to turn off smartHouse");
             using (var client = new HttpClient())
 			{
-				await client.GetStringAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff");
+				await client.GetAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff");
 			}
 		}
 	}
