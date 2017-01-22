@@ -9,13 +9,13 @@ namespace SmartHouse.Lib
 {
 	public class LastFMService : ILastFMService
 	{
-		private const string API_KEY = "XXXX";
-		private const string API_SECRET = "XXXX";
+        private const string API_KEY = "XXXX";
+        private const string API_SECRET = "XXXX";
 
-		private const string USERNAME = "XXXX";
-		private const string PASSWORD = "XXXX";
+        private const string USERNAME = "XXXX";
+        private const string PASSWORD = "XXXX";
 
-		public LastFMService()
+        public LastFMService()
 		{
 			
 		}
@@ -57,7 +57,18 @@ namespace SmartHouse.Lib
 			}
 		}
 
-		public async Task<LastTrack> GetInfo(string artistName, string trackName)
+        public async Task<string> UnloveSong(string artistName, string trackName)
+        {
+            using (var client = new LastfmClient(API_KEY, API_SECRET))
+            {
+                await client.Auth.GetSessionTokenAsync(USERNAME, PASSWORD);
+
+                var response = await client.Track.UnloveAsync(trackName, artistName);
+                return response.Status.ToString();
+            }
+        }
+
+        public async Task<LastTrack> GetSongInfo(string artistName, string trackName)
 		{
 			using (var client = new LastfmClient(API_KEY, API_SECRET))
 			{
@@ -79,5 +90,38 @@ namespace SmartHouse.Lib
 				return response.Content.ToList();
 			}
 		}
-	}
+
+        public async Task<LastAlbum> GetAlbumInfo(string artist, string album)
+        {
+            using (var client = new LastfmClient(API_KEY, API_SECRET))
+            {
+                await client.Auth.GetSessionTokenAsync(USERNAME, PASSWORD);
+
+                var response = await client.Album.GetInfoAsync(artist, album, true);
+                return response.Content;
+            }
+        }
+
+        public async Task<LastArtist> GetArtistInfo(string artist)
+        {
+            using (var client = new LastfmClient(API_KEY, API_SECRET))
+            {
+                await client.Auth.GetSessionTokenAsync(USERNAME, PASSWORD);
+
+                var response = await client.Artist.GetInfoAsync(artist: artist, autocorrect: true);
+                return response.Content;
+            }
+        }
+
+        public async Task<IEnumerable<LastArtist>> GetSimilarArtist(string artist, int limit = 50)
+        {
+            using (var client = new LastfmClient(API_KEY, API_SECRET))
+            {
+                await client.Auth.GetSessionTokenAsync(USERNAME, PASSWORD);
+
+                var response = await client.Artist.GetSimilarAsync(artist, true, limit);
+                return response.Content;
+            }
+        }
+    }
 }

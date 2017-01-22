@@ -29,14 +29,7 @@ namespace SmartHouse.WebApiMono
 
 			await LastFMService.StartScrobble(song);
 			return new HttpResponseMessage(HttpStatusCode.OK);
-		}
-
-		[Route("GetSongInfo")]
-		[HttpGet]
-		public async Task<LastTrack> GetSongInfo(string artistName, string songName)
-		{
-			return await LastFMService.GetInfo(artistName, songName);
-		}
+		}		
 
 		[Route("LoveSong")]
 		[HttpGet]
@@ -45,11 +38,46 @@ namespace SmartHouse.WebApiMono
 			return await LastFMService.LoveSong(artistName, songName);
 		}
 
-		[Route("GetTopTracks")]
+        [Route("UnloveSong")]
+        [HttpGet]
+        public async Task<string> UnloveSong(string artistName, string songName)
+        {
+            return await LastFMService.UnloveSong(artistName, songName);
+        }
+
+        [Route("GetTopTracks")]
 		[HttpGet]
 		public async Task<List<LastTrack>> GetTopTracks()
 		{
 			return await LastFMService.GetTopTracks();
 		}
-	}
+
+        [Route("GetSongInfo")]
+        [HttpGet]
+        public async Task<LastTrack> GetSongInfo(string artistName, string songName)
+        {
+            return await LastFMService.GetSongInfo(artistName, songName);
+        }
+
+        [Route("GetAlbumInfo")]
+        [HttpGet]
+        public async Task<LastAlbum> GetAlbumInfo(string artist, string album)
+        {
+            return await LastFMService.GetAlbumInfo(artist, album);
+        }
+
+        [Route("GetArtistInfo")]
+        [HttpGet]
+        public async Task<LastArtist> GetArtistInfo(string artist)
+        {
+            return await LastFMService.GetArtistInfo(artist);
+        }
+
+        [Route("GetSimilarArtist")]
+        [HttpGet]
+        public async Task<IEnumerable<LastArtist>> GetSimilarArtist(string artist, int limit = 50)
+        {
+            return await LastFMService.GetSimilarArtist(artist, limit);
+        }
+    }
 }
