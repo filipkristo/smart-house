@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using Libmpc;
+using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
@@ -81,6 +82,58 @@ namespace SmartHouse.Lib
         public MpdFile GetCurrentSong()
         {
             return MpdClient.CurrentSong();
+        }
+
+        public async Task<SongResult> GetNowPlaying()
+        {
+            var song = GetCurrentSong();
+            var status = GetStatus();
+            var lastFMService = new LastFMService();
+
+            var result = new SongResult()
+            {
+                Album = song.Album,
+                AlbumUri = null,
+                Artist = song.Artist,
+                DurationSeconds = status.TimeTotal,
+                Loved = false,
+                PlayedSeconds = status.TimeElapsed,
+                Song = song.Title,
+                Genre = song.Genre
+            };
+
+            result.Loved = (await lastFMService.GetSongInfo(result.Artist, result.Song))?.IsLoved ?? false;
+            result.AlbumUri = (await lastFMService.GetAlbumInfo(result.Artist, result.Album))?.Images?.Large?.ToString();
+
+            return result;
+        }
+
+        public async Task<Result> LoveSong()
+        {
+            var lastFMService = new LastFMService();
+            var mpdInfo = await GetNowPlaying();
+            var mpdSong = GetCurrentSong();
+
+            if (mpdInfo.Loved)
+                return new Result()
+                {
+                    Ok = true,
+                    ErrorCode = 0,
+                    Message = "You already liked this song"
+                };
+
+            var status = await lastFMService.LoveSong(mpdInfo.Artist, mpdInfo.Song);            
+
+            // TODO: Add loved song to genre playlist
+            //MpdClient.ListPlaylist(mpdSong.Genre);
+            //MpdClient.PlaylistAdd(mpdInfo.Genre, mpdSong.File);
+
+            return new Result
+            {
+                Ok = true,
+                ErrorCode = 0,
+                Message = $"You liked {mpdInfo.Song} song. Status: {status}"
+            };
         }
 
         public void Dispose()

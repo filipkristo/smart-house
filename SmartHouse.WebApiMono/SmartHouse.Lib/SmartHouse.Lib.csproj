@@ -61,6 +61,7 @@
     <Compile Include="Interfaces\IOrvibioService.cs" />
     <Compile Include="Interfaces\ITVService.cs" />
     <Compile Include="Model\IRCommands.cs" />
+    <Compile Include="Model\Pandora\SongResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Result.cs" />
     <Compile Include="Service\LyricsService.cs" />

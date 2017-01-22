@@ -1,10 +1,11 @@
 ﻿using System;
 using Libmpc;
+using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
 	public interface IMPDService : IDisposable
-	{
+    {
 		Result Play();
 
 		Result Pause();
@@ -18,5 +19,9 @@ namespace SmartHouse.Lib
 		MpdStatus GetStatus();
 
 		MpdFile GetCurrentSong();
-	}
+
+        Task<SongResult> GetNowPlaying();
+
+        Task<Result> LoveSong();
+    }
 }

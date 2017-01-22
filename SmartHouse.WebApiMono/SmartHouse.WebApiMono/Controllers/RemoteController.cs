@@ -17,8 +17,9 @@ namespace SmartHouse.WebApiMono.Controllers
         private readonly ISmartHouseService SmartHouseService;
         private readonly IMPDService MpdService;
         private readonly ITVService TVService;
+        private readonly ILastFMService LastFMService;
 
-        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService) 
+        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService) 
 			: base(service)
 		{
             YamahaService = yamahaService;
@@ -26,6 +27,7 @@ namespace SmartHouse.WebApiMono.Controllers
             SmartHouseService = smartHouseService;
             MpdService = mpdService;
             TVService = tvService;
+            LastFMService = lastFMService;
         }
 
         [HttpGet]
@@ -246,38 +248,35 @@ namespace SmartHouse.WebApiMono.Controllers
         [Route("Love")]
         public async Task<Result> Love()
         {
-            var smartHouseState = await SmartHouseService.GetCurrentState();
-            var pandoraInfo = PandoraService.GetCurrentSongInfo();
-
-            if (pandoraInfo.Loved)
-                return new Result()
-                {
-                    Ok = true,
-                    ErrorCode = 0,
-                    Message = "You already liked this song"
-                };
+            var smartHouseState = await SmartHouseService.GetCurrentState();            
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                var result = PandoraService.ThumbUp();
+                var result = await PandoraService.LoveSong();
 
                 NotifyClients();
-                PushNotification("Thumb Up");
+                PushNotification(result.Message);
 
-                return new Result
-                {
-                    Ok = true,
-                    ErrorCode = 0,
-                    Message = $"You liked {pandoraInfo.Song} song"
-                };
+                return result;
             }
-
-            return new Result()
+            else if(smartHouseState == SmartHouseState.Music)
             {
-                ErrorCode = 0,
-                Message = "You can like only on Pandora input",
-                Ok = true
-            };
+                var result = await MpdService.LoveSong();
+
+                NotifyClients();
+                PushNotification(result.Message);
+
+                return result;
+            }
+            else
+            {
+                return new Result()
+                {
+                    ErrorCode = 0,
+                    Message = "You can like only on Pandora or Music input",
+                    Ok = true
+                };
+            }            
         }
 
         [HttpGet]

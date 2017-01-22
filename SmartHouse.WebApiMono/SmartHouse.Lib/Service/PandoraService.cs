@@ -186,7 +186,51 @@ namespace SmartHouse.Lib
 			};
 		}
 
-		public IEnumerable<KeyValue> GetStationList()
+        public async Task<SongResult> GetNowPlaying()
+        {
+            return await Task.Run(() =>
+            {
+                var result = GetCurrentSongInfo();
+
+                return new SongResult()
+                {
+                    Album = result.Album,
+                    AlbumUri = result.AlbumUri,
+                    Artist = result.Artist,
+                    DurationSeconds = result.DurationSeconds,
+                    Loved = result.Loved,
+                    PlayedSeconds = 0,
+                    Song = result.Song,
+                    Genre = result.Radio
+                };
+            });            
+        }
+
+        public async Task<Result> LoveSong()
+        {
+            var lastFMService = new LastFMService();
+            var songInfo = await GetNowPlaying();            
+
+            if (songInfo.Loved)
+                return new Result()
+                {
+                    Ok = true,
+                    ErrorCode = 0,
+                    Message = "You already liked this song"
+                };
+
+            var status = await lastFMService.LoveSong(songInfo.Artist, songInfo.Song);
+            ThumbUp();
+
+            return new Result
+            {
+                Ok = true,
+                ErrorCode = 0,
+                Message = $"You liked {songInfo.Song} song. Status: {status}"
+            };
+        }
+
+        public IEnumerable<KeyValue> GetStationList()
 		{
 			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
 			var path = Path.Combine(homeDir, @".config/pianobar/stationlist");

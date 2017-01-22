@@ -582,5 +582,19 @@ namespace SmartHouse.WebApiMono
             var result = await SmartHouseService.TimerTcp();
             return result;
         }
+
+        [HttpGet]
+        [Route("NowPlaying")]
+        public async Task<SongResult> NowPlaying()
+        {
+            var state = await SmartHouseService.GetCurrentState();
+
+            if (state == SmartHouseState.Pandora)
+                return await PandoraService.GetNowPlaying();
+            else if (state == SmartHouseState.Music)
+                return await MpdService.GetNowPlaying();
+            else
+                return null;
+        }
     }
 }
