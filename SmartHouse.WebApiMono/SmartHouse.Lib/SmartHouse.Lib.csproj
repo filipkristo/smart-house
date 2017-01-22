@@ -57,11 +57,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ILyricsService.cs" />
     <Compile Include="Interfaces\IOrvibioService.cs" />
     <Compile Include="Interfaces\ITVService.cs" />
     <Compile Include="Model\IRCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Result.cs" />
+    <Compile Include="Service\LyricsService.cs" />
     <Compile Include="Service\OrvibioService.cs" />
     <Compile Include="Service\TVService.cs" />
     <Compile Include="Util\BashHelper.cs" />

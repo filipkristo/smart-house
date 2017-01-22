@@ -128,6 +128,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\LyricsController.cs" />
     <Compile Include="Controllers\OrvibioController.cs" />
     <Compile Include="Controllers\RemoteController.cs" />
     <Compile Include="Program.cs" />

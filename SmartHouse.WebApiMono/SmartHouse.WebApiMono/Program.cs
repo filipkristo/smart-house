@@ -8,91 +8,91 @@ using System.Net.Http;
 
 namespace SmartHouse.WebApiMono
 {
-	public class MainClass
-	{
-		public static readonly ILog Log = LogManager.GetLogger(typeof(MainClass));
+    public class MainClass
+    {
+        public static readonly ILog Log = LogManager.GetLogger(typeof(MainClass));
 
-		public static String SslPort { get; private set; } = "5001";
-		public static String SslUrl => $"https://*:{SslPort}";
+        public static String SslPort { get; private set; } = "5001";
+        public static String SslUrl => $"https://*:{SslPort}";
 
-		public static String Port { get; private set; } = "8081";
-		public static String Url => $"http://*:{Port}";
+        public static String Port { get; private set; } = "8081";
+        public static String Url => $"http://*:{Port}";
 
-		public static void Main(string[] args)
-		{
-			try
-			{
-				if (args.Length > 0)
-					Port = args[0];
+        public static void Main(string[] args)
+        {
+            try
+            {
+                if (args.Length > 0)
+                    Port = args[0];
 
-				if (args.Length > 1)
-					SslPort = args[1];
+                if (args.Length > 1)
+                    SslPort = args[1];
 
-				log4net.Config.XmlConfigurator.Configure();
-				Log.Info("Application_Start");
+                log4net.Config.XmlConfigurator.Configure();
+                Log.Info("Application_Start");
 
-				StartTcpServer();
-				StartUdpTemperature();
+                StartTcpServer();
+                StartUdpTemperature();
                 StartAlarmClock();
 
-				StartSelfHosting();
+                StartSelfHosting();
 
-				Console.ReadLine();
-			}
-			catch (Exception ex)
-			{
-				Log.Error("Unhandled exception", ex);
-				throw;
-			}
-		}
+                Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Unhandled exception", ex);
+                throw;
+            }
+        }
 
-		private static void StartSelfHosting()
-		{
-			try
-			{
-				ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, error) =>
-				{					
-					return true;
-				};
+        private static void StartSelfHosting()
+        {
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, error) =>
+                {
+                    return true;
+                };
 
-				ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
-				var Server = WebApp.Start<WebApiConfig>(Url);
-				var message = $"Started self hosting at {Url}.";
-				Log.Info(message);
+                var Server = WebApp.Start<WebApiConfig>(Url);
+                var message = $"Started self hosting at {Url}.";
+                Log.Info(message);
 
-			}
-			catch (Exception ex)
-			{
-				Log.Error($"Exception StartSelfHosting", ex);
-			}
-		}
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Exception StartSelfHosting", ex);
+            }
+        }
 
-		private static async void StartTcpServer()
-		{
-			try
-			{
-				var tcp = new TcpServer();
-				await tcp.StartTcpServer();
-			}
-			catch (Exception ex)
-			{
-				Log.Error("TCP Server Error", ex);
-			}
-		}
+        private static async void StartTcpServer()
+        {
+            try
+            {
+                var tcp = new TcpServer();
+                await tcp.StartTcpServer();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("TCP Server Error", ex);
+            }
+        }
 
-		private static async void StartUdpTemperature()
-		{
-			try
-			{
-				var udp = new TemperatureUdp(SignalRTemperature);
-				await udp.StartListen();
-			}
-			catch (Exception ex)
-			{
-				Log.Error("UDP Server Error", ex);
-			}
-		}
+        private static async void StartUdpTemperature()
+        {
+            try
+            {
+                var udp = new TemperatureUdp(SignalRTemperature);
+                await udp.StartListen();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("UDP Server Error", ex);
+            }
+        }
 
         private static async void StartAlarmClock()
         {
@@ -102,7 +102,7 @@ namespace SmartHouse.WebApiMono
                 using (var client = new HttpClient())
                     client.GetAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff");
 
-                var smartHouse = new SmartHouseService();                
+                var smartHouse = new SmartHouseService();
 
                 using (var orvibioService = new OrvibioService())
                 {
@@ -119,20 +119,20 @@ namespace SmartHouse.WebApiMono
                     Logger.LogInfoMessage("Starting to restart VPN");
                     smartHouse.RestartOpenVPNService().Wait(TimeSpan.FromSeconds(15));
                     Logger.LogInfoMessage("VPN Restarted");
-                }                    
+                }
             };
             var alarmClock = new AlarmClock(DateTime.Today.AddDays(1).Date.AddTicks(timeSpan.Ticks), action);
-            await alarmClock.Start();         
+            await alarmClock.Start();
         }
 
-		private static void SignalRTemperature(TemperatureData temperature)
-		{
-			var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
-			if (context == null)
-				return;
-			
-			context.Clients.All.temperature(temperature);
-		}
+        private static void SignalRTemperature(TemperatureData temperature)
+        {
+            var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
+            if (context == null)
+                return;
 
-	}
+            context.Clients.All.temperature(temperature);
+        }
+
+    }
 }
