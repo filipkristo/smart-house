@@ -32,9 +32,6 @@ case "$1" in
   songfinish)
   if [[ $songPlayed -gt $minduration ]]; then
     curl "http://10.110.166.90:8081/api/Pandora/StartScrobble"
-    if [[ $rating -gt 0 ]]; then
-      curl -G "http://10.110.166.90:8081/api/LastFM/LoveSong?" --data-urlencode "artistName=${artist}&songName=${title}"
-    fi
   fi
 ;; 
     usergetstations)
