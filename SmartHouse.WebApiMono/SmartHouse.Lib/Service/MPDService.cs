@@ -2,6 +2,7 @@
 using System.Net;
 using Libmpc;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SmartHouse.Lib
 {
@@ -11,7 +12,15 @@ namespace SmartHouse.Lib
 
         public MPDService()
         {
-            MpdClient.Connection = new MpcConnection(new System.Net.IPEndPoint(IPAddress.Parse("10.110.166.90"), 6600));
+            try
+            {
+                MpdClient.Connection = new MpcConnection(new System.Net.IPEndPoint(IPAddress.Parse("10.110.166.90"), 6600));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogErrorMessage("Mpd Error", ex);
+                throw;
+            }
         }
 
         public Result Play()
@@ -122,11 +131,8 @@ namespace SmartHouse.Lib
                     Message = "You already liked this song"
                 };
 
-            var status = await lastFMService.LoveSong(mpdInfo.Artist, mpdInfo.Song);            
-
-            // TODO: Add loved song to genre playlist
-            //MpdClient.ListPlaylist(mpdSong.Genre);
-            //MpdClient.PlaylistAdd(mpdInfo.Genre, mpdSong.File);
+            var status = await lastFMService.LoveSong(mpdInfo.Artist, mpdInfo.Song);
+            SaveToFavoritesPlaylist(mpdSong);
 
             return new Result
             {
@@ -136,9 +142,30 @@ namespace SmartHouse.Lib
             };
         }
 
+        private void SaveToFavoritesPlaylist(MpdFile mpdSong)
+        {
+            var playlistName = mpdSong.HasGenre ? mpdSong.Genre : "Favorites";
+
+            if (!ExistsInPlaylist(playlistName, mpdSong.File))
+            {
+                MpdClient.PlaylistAdd(playlistName, mpdSong.File);
+            }
+        }
+
+        private bool ExistsInPlaylist(string playlistName, string fileName)
+        {
+            try
+            {
+                return MpdClient.ListPlaylist(playlistName).Any(x => x == fileName);
+            }
+            catch { }
+
+            return false;
+        }
+
         public void Dispose()
         {
-            MpdClient?.Connection.Disconnect();
+            MpdClient?.Connection?.Disconnect();            
         }
     }
 }

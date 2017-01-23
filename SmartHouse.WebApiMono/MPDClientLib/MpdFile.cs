@@ -207,14 +207,14 @@ namespace Libmpc
         /// <param name="disc">The number of the disc on a multidisc album.</param>
         /// <param name="pos">The index of the file in a playlist.</param>
         /// <param name="id">The id of the file in a playlist.</param>
-        public MpdFile(string file, 
-            int time, 
-            string album, 
-            string artist, 
-            string title, 
-            string track, 
-            string name, 
-            string genre, 
+        public MpdFile(string file,
+            int time,
+            string album,
+            string artist,
+            string title,
+            string track,
+            string name,
+            string genre,
             string date,
             string composer,
             string performer,
@@ -327,7 +327,7 @@ namespace Libmpc
 
             foreach (KeyValuePair<string, string> line in response)
             {
-                if( line.Key != null )
+                if (line.Key != null)
                     switch (line.Key)
                     {
                         case TAG_FILE:
@@ -335,7 +335,7 @@ namespace Libmpc
                             break;
                         case TAG_TIME:
                             int tryTime;
-                            if( int.TryParse( line.Value, out tryTime ) )
+                            if (int.TryParse(line.Value, out tryTime))
                                 time = tryTime;
                             break;
                         case TAG_ALBUM:
@@ -437,27 +437,27 @@ namespace Libmpc
 
             foreach (KeyValuePair<string, string> line in response)
             {
-                if( line.Key != null )
+                if (line.Key != null)
                     switch (line.Key)
                     {
                         case TAG_FILE:
-                            if( file != null )
-                                ret.Add( new MpdFile( 
-                                    file, 
-                                    time, 
-                                    album, 
-                                    artist, 
-                                    title, 
-                                    track, 
-                                    name, 
-                                    genre, 
-                                    date, 
-                                    composer, 
-                                    performer, 
+                            if (file != null)
+                                ret.Add(new MpdFile(
+                                    file,
+                                    time,
+                                    album,
+                                    artist,
+                                    title,
+                                    track,
+                                    name,
+                                    genre,
+                                    date,
+                                    composer,
+                                    performer,
                                     comment,
                                     disc,
                                     pos,
-                                    id ) );
+                                    id));
 
                             file = line.Value;
 
@@ -479,7 +479,7 @@ namespace Libmpc
                             break;
                         case TAG_TIME:
                             int tryTime;
-                            if( int.TryParse( line.Value, out tryTime ) )
+                            if (int.TryParse(line.Value, out tryTime))
                                 time = tryTime;
                             break;
                         case TAG_ALBUM:
@@ -551,7 +551,7 @@ namespace Libmpc
                     comment,
                     disc,
                     pos,
-                    id ));
+                    id));
 
             return ret;
         }

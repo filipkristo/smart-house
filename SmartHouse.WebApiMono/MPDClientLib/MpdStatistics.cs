@@ -107,7 +107,7 @@ namespace Libmpc
 
             return builder.ToString();
         }
-        
+
         private static void appendInt(StringBuilder builder, string name, int value)
         {
             if (value < 0)

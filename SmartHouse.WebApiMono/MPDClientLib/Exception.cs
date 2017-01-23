@@ -32,7 +32,7 @@ namespace Libmpc
         /// <summary>
         /// Creates a new NotConnectedException.
         /// </summary>
-        public NotConnectedException() : base("Not connected.") {}
+        public NotConnectedException() : base("Not connected.") { }
     }
     /// <summary>
     /// Is thrown when the connect method is invoked on an already connected <see cref="MpcConnection"/>.
@@ -53,7 +53,7 @@ namespace Libmpc
         /// <summary>
         /// Creates a new InvalidMpdResponseException.
         /// </summary>
-        public InvalidMpdResponseException() : base( "Invalid Mpd Response." ) {}
+        public InvalidMpdResponseException() : base("Invalid Mpd Response.") { }
         /// <summary>
         /// Creates a new InvalidMpdResponseException.
         /// </summary>
@@ -81,7 +81,7 @@ namespace Libmpc
         /// <param name="errorCode">The error code of the mpd server.</param>
         /// <param name="errorMessage">A message describing what went wrong.</param>
         public MpdResponseException(int errorCode, string errorMessage)
-            : base("MPD" + errorCode + " " + errorMessage)
+          : base("MPD" + errorCode + " " + errorMessage)
         {
             this.errorCode = errorCode;
             this.errorMessage = errorMessage;

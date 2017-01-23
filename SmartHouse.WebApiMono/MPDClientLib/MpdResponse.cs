@@ -33,7 +33,7 @@ namespace Libmpc
         private const string OK = "OK";
         private const string ACK = "ACK";
 
-        private static readonly Regex LINE_REGEX = new Regex("^(?<key>[A-Za-z]*):[ ]{0,1}(?<value>.*)$");
+        private static readonly Regex LINE_REGEX = new Regex("^(?<key>[A-Z_a-z]*):[ ]{0,1}(?<value>.*)$");
 
         private readonly bool isError;
         private readonly int errorCode;
@@ -78,7 +78,7 @@ namespace Libmpc
             {
                 if (this.dictionary == null)
                 {
-                    this.dictionary = new Dictionary<string,string>();
+                    this.dictionary = new Dictionary<string, string>();
 
                     foreach (string line in this.message)
                     {
@@ -110,14 +110,14 @@ namespace Libmpc
                 if (match.Success)
                     return new KeyValuePair<string, string>(match.Result("${key}"), match.Result("${value}"));
                 else
-                    return new KeyValuePair<string,string>(null, this.message[line]);
+                    return new KeyValuePair<string, string>(null, this.message[line]);
             }
         }
         /// <summary>
         /// Creates a new MpdResponse from a list of lines in case no error occured.
         /// </summary>
         /// <param name="message">The response to an MPD command.</param>
-        public MpdResponse( ReadOnlyCollection<string> message )
+        public MpdResponse(ReadOnlyCollection<string> message)
         {
             if (message == null)
                 throw new ArgumentNullException("message");
@@ -137,7 +137,7 @@ namespace Libmpc
         /// <param name="currentCommand">The command that raised the error.</param>
         /// <param name="errorMessage">The message describing the error.</param>
         /// <param name="message">The text of the standard MPD response.</param>
-        public MpdResponse( int errorCode, int commandListNum, string currentCommand, string errorMessage, ReadOnlyCollection<string> message)
+        public MpdResponse(int errorCode, int commandListNum, string currentCommand, string errorMessage, ReadOnlyCollection<string> message)
         {
             if (currentCommand == null)
                 throw new ArgumentNullException("currentCommand");
@@ -168,11 +168,11 @@ namespace Libmpc
                 if (match.Success)
                 {
                     string key = match.Result("${key}");
-                    if( ( key != null ) && key.Equals( attribute ) )
+                    if ((key != null) && key.Equals(attribute))
                     {
                         string value = match.Result("${value}");
-                        if( value != null )
-                            ret.Add( value );
+                        if (value != null)
+                            ret.Add(value);
                     }
                 }
             }
@@ -256,7 +256,7 @@ namespace Libmpc
     /// <summary>
     /// A class for enumerating over the KeyValuePairs in the response.
     /// </summary>
-    public class MpdResponseEnumerator :IEnumerator<KeyValuePair<string, string>>
+    public class MpdResponseEnumerator : IEnumerator<KeyValuePair<string, string>>
     {
         private readonly MpdResponse response;
         private int position = -1;
@@ -322,5 +322,52 @@ namespace Libmpc
         }
 
         #endregion
+    }
+
+    public class MpdMessage : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string m_Channel = string.Empty;
+        private DateTime m_DateTime = DateTime.MinValue;
+        private string m_Message = string.Empty;
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        public string Channel
+        {
+            get { return m_Channel; }
+            set
+            {
+                m_Channel = value;
+                OnPropertyChanged("Channel");
+            }
+        }
+
+        public DateTime DateTime
+        {
+            get { return m_DateTime; }
+            set
+            {
+                m_DateTime = value;
+                OnPropertyChanged("DateTime");
+            }
+        }
+
+        public string Message
+        {
+            get { return m_Message; }
+            set
+            {
+                m_Message = value;
+                OnPropertyChanged("Message");
+            }
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(name));
+            }
+        }
     }
 }

@@ -24,6 +24,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Libmpc
 {
@@ -31,7 +32,9 @@ namespace Libmpc
     /// The delegate for the <see cref="MpcConnection.OnConnected"/> and <see cref="MpcConnection.OnDisconnected"/> events.
     /// </summary>
     /// <param name="connection">The connection firing the event.</param>
-    public delegate void MpcConnectionEventDelegate( MpcConnection connection );
+    public delegate void MpcConnectionEventDelegate(MpcConnection connection);
+    public delegate void MpcConnectionIdleEventDelegate(MpcConnection connection, Mpc.Subsystems subsystems);
+
     /// <summary>
     /// Keeps the connection to the MPD server and handels the most basic structure of the
     /// MPD protocol. The high level commands are handeled in the <see cref="Libmpc.Mpc"/>
@@ -47,6 +50,7 @@ namespace Libmpc
         /// Is fired when the connection to the MPD server is closed.
         /// </summary>
         public event MpcConnectionEventDelegate OnDisconnected;
+        public event MpcConnectionIdleEventDelegate OnSubsystemsChanged;
 
         private static readonly string FIRST_LINE_PREFIX = "OK MPD ";
 
@@ -55,19 +59,17 @@ namespace Libmpc
 
         private static readonly Regex ACK_REGEX = new Regex("^ACK \\[(?<code>[0-9]*)@(?<nr>[0-9]*)] \\{(?<command>[a-z]*)} (?<message>.*)$");
 
+        private List<string> m_Commands = null;
+        private Mutex m_Mutex = new Mutex();
         private IPEndPoint ipEndPoint = null;
 
-        private TcpClient tcpClient = null;
-        private NetworkStream networkStream = null;
-
-        private StreamReader reader;
-        private StreamWriter writer;
+        private SocketManager m_SocketManager = null;
 
         private string version;
         /// <summary>
         /// If the connection to the MPD is connected.
         /// </summary>
-        public bool Connected { get { return (this.tcpClient != null) && this.tcpClient.Connected; } }
+        public bool Connected { get { return (m_SocketManager != null) && m_SocketManager.Connected; } }
         /// <summary>
         /// The version of the MPD.
         /// </summary>
@@ -80,18 +82,25 @@ namespace Libmpc
         /// </summary>
         public bool AutoConnect
         {
-            get{ return this.autoConnect; }
+            get { return this.autoConnect; }
             set { this.autoConnect = value; }
         }
+
+        public List<string> Commands
+        {
+            get { return m_Commands; }
+        }
+
         /// <summary>
         /// Creates a new MpdConnection.
         /// </summary>
-        public MpcConnection() {}
+        public MpcConnection() { }
         /// <summary>
         /// Creates a new MpdConnection.
         /// </summary>
         /// <param name="server">The IPEndPoint of the MPD server.</param>
         public MpcConnection(IPEndPoint server) { this.Connect(server); }
+
         /// <summary>
         /// The IPEndPoint of the MPD server.
         /// </summary>
@@ -130,46 +139,97 @@ namespace Libmpc
             if (this.Connected)
                 throw new AlreadyConnectedException();
 
-            this.tcpClient = new TcpClient(
-                this.ipEndPoint.Address.ToString(), 
-                this.ipEndPoint.Port);
-            this.networkStream = this.tcpClient.GetStream();
+            if (m_SocketManager != null)
+            {
+                m_SocketManager.Dispose();
+            }
 
-            this.reader = new StreamReader(this.networkStream, Encoding.UTF8);
-            this.writer = new StreamWriter(this.networkStream, Encoding.UTF8);
-            this.writer.NewLine = "\n";
+            m_SocketManager = new SocketManager();
+            m_SocketManager.Connect(ipEndPoint);
 
-            string firstLine = this.reader.ReadLine();
-            if( !firstLine.StartsWith( FIRST_LINE_PREFIX ) )
+            string firstLine = m_SocketManager.ReadLine();
+            if (!firstLine.StartsWith(FIRST_LINE_PREFIX))
             {
                 this.Disconnect();
-                throw new InvalidDataException("Response of mpd does not start with \"" + FIRST_LINE_PREFIX + "\"." );
+                throw new InvalidDataException("Response of mpd does not start with \"" + FIRST_LINE_PREFIX + "\".");
             }
             this.version = firstLine.Substring(FIRST_LINE_PREFIX.Length);
 
-            this.writer.WriteLine();
-            this.writer.Flush();
+            //m_SocketManager.WriteLine(string.Empty);
+            //this.readResponse();
 
-            this.readResponse();
+            MpdResponse response = Exec("commands");
+            m_Commands = response.getValueList();
 
-            if( this.OnConnected != null )
-                this.OnConnected.Invoke( this );
+            if (this.OnConnected != null)
+                this.OnConnected.Invoke(this);
         }
         /// <summary>
         /// Disconnects from the current MPD server.
         /// </summary>
         public void Disconnect()
         {
-            if (this.tcpClient == null)
+            if (m_SocketManager == null)
                 return;
 
-            this.networkStream.Close();
-
+            m_SocketManager.Socket.Close();
+            m_SocketManager.Socket.Dispose();
             this.ClearConnectionFields();
 
-            if( this.OnDisconnected != null )
-                this.OnDisconnected.Invoke( this );
+            if (this.OnDisconnected != null)
+                this.OnDisconnected.Invoke(this);
         }
+
+        /// <summary>
+        /// Puts the client in idle mode for the given subsystems
+        /// </summary>
+        /// <param name="subsystems">The subsystems to listen to.</param>
+        public void Idle(Mpc.Subsystems subsystems)
+        {
+            StringBuilder subs = new StringBuilder();
+            foreach (Mpc.Subsystems s in Enum.GetValues(typeof(Mpc.Subsystems)))
+            {
+                if (s != Mpc.Subsystems.All && (subsystems & s) != 0)
+                    subs.AppendFormat(" {0}", s.ToString());
+            }
+            string command = string.Format("idle {0}", subs.ToString());
+
+            try
+            {
+                while (true)
+                {
+                    this.CheckConnected();
+                    m_SocketManager.WriteLine(command);
+                    MpdResponse res = this.readResponse();
+
+                    Mpc.Subsystems eventSubsystems = Mpc.Subsystems.None;
+                    foreach (string m in res.Message)
+                    {
+                        List<string> values = res.getValueList();
+                        foreach (string sub in values)
+                        {
+                            Mpc.Subsystems s = Mpc.Subsystems.None;
+                            if (Enum.TryParse<Mpc.Subsystems>(sub, out s))
+                            {
+                                eventSubsystems |= s;
+                            }
+                        }
+                    }
+
+                    if (eventSubsystems != Mpc.Subsystems.None && this.OnSubsystemsChanged != null)
+                        this.OnSubsystemsChanged(this, eventSubsystems);
+                }
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    this.Disconnect();
+                }
+                catch (Exception) { }
+            }
+        }
+
         /// <summary>
         /// Executes a simple command without arguments on the MPD server and returns the response.
         /// </summary>
@@ -185,20 +245,29 @@ namespace Libmpc
             if (command.Contains("\n"))
                 throw new ArgumentException("command contains newline");
 
-            this.CheckConnected();
+            //if (m_Commands != null && !m_Commands.Contains(command))
+            //  return new MpdResponse(new ReadOnlyCollection<string>(new List<string>()));
 
             try
             {
-                this.writer.WriteLine(command);
-                this.writer.Flush();
+                this.CheckConnected();
+                m_Mutex.WaitOne();
+                m_SocketManager.WriteLine(command);
 
-                return this.readResponse();
+                MpdResponse res = this.readResponse();
+                m_Mutex.ReleaseMutex();
+                return res;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                try { this.Disconnect(); }
+                System.Diagnostics.Debug.WriteLine(string.Format("Exec: {0}", ex.Message));
+                try
+                {
+                    this.Disconnect();
+                }
                 catch (Exception) { }
-                throw;
+                return new MpdResponse(new ReadOnlyCollection<string>(new List<string>()));
+                //throw;
             }
         }
         /// <summary>
@@ -211,14 +280,14 @@ namespace Libmpc
         public MpdResponse Exec(string command, string[] argument)
         {
             if (command == null)
-                throw new ArgumentNullException(nameof(command));
+                throw new ArgumentNullException("command");
             if (command.Contains(" "))
                 throw new ArgumentException("command contains space");
             if (command.Contains("\n"))
                 throw new ArgumentException("command contains newline");
 
             if (argument == null)
-                throw new ArgumentNullException(nameof(argument));
+                throw new ArgumentNullException("argument");
             for (int i = 0; i < argument.Length; i++)
             {
                 if (argument[i] == null)
@@ -227,25 +296,25 @@ namespace Libmpc
                     throw new ArgumentException("argument[" + i + "] contains newline");
             }
 
-            this.CheckConnected();
+            //if (m_Commands != null && !m_Commands.Contains(command))
+            //  return new MpdResponse(new ReadOnlyCollection<string>(new List<string>()));
 
             try
             {
-                this.writer.Write(command);
-                foreach (string arg in argument)
-                {
-                    this.writer.Write(' ');
-                    this.WriteToken(arg);
-                }
-                this.writer.WriteLine();
-                this.writer.Flush();
+                this.CheckConnected();
+                m_Mutex.WaitOne();
+                m_SocketManager.WriteLine(string.Format("{0} {1}", command, string.Join(" ", argument)));
 
-                return this.readResponse();
+                MpdResponse res = this.readResponse();
+                m_Mutex.ReleaseMutex();
+                return res;
             }
             catch (Exception)
             {
-                try { this.Disconnect(); } catch (Exception) { }
-                throw;
+                try { this.Disconnect(); }
+                catch (Exception) { }
+                return new MpdResponse(new ReadOnlyCollection<string>(new List<string>()));
+                //throw;
             }
         }
 
@@ -256,7 +325,9 @@ namespace Libmpc
                 if (this.autoConnect)
                     this.Connect();
                 else
-                    throw new NotConnectedException();
+                  if (this.OnDisconnected != null)
+                    this.OnDisconnected.Invoke(this);
+                throw new NotConnectedException();
             }
 
         }
@@ -265,26 +336,29 @@ namespace Libmpc
         {
             if (token.Contains(" "))
             {
-                this.writer.Write("\"");
+                m_SocketManager.Write("\"");
                 foreach (char chr in token)
                     if (chr == '"')
-                        this.writer.Write("\\\"");
+                        m_SocketManager.Write("\\\"");
                     else
-                        this.writer.Write(chr);
+                        m_SocketManager.Write(chr);
             }
             else
-                this.writer.Write(token);
+                m_SocketManager.Write(token);
         }
 
         private MpdResponse readResponse()
         {
             List<string> ret = new List<string>();
-            string line = this.reader.ReadLine();
-            while (!(line.Equals(OK) || line.StartsWith(ACK)))
+            string line = m_SocketManager.ReadLine();
+            while (line != null && !(line.Equals(OK) || line.StartsWith(ACK)))
             {
                 ret.Add(line);
-                line = this.reader.ReadLine();
+                line = m_SocketManager.ReadLine();
             }
+            if (line == null)
+                line = string.Empty;
+
             if (line.Equals(OK))
                 return new MpdResponse(new ReadOnlyCollection<string>(ret));
             else
@@ -292,11 +366,11 @@ namespace Libmpc
                 Match match = ACK_REGEX.Match(line);
 
                 if (match.Groups.Count != 5)
-                    throw new InvalidDataException( "Error response not as expected" );
+                    throw new InvalidDataException("Error response not as expected");
 
                 return new MpdResponse(
-                    int.Parse( match.Result("${code}") ),
-                    int.Parse( match.Result("${nr}") ),
+                    int.Parse(match.Result("${code}")),
+                    int.Parse(match.Result("${nr}")),
                     match.Result("${command}"),
                     match.Result("${message}"),
                     new ReadOnlyCollection<string>(ret)
@@ -304,12 +378,9 @@ namespace Libmpc
             }
         }
 
-        private void ClearConnectionFields() 
+        private void ClearConnectionFields()
         {
-            this.tcpClient = null;
-            this.networkStream = null;
-            this.reader = null;
-            this.writer = null;
+            m_SocketManager = null;
             this.version = null;
         }
     }

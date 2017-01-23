@@ -25,17 +25,17 @@ namespace SmartHouse.Lib
 
         public Result TurnOn()
         {
-            var Ok = _autoResetEvent.WaitOne(5000);
+            var Ok = _autoResetEvent.WaitOne(10000);
 
             if(Ok)
             {
-                DoSet(_device.MacAddr, _device.IpAddr, true);
+                var result = DoSet(_device.MacAddr, _device.IpAddr, true);
 
                 return new Result()
                 {
                     ErrorCode = 0,
                     Ok = true,
-                    Message = $"Turning on socket. IP:{_device.IpAddr}, Mac: {_device.MacAddr}"
+                    Message = $"Turning on socket. IP:{_device.IpAddr}, Mac: {_device.MacAddr}, Success: {result}"
                 };
             }
             else
@@ -51,17 +51,17 @@ namespace SmartHouse.Lib
 
         public Result TurnOff()
         {
-            var Ok = _autoResetEvent.WaitOne(5000);
+            var Ok = _autoResetEvent.WaitOne(10000);
 
             if (Ok)
             {
-                DoSet(_device.MacAddr, _device.IpAddr, false);
+                var result = DoSet(_device.MacAddr, _device.IpAddr, false);
 
                 return new Result()
                 {
                     ErrorCode = 0,
                     Ok = true,
-                    Message = $"Turning off socket. IP:{_device.IpAddr}, Mac: {_device.MacAddr}"
+                    Message = $"Turning on socket. IP:{_device.IpAddr}, Mac: {_device.MacAddr}, Success: {result}"
                 };
             }                
             else
