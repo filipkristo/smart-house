@@ -75,14 +75,14 @@ namespace SmartHouse.WebApiMono
 
             if (state == SmartHouseState.Music && MpdService.GetStatus().State != Libmpc.MpdState.Play)
             {
-                PandoraService.StopTcp().Wait(1000);
+                await PandoraService.StopTcp();
                 MpdService.Play();
                 sb.AppendLine("Playing MPD");
             }
 
             else if (state == SmartHouseState.Pandora && !PandoraService.IsPlaying())
             {
-                PandoraService.StartTcp().Wait(5000);
+                await PandoraService.StartTcp();
                 PandoraService.Play();
                 sb.AppendLine("Playing pandora radio");
             }

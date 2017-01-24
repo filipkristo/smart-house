@@ -8,12 +8,12 @@ using SmartHouse.Lib;
 
 namespace SmartHouse.WebApiMono.Controllers
 {
-    [RoutePrefix("api/Orvibio")]
-    public class OrvibioController : BaseController
+    [RoutePrefix("api/Orvibo")]
+    public class OrviboController : BaseController
     {
-        private readonly IOrvibioService OrvibioService;
+        private readonly IOrviboService OrvibioService;
 
-        public OrvibioController(ISettingsService settingsService, IOrvibioService orvibioService) : base(settingsService)
+        public OrviboController(ISettingsService settingsService, IOrviboService orvibioService) : base(settingsService)
         {
             OrvibioService = orvibioService;
         }

@@ -75,7 +75,7 @@ namespace SmartHouse.Lib
             return new Result()
             {
                 ErrorCode = 0,
-                Message = "OK",
+                Message = "OpenVPN service has been restarted",
                 Ok = true
             };
         }
@@ -123,10 +123,10 @@ namespace SmartHouse.Lib
             {
                 using (var client = new HttpClient())
                 {
-                    client.Timeout = TimeSpan.FromSeconds(2);
+                    client.Timeout = TimeSpan.FromSeconds(3);
                     client.DefaultRequestHeaders.Host = "google.com";
 
-                    var response = await client.GetAsync("http://wwww.google.com");
+                    var response = await client.GetAsync("http://www.google.com");
 
                     if (!response.IsSuccessStatusCode)
                         await RestartOpenVPNServiceTcp();
@@ -134,7 +134,7 @@ namespace SmartHouse.Lib
             }
             catch (Exception ex)
             {
-                Logger.LogErrorMessage("", ex);
+                Logger.LogErrorMessage("Get result code from google", ex);
                 RestartOpenVPNServiceTcp().Wait(TimeSpan.FromSeconds(4));
             }
 

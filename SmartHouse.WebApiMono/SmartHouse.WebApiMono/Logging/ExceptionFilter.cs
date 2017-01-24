@@ -8,7 +8,10 @@ namespace SmartHouse.WebApiMono
 	{
 		public override void OnException(HttpActionExecutedContext actionExecutedContext)
 		{
-			MainClass.Log.Error("HttpException", actionExecutedContext?.Exception);
+            if(actionExecutedContext?.Exception != null)
+            {
+                MainClass.Log.Error("HttpException", actionExecutedContext.Exception);                
+            }			
 		}
 	}
 }

@@ -5,6 +5,7 @@ using Microsoft.Owin.Hosting;
 using SmartHouse.Lib;
 using System.Threading;
 using System.Net.Http;
+using System.Web.Routing;
 
 namespace SmartHouse.WebApiMono
 {
@@ -49,7 +50,7 @@ namespace SmartHouse.WebApiMono
         private static void StartSelfHosting()
         {
             try
-            {
+            {                
                 ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, error) =>
                 {
                     return true;
@@ -104,17 +105,17 @@ namespace SmartHouse.WebApiMono
 
                 var smartHouse = new SmartHouseService();
 
-                using (var orvibioService = new OrvibioService())
+                using (var orvibioService = new OrviboService())
                 {
                     var turnOffResult = orvibioService.TurnOff();
-                    Logger.LogInfoMessage($"TurnOff result: {turnOffResult.Message}");
-
-                    Thread.Sleep(TimeSpan.FromSeconds(10));
-
-                    var turnOnResult = orvibioService.TurnOn();
-                    Logger.LogInfoMessage($"TurnOn result: {turnOnResult.Message}");
+                    Logger.LogInfoMessage(turnOffResult.Message);
 
                     Thread.Sleep(TimeSpan.FromMinutes(5));
+
+                    var turnOnResult = orvibioService.TurnOn();
+                    Logger.LogInfoMessage(turnOnResult.Message);
+
+                    Thread.Sleep(TimeSpan.FromMinutes(15));
 
                     Logger.LogInfoMessage("Starting to restart VPN");
                     smartHouse.RestartOpenVPNService().Wait(TimeSpan.FromSeconds(15));

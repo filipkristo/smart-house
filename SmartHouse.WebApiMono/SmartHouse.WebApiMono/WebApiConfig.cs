@@ -9,6 +9,7 @@ using Newtonsoft.Json.Serialization;
 using Owin;
 using SmartHouse.Lib;
 using Swashbuckle.Application;
+using System.Web.Http.Routing;
 
 namespace SmartHouse.WebApiMono
 {
@@ -20,14 +21,15 @@ namespace SmartHouse.WebApiMono
         {
             var config = new HttpConfiguration();
 
-            EnableCors(appBuilder);
+            EnableCors(appBuilder);            
 
             config.MapHttpAttributeRoutes();
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+            );            
 
             SetupDI(config);
 
@@ -60,7 +62,7 @@ namespace SmartHouse.WebApiMono
             unity.RegisterType<IMPDService, MPDService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ILastFMService, LastFMService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ITVService, TVService>(new HierarchicalLifetimeManager());
-            unity.RegisterType<IOrvibioService, OrvibioService>(new HierarchicalLifetimeManager());
+            unity.RegisterType<IOrviboService, OrviboService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ILyricsService, LyricsService>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(unity);

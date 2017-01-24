@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace OrviboController.Common
@@ -32,6 +34,8 @@ namespace OrviboController.Common
             
             _ep = new IPEndPoint(IPAddress.Any, _port);
             _client = new UdpClient(_ep);
+            _client.EnableBroadcast = true;
+            _client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             _client.BeginReceive(ReceiveDataCB, null);
 
             _isListening = true;
@@ -54,9 +58,41 @@ namespace OrviboController.Common
             _client.Send(data, data.Length, ep);
         }
 
+        /// <summary>
+        /// Check function DisplayDirectedBroadcastAddresses for IP address
+        /// </summary>
+        /// <param name="data"></param>
         public void SendBroadcast(byte[] data)
         {
-            _client.Send(data, data.Length, new IPEndPoint(IPAddress.Broadcast, _port));
+            _client.Send(data, data.Length, new IPEndPoint(IPAddress.Parse("10.110.167.255"), _port));
+        }
+
+        public void DisplayDirectedBroadcastAddresses()
+        {
+
+            foreach (var iface in NetworkInterface.GetAllNetworkInterfaces()
+                     .Where(c => c.NetworkInterfaceType != NetworkInterfaceType.Loopback))
+            {
+                Console.WriteLine(iface.Description);
+                foreach (var ucastInfo in iface.GetIPProperties().UnicastAddresses
+                         .Where(c => !c.Address.IsIPv6LinkLocal))
+                {
+                    Console.WriteLine("\tIP       : {0}", ucastInfo.Address);
+                    Console.WriteLine("\tSubnet   : {0}", ucastInfo.IPv4Mask);
+                    byte[] ipAdressBytes = ucastInfo.Address.GetAddressBytes();
+                    byte[] subnetMaskBytes = ucastInfo.IPv4Mask.GetAddressBytes();
+
+                    if (ipAdressBytes.Length != subnetMaskBytes.Length) continue;
+
+                    var broadcast = new byte[ipAdressBytes.Length];
+                    for (int i = 0; i < broadcast.Length; i++)
+                    {
+                        broadcast[i] = (byte)(ipAdressBytes[i] | ~(subnetMaskBytes[i]));
+                    }
+                    Console.WriteLine("\tBroadcast: {0}", new IPAddress(broadcast).ToString());
+                }
+            }
+
         }
 
         private void ReceiveDataCB(IAsyncResult ar)

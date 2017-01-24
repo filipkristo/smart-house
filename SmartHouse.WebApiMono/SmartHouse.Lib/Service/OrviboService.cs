@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
-    public class OrvibioService : IOrvibioService, IDisposable
+    public class OrviboService : IOrviboService, IDisposable
     {
         private Controller _controller;
         private Device _device;
 
         private AutoResetEvent _autoResetEvent = new AutoResetEvent(false);
 
-        public OrvibioService()
+        public OrviboService()
         {
             SetupController();
             DoDiscovery();   
@@ -61,7 +61,7 @@ namespace SmartHouse.Lib
                 {
                     ErrorCode = 0,
                     Ok = true,
-                    Message = $"Turning on socket. IP:{_device.IpAddr}, Mac: {_device.MacAddr}, Success: {result}"
+                    Message = $"Turning off socket. IP:{_device.IpAddr}, Mac: {_device.MacAddr}, Success: {result}"
                 };
             }                
             else

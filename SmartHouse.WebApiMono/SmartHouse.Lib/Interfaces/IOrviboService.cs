@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
-    public interface IOrvibioService
+    public interface IOrviboService
     {
         Result TurnOn();
         Result TurnOff();     
