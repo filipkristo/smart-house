@@ -24,6 +24,13 @@ namespace SmartHouse.UWPClient
         {
             Microsoft.HockeyApp.HockeyClient.Current.Configure("c7217e3f12be43108f4de5b1c9fdd02a");
             InitializeComponent();
+
+            ShowShellBackButton = SettingsService.Instance.UseShellBackButton;
+            CacheMaxDuration = SettingsService.Instance.CacheMaxDuration;
+            ShowShellBackButton = SettingsService.Instance.UseShellBackButton;
+            AutoSuspendAllFrames = true;
+            AutoRestoreAfterTerminated = true;
+            AutoExtendExecutionSession = true;
         }
 
         public override async Task OnInitializeAsync(IActivatedEventArgs args)
@@ -36,7 +43,7 @@ namespace SmartHouse.UWPClient
                 Window.Current.Content = new ModalDialog{DisableBackButtonWhenModal = true, Content = new Views.Shell(nav), ModalContent = new Views.Busy()};
             }
 
-            (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();
+            (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();            
             Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);
         }
 

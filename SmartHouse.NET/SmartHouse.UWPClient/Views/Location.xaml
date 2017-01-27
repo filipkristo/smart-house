@@ -18,6 +18,7 @@
 
         <controls:PageHeader x:Name="pageHeader" Content="Location"
                              RelativePanel.AlignLeftWithPanel="True"
+                             Frame="{x:Bind Frame}"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True">
             <controls:PageHeader.SecondaryCommands>

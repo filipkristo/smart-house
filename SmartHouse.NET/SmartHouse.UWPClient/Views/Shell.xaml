@@ -16,7 +16,7 @@
 
         <controls:HamburgerMenu.PrimaryButtons>
             <!--  mainpage button  -->
-            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:MainPage" 
+            <controls:HamburgerButtonInfo PageType="views:MainPage" 
                                           AutomationProperties.Name="Home">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"
@@ -25,7 +25,7 @@
                                Text="Main page" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
-            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:PandoraRemote" 
+            <controls:HamburgerButtonInfo PageType="views:PandoraRemote" 
                                           AutomationProperties.Name="Player">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"
@@ -34,7 +34,7 @@
                                Text="Pandora" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
-            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:SwaggerWebView" 
+            <controls:HamburgerButtonInfo PageType="views:SwaggerWebView" 
                                           AutomationProperties.Name="Blue">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"
@@ -43,7 +43,7 @@
                                Text="Swagger" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
-            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:Location" 
+            <controls:HamburgerButtonInfo PageType="views:Location" 
                                           AutomationProperties.Name="Blue">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"
@@ -52,7 +52,7 @@
                                Text="IP Location" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
-            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:MPDClient" 
+            <controls:HamburgerButtonInfo PageType="views:MPDClient" 
                                           AutomationProperties.Name="Blue">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"
@@ -61,7 +61,7 @@
                                Text="MPD Remote" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
-            <controls:HamburgerButtonInfo ClearHistory="True" PageType="views:RemoteController" 
+            <controls:HamburgerButtonInfo PageType="views:RemoteController" 
                                           AutomationProperties.Name="Blue">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48" Height="48"

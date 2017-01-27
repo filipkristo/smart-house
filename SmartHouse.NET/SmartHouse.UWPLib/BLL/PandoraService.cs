@@ -25,16 +25,16 @@ namespace SmartHouse.UWPLib.BLL
             }
         }
 
-        public async Task<PandoraResult> ShowInfo()
+        public async Task<SongResult> ShowInfo()
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/Pandora/CurrentSongInfo";
+                var uri = $"http://10.110.166.90:8081/api/SmartHouse/NowPlaying";
                 var json = await client.GetStringAsync(uri);
 
-                return JsonConvert.DeserializeObject<PandoraResult>(json);
+                return JsonConvert.DeserializeObject<SongResult>(json);
             }
         }
 

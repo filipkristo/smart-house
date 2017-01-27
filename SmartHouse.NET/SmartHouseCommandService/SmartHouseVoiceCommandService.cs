@@ -223,7 +223,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     await CompleteMessage("");
                     break;                
                 case "Love":
-                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbUp);
+                    await smartHouse.LoveSong();
                     await CompleteMessage("");
                     break;
                 case "Hate":
@@ -285,7 +285,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
             await voiceServiceConnection.RequestAppLaunchAsync(response);
         }
 
-        private async Task CortanaResponseLoveSong(PandoraResult info)
+        private async Task CortanaResponseLoveSong(SongResult info)
         {
             var message = $"Playing Song: {info.Song}, from artist {info.Artist}, on album {info.Album}. {(info.Loved ? "You like this song." : "")}";            
 
@@ -312,10 +312,10 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 }
                 else if(voiceCommandConfirmation.Confirmed)
                 {
-                    var pandora = new PandoraService();
-                    await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.ThumbUp);
+                    var service = new SmartHouseService();
+                    var result = await service.LoveSong();
 
-                    await CompleteMessage("You liked this song");
+                    await CompleteMessage(result?.Message);
                 }
                 else
                 {

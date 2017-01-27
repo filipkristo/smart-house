@@ -76,5 +76,18 @@ namespace SmartHouse.UWPLib.BLL
                 return JsonConvert.DeserializeObject<string>(json);
             }
         }
+
+        public async Task<Result> LoveSong()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = "http://10.110.166.90:8081/api/Remote/Love";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
     }
 }

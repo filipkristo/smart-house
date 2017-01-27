@@ -26,11 +26,14 @@ namespace SmartHouse.UWPClient.Views
     {
         public static Shell Instance { get; set; }
         public static HamburgerMenu HamburgerMenu => Instance.Menu;
+        Services.SettingsServices.SettingsService _settings;
 
         public Shell()
         {
             Instance = this;
             this.InitializeComponent();
+
+            _settings = Services.SettingsServices.SettingsService.Instance;
         }        
 
         public Shell(INavigationService navigationService) : this()

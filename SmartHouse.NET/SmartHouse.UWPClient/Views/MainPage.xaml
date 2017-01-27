@@ -17,6 +17,7 @@
 
         <controls:PageHeader x:Name="pageHeader" Content="Smart House - Main page"
                              RelativePanel.AlignLeftWithPanel="True"
+                             Frame="{x:Bind Frame}"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" />
 

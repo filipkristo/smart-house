@@ -128,6 +128,8 @@ namespace SmartHouse.Lib
 
                     var response = await client.GetAsync("http://www.google.com");
 
+                    Logger.LogInfoMessage($"Get result code from google: {response.StatusCode}");
+
                     if (!response.IsSuccessStatusCode)
                         await RestartOpenVPNServiceTcp();
                 }
