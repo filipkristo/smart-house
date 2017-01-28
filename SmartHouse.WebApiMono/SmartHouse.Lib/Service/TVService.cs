@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -347,6 +348,34 @@ namespace SmartHouse.Lib
         }
 
         public async Task<string> SendCommand(IRCommands irCommand)
+        {
+            return await SendCommandUdp(irCommand);
+        }
+
+        private async Task<string> SendCommandUdp(IRCommands irCommand)
+        {
+            try
+            {
+                var command = $"irsend SEND_ONCE philips {irCommand}";
+                var address = IPAddress.Parse("10.110.166.91");
+
+                var udpClient = new UdpClient();
+                udpClient.Connect(address, 5740);
+
+                var bytes = Encoding.ASCII.GetBytes(command);
+                await udpClient.SendAsync(bytes, bytes.Length);
+
+                udpClient.Close();
+
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        private async Task<string> SendCommandTcp(IRCommands irCommand)
         {
             try
             {
