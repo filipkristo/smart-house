@@ -9,6 +9,7 @@ using Template10.Common;
 using Template10.Services.KeyboardService;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -34,6 +35,23 @@ namespace SmartHouse.UWPClient.Views
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
 
             BootStrapper.BackRequested += BootStrapper_BackRequested;
+            webView.ScriptNotify += WebView_ScriptNotify;
+        }
+
+        async private void WebView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            try
+            {
+                string data = e.Value;
+                if (data.ToLower().StartsWith("launchlink:https://www.last.fm"))
+                {
+                    await Launcher.LaunchUriAsync(new Uri(data.Substring("launchlink:".Length), UriKind.Absolute));
+                }
+            }
+            catch (Exception)
+            {
+                // Could not build a proper Uri. Abandon.
+            }
         }
 
         private void BootStrapper_BackRequested(object sender, HandledEventArgs e)
