@@ -40,7 +40,7 @@ namespace SmartHouse.WebApiMono
             var jsonFormatter = formatters.JsonFormatter;
             var settings = jsonFormatter.SerializerSettings;
             settings.Formatting = Formatting.Indented;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();                        
 
             SetupSwagger(config);
 

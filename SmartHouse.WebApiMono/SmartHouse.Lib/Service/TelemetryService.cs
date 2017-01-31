@@ -48,10 +48,10 @@ namespace SmartHouse.Lib
 			{
 				TemperatureData.Temperature = Convert.ToDecimal(data.Split(';')[0]);
 				TemperatureData.Humidity = Convert.ToDecimal(data.Split(';')[1]);
-				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);
-				TemperatureData.Measured = DateTime.Now;                
+				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);				
+                TemperatureData.Measured = DateTime.UtcNow;
 
-				SignalR?.Invoke(TemperatureData);
+                SignalR?.Invoke(TemperatureData);
 			}
 
             await SaveTemperatureToFile(TemperatureData);

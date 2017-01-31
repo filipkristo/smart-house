@@ -183,6 +183,10 @@
     <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OrviboController.Common\OrviboController.Common.csproj">
+      <Project>{3E5BF144-BD4E-4B43-91EC-EF5E5E8BF2F6}</Project>
+      <Name>OrviboController.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmartHouse.Lib\SmartHouse.Lib.csproj">
       <Project>{CEF8FE44-20C2-460E-9909-7DD0277C45B7}</Project>
       <Name>SmartHouse.Lib</Name>

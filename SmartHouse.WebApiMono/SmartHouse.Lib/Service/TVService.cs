@@ -365,9 +365,12 @@ namespace SmartHouse.Lib
                 var bytes = Encoding.ASCII.GetBytes(command);
                 await udpClient.SendAsync(bytes, bytes.Length);
 
+                var result = await udpClient.ReceiveAsync();
+                var str = Encoding.ASCII.GetString(result.Buffer);
+
                 udpClient.Close();
 
-                return "OK";
+                return str;
             }
             catch (Exception ex)
             {

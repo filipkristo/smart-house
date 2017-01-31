@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using SmartHouse.Lib;
+using OrviboController.Common;
 
 namespace SmartHouse.WebApiMono.Controllers
 {
@@ -30,6 +31,13 @@ namespace SmartHouse.WebApiMono.Controllers
         public Result TurnOff()
         {
             return OrvibioService.TurnOff();
+        }
+
+        [Route("GetDevice")]
+        [HttpGet]
+        public Device GetDevice()
+        {
+            return OrvibioService.GetDevice();
         }
     }
 }

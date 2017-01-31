@@ -36,6 +36,9 @@ namespace SmartHouse.WebApiMono
                 StartUdpTemperature();
                 StartAlarmClock();
 
+                var lastFm = new LastFMService();
+                var result = lastFm.GetArtistInfo("Metallica").Result;
+
                 StartSelfHosting();
 
                 Console.ReadLine();
@@ -98,21 +101,26 @@ namespace SmartHouse.WebApiMono
         private static async void StartAlarmClock()
         {
             var timeSpan = new TimeSpan(4, 30, 0);
+
             Action action = () =>
             {
                 using (var client = new HttpClient())
-                    client.GetAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff");
+                    client.GetAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff").Wait();
+
+                Logger.LogInfoMessage("Smart house turn off");
 
                 var smartHouse = new SmartHouseService();
 
                 using (var orvibioService = new OrviboService())
                 {
                     var turnOffResult = orvibioService.TurnOff();
+                    Logger.LogInfoMessage("orvibioService.TurnOff");
                     Logger.LogInfoMessage(turnOffResult.Message);
 
                     Thread.Sleep(TimeSpan.FromMinutes(5));
 
                     var turnOnResult = orvibioService.TurnOn();
+                    Logger.LogInfoMessage("orvibioService.TurnOn");
                     Logger.LogInfoMessage(turnOnResult.Message);
 
                     Thread.Sleep(TimeSpan.FromMinutes(15));
@@ -122,6 +130,7 @@ namespace SmartHouse.WebApiMono
                     Logger.LogInfoMessage("VPN Restarted");
                 }
             };
+
             var alarmClock = new AlarmClock(DateTime.Today.AddDays(1).Date.AddTicks(timeSpan.Ticks), action);
             await alarmClock.Start();
         }

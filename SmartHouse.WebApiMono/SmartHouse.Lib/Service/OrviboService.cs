@@ -75,6 +75,12 @@ namespace SmartHouse.Lib
             }
         }
         
+        public Device GetDevice()
+        {
+            var Ok = _autoResetEvent.WaitOne(10000);
+            return _device;
+        }
+
         private bool SetupController()
         {
             _controller = Controller.CreateController(true);
