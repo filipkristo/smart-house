@@ -16,8 +16,8 @@ namespace SmartHouse.WebApiMono
         private readonly IMPDService MpdService;
         private readonly ITVService TVService;
 
-        public SmartHouseController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService)
-            : base(service)
+        public SmartHouseController(ISettingsService settingsService, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService)
+            : base(settingsService)
         {
             YamahaService = yamahaService;
             PandoraService = pandoraService;
@@ -55,15 +55,14 @@ namespace SmartHouse.WebApiMono
 
             if (powerStatus == PowerStatusEnum.StandBy)
             {
-                await YamahaService.TurnOn();
-                sb.AppendLine("Yamaha Turn on");
-
                 await TVService.Power();
+                sb.AppendLine("Turning on TV");
+
+                await YamahaService.TurnOn();
+                sb.AppendLine("Yamaha Turn on");                
 
                 await Task.Delay(TimeSpan.FromSeconds(8));
-            }
-
-            await SmartHouseService.CheckVPNInternet();
+            }            
 
             await YamahaService.SetInput("HDMI1");
             sb.AppendLine("Setting HDMI1 input");
@@ -75,7 +74,9 @@ namespace SmartHouse.WebApiMono
 
             if (state == SmartHouseState.Music && MpdService.GetStatus().State != Libmpc.MpdState.Play)
             {
-                await PandoraService.StopTcp();
+                if(PandoraService.IsPlaying())
+                    PandoraService.Pause();
+
                 MpdService.Play();
                 sb.AppendLine("Playing MPD");
             }
@@ -406,9 +407,7 @@ namespace SmartHouse.WebApiMono
             {
                 MpdService.Stop();
                 sb.AppendLine("Stopping MPD");
-            }
-
-            await SmartHouseService.CheckVPNInternet();
+            }            
 
             if (!PandoraService.IsPlaying())
             {
@@ -451,12 +450,13 @@ namespace SmartHouse.WebApiMono
                 await YamahaService.TurnOn();
                 sb.AppendLine("Yamaha Turn on");
                 await Task.Delay(TimeSpan.FromSeconds(8));
-            }
+            }            
 
-            await SmartHouseService.CheckVPNInternet();
-
-            await PandoraService.StopTcp();
-            sb.AppendLine("Stopping pandora radio");
+            if(PandoraService.IsPlaying())
+            {
+                PandoraService.Pause();
+                sb.AppendLine("Stopping pandora radio");
+            }            
 
             await YamahaService.SetInput("HDMI1");
             sb.AppendLine("Set HDMI1 input");

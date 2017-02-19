@@ -21,7 +21,7 @@ namespace SmartHouse.WebApiMono
         {
             var config = new HttpConfiguration();
 
-            EnableCors(appBuilder);            
+            EnableCors(appBuilder);
 
             config.MapHttpAttributeRoutes();
 
@@ -29,7 +29,7 @@ namespace SmartHouse.WebApiMono
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );            
+            );
 
             SetupDI(config);
 
@@ -40,7 +40,7 @@ namespace SmartHouse.WebApiMono
             var jsonFormatter = formatters.JsonFormatter;
             var settings = jsonFormatter.SerializerSettings;
             settings.Formatting = Formatting.Indented;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();                        
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             SetupSwagger(config);
 
@@ -101,17 +101,16 @@ namespace SmartHouse.WebApiMono
         private void SetupSwagger(HttpConfiguration config)
         {
             config.EnableSwagger(c =>
-                                {
-                                    c.SingleApiVersion("1.0.0", "Smart House - REST API")
-                                     .Description("Open Source web api for Smart House running on .NET framework(Mono compatibile)")
-                                    .Contact(co => co
-                                        .Name("Filip Krišto")
-                                        .Url("https://github.com/filipkristo")
-                                        .Email("filipkristo@outlook.com"));
+                {
+                    c.SingleApiVersion("1.0.0", "Smart House - REST API")
+                        .Description("Open Source web api for Smart House running on .NET framework(Mono compatibile)")
+                    .Contact(co => co
+                        .Name("Filip Krišto")
+                        .Url("https://github.com/filipkristo")
+                        .Email("filipkristo@outlook.com"));
 
-                                }
-                            )
-                        .EnableSwaggerUi();
+                })
+        .EnableSwaggerUi();
         }
     }
 }

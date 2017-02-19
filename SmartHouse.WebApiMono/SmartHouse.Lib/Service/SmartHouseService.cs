@@ -9,6 +9,8 @@ namespace SmartHouse.Lib
 {
     public class SmartHouseService : ISmartHouseService
     {
+        private static SmartHouseState? cacheState;
+
         private const string stateFile = "state";
 
         private readonly SettingService settingsService = new SettingService();
@@ -42,6 +44,8 @@ namespace SmartHouse.Lib
 
         public async Task SaveState(SmartHouseState state)
         {
+            cacheState = state;
+
             using (var fileStream = File.Open(stateFile, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 var bytes = Encoding.UTF8.GetBytes(state.ToString());
@@ -51,6 +55,9 @@ namespace SmartHouse.Lib
 
         public async Task<SmartHouseState> GetCurrentState()
         {
+            if (cacheState != null)
+                return cacheState.Value;
+
             if (!File.Exists(stateFile))
                 return SmartHouseState.Unknown;
 
@@ -123,9 +130,7 @@ namespace SmartHouse.Lib
             {
                 using (var client = new HttpClient())
                 {
-                    client.Timeout = TimeSpan.FromSeconds(3);
-                    client.DefaultRequestHeaders.Host = "google.com";
-
+                    client.Timeout = TimeSpan.FromSeconds(3);                    
                     var response = await client.GetAsync("http://www.google.com");
 
                     Logger.LogInfoMessage($"Get result code from google: {response.StatusCode}");
@@ -136,7 +141,7 @@ namespace SmartHouse.Lib
             }
             catch (Exception ex)
             {
-                Logger.LogErrorMessage("Get result code from google", ex);
+                Logger.LogErrorMessage("Exception: Get result code from google", ex);
                 RestartOpenVPNServiceTcp().Wait(TimeSpan.FromSeconds(4));
             }
 

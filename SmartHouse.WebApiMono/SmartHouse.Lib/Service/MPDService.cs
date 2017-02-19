@@ -14,7 +14,7 @@ namespace SmartHouse.Lib
         {
             try
             {
-                MpdClient.Connection = new MpcConnection(new System.Net.IPEndPoint(IPAddress.Parse("10.110.166.90"), 6600));
+                MpdClient.Connection = new MpcConnection(new System.Net.IPEndPoint(IPAddress.Loopback, 6600));
             }
             catch (Exception ex)
             {

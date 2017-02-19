@@ -11,23 +11,16 @@ namespace SmartHouse.WebApiMono
 {
     public class MainClass
     {
-        public static readonly ILog Log = LogManager.GetLogger(typeof(MainClass));
-
-        public static String SslPort { get; private set; } = "5001";
-        public static String SslUrl => $"https://*:{SslPort}";
-
-        public static String Port { get; private set; } = "8081";
-        public static String Url => $"http://*:{Port}";
+        public static readonly ILog Log = LogManager.GetLogger(typeof(MainClass));               
+        public static string Port { get; private set; } = "8081";
+        public static string Url => $"http://*:{Port}";
 
         public static void Main(string[] args)
         {
             try
             {
                 if (args.Length > 0)
-                    Port = args[0];
-
-                if (args.Length > 1)
-                    SslPort = args[1];
+                    Port = args[0];                
 
                 log4net.Config.XmlConfigurator.Configure();
                 Log.Info("Application_Start");
@@ -36,10 +29,15 @@ namespace SmartHouse.WebApiMono
                 StartUdpTemperature();
                 StartAlarmClock();
 
-                var lastFm = new LastFMService();
-                var result = lastFm.GetArtistInfo("Metallica").Result;
+                ServicePointManager.ServerCertificateValidationCallback +=
+                delegate (object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate,
+                                       System.Security.Cryptography.X509Certificates.X509Chain chain,
+                                       System.Net.Security.SslPolicyErrors sslPolicyErrors)
+                {
+                    return true; // **** Always accept
+                };
 
-                StartSelfHosting();
+                StartSelfHosting();                
 
                 Console.ReadLine();
             }
@@ -53,18 +51,10 @@ namespace SmartHouse.WebApiMono
         private static void StartSelfHosting()
         {
             try
-            {                
-                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, error) =>
-                {
-                    return true;
-                };
-
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-
+            {                                
                 var Server = WebApp.Start<WebApiConfig>(Url);
                 var message = $"Started self hosting at {Url}.";
                 Log.Info(message);
-
             }
             catch (Exception ex)
             {
@@ -105,7 +95,7 @@ namespace SmartHouse.WebApiMono
             Action action = () =>
             {
                 using (var client = new HttpClient())
-                    client.GetAsync("http://127.0.0.1:8081/api/SmartHouse/TurnOff").Wait();
+                    client.GetAsync($"http://127.0.0.1:{Port}/api/SmartHouse/TurnOff").Wait();
 
                 Logger.LogInfoMessage("Smart house turn off");
 
@@ -121,13 +111,7 @@ namespace SmartHouse.WebApiMono
 
                     var turnOnResult = orvibioService.TurnOn();
                     Logger.LogInfoMessage("orvibioService.TurnOn");
-                    Logger.LogInfoMessage(turnOnResult.Message);
-
-                    Thread.Sleep(TimeSpan.FromMinutes(15));
-
-                    Logger.LogInfoMessage("Starting to restart VPN");
-                    smartHouse.RestartOpenVPNService().Wait(TimeSpan.FromSeconds(15));
-                    Logger.LogInfoMessage("VPN Restarted");
+                    Logger.LogInfoMessage(turnOnResult.Message);                    
                 }
             };
 

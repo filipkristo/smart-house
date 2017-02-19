@@ -349,7 +349,15 @@ namespace SmartHouse.Lib
 
         public async Task<string> SendCommand(IRCommands irCommand)
         {
-            return await SendCommandUdp(irCommand);
+            return await SendCommandLocal(irCommand);
+        }
+
+        private async Task<string> SendCommandLocal(IRCommands irCommand)
+        {
+            var command = $"irsend SEND_ONCE philips {irCommand}";
+            var result = BashHelper.ExecBashCommand(command);
+            
+            return await Task.FromResult<string>(result.Message);
         }
 
         private async Task<string> SendCommandUdp(IRCommands irCommand)
