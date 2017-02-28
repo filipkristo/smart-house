@@ -25,8 +25,8 @@ namespace SmartHouse.Lib
 
                 return new ProcessResult()
                 {
-                    Error = error,
-                    Message = output
+                    Error = error.Trim(),
+                    Message = output.Trim()
                 };
             }
 		}
@@ -75,13 +75,15 @@ namespace SmartHouse.Lib
 
 		public static void PlayAudio(string file)
 		{
-			var proc = new System.Diagnostics.Process();
-			proc.EnableRaisingEvents = false;
-			proc.StartInfo.FileName = "mplayer";
-			proc.StartInfo.Arguments = $"{file}";
-			proc.Start();
+            using (var proc = new Process())
+            {
+                proc.EnableRaisingEvents = false;
+                proc.StartInfo.FileName = "mplayer";
+                proc.StartInfo.Arguments = $"{file}";
+                proc.Start();
 
-			proc.WaitForExit();
+                proc.WaitForExit();
+            }                
 		}
 	}
 }

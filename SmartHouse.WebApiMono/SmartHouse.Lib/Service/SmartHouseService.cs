@@ -16,6 +16,8 @@ namespace SmartHouse.Lib
         private readonly SettingService settingsService = new SettingService();
         private readonly YamahaService yamahaService = new YamahaService();
 
+
+
         public async Task<Result> SetMode(ModeEnum mode)
         {
             var message = string.Empty;
@@ -95,13 +97,6 @@ namespace SmartHouse.Lib
 
         public Result PlayAlarm()
         {
-            //using (var soundPlayer = new System.Media.SoundPlayer("redalert.wav"))
-            //{
-            //	soundPlayer.Load();
-            //	soundPlayer.PlaySync();
-            //	soundPlayer.Stop();
-            //}
-
             BashHelper.PlayAudio("redalert.wav");
 
             return new Result()

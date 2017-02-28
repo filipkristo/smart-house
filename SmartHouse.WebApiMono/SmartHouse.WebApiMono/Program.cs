@@ -28,14 +28,9 @@ namespace SmartHouse.WebApiMono
                 StartTcpServer();
                 StartUdpTemperature();
                 StartAlarmClock();
+                //StartIRCommandPipes();
 
-                ServicePointManager.ServerCertificateValidationCallback +=
-                delegate (object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate,
-                                       System.Security.Cryptography.X509Certificates.X509Chain chain,
-                                       System.Net.Security.SslPolicyErrors sslPolicyErrors)
-                {
-                    return true; // **** Always accept
-                };
+                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
                 StartSelfHosting();                
 
@@ -117,6 +112,12 @@ namespace SmartHouse.WebApiMono
 
             var alarmClock = new AlarmClock(DateTime.Today.AddDays(1).Date.AddTicks(timeSpan.Ticks), action);
             await alarmClock.Start();
+        }
+
+        private static async void StartIRCommandPipes()
+        {
+            var pipe = new IRRemotePipe();
+            await pipe.Start();
         }
 
         private static void SignalRTemperature(TemperatureData temperature)

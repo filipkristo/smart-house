@@ -122,8 +122,8 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Validation, Version=2.3.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Validation.2.3.7\lib\dotnet\Validation.dll</HintPath>
+    <Reference Include="Validation, Version=2.4.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Validation.2.4.10\lib\net45\Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -155,9 +155,6 @@
     </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="mdpstatus.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
