@@ -45,14 +45,14 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("VolumeUp")]
-		public async Task<string> VolumeUp()
+		public async Task<int> VolumeUp()
 		{
 			return await YamahaService.VolumeUp();
 		}
 
 		[HttpGet]
 		[Route("VolumeDown")]
-		public async Task<string> VolumeDown()
+		public async Task<int> VolumeDown()
 		{
 			return await YamahaService.VolumeDown();
 		}

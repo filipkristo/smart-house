@@ -152,19 +152,17 @@ namespace SmartHouse.WebApiMono
 
             if (powerStatus == PowerStatusEnum.On)
             {
-                await YamahaService.VolumeUp();
+                var newVolume = await YamahaService.VolumeUp();
                 sb.AppendLine("Yamaha Volume Up.");
+
+                VolumeChangeNotify(newVolume);
+                sb.Append($"{newVolume} db");
             }
             else
             {
                 sb.AppendLine("Yamaha is turned off");
                 PushNotification("Yamaha is turned off. Operation canceled.");
-            }
-
-            var volume = await YamahaService.GetVolume();
-            VolumeChangeNotify(volume);
-
-            sb.Append($"{volume} db");
+            }                       
 
             return new Result()
             {
@@ -183,19 +181,17 @@ namespace SmartHouse.WebApiMono
 
             if (powerStatus == PowerStatusEnum.On)
             {
-                await YamahaService.VolumeDown();
+                var newVolume = await YamahaService.VolumeDown();
                 sb.AppendLine("Yamaha Volume Down.");
+
+                VolumeChangeNotify(newVolume);
+                sb.Append($"{newVolume} db");
             }
             else
             {
                 sb.AppendLine("Yamaha is turned off.");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            }
-
-            var volume = await YamahaService.GetVolume();
-            VolumeChangeNotify(volume);
-
-            sb.Append($"{volume} db");
+            }                        
 
             return new Result()
             {

@@ -13,9 +13,9 @@ namespace SmartHouse.Lib
 
 		Task<string> SetInput(string input);
 
-		Task<string> VolumeUp();
+		Task<int> VolumeUp();
 
-		Task<string> VolumeDown();
+		Task<int> VolumeDown();
 
 		Task<string> SetVolume(int volume);
 

@@ -31,7 +31,7 @@ namespace SmartHouse.WebApiMono
 			context.Clients.All.notification(message);
 		}
 
-        protected virtual void VolumeChangeNotify(short currentVolume)
+        protected virtual void VolumeChangeNotify(int currentVolume)
         {
             var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
             if (context == null)
