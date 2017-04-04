@@ -19,6 +19,9 @@ namespace SmartHouse.WebApiMono
         {
             try
             {
+                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
                 if (args.Length > 0)
                     Port = args[0];                
 
@@ -28,9 +31,7 @@ namespace SmartHouse.WebApiMono
                 StartTcpServer();
                 StartUdpTemperature();
                 StartAlarmClock();
-                //StartIRCommandPipes();
-
-                ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+                //StartIRCommandPipes();                
 
                 StartSelfHosting();                
 
@@ -46,7 +47,7 @@ namespace SmartHouse.WebApiMono
         private static void StartSelfHosting()
         {
             try
-            {                                
+            {
                 var Server = WebApp.Start<WebApiConfig>(Url);
                 var message = $"Started self hosting at {Url}.";
                 Log.Info(message);
