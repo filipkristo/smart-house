@@ -7,16 +7,17 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
+using System.Net;
 
 namespace SmartHouse.Lib
 {
     public class LastFMService : ILastFMService
     {
-        private const string API_KEY = "XXXX";
-        private const string API_SECRET = "XXXX";
+        private const string API_KEY = "f6efd05dff7733d006993bdb97bbdb06";
+        private const string API_SECRET = "6fe8591b91d15471d484e3842fa96b96";
 
-        private const string USERNAME = "XXXX";
-        private const string PASSWORD = "XXXX";
+        private const string USERNAME = "filip_kristo";
+        private const string PASSWORD = "duKH1G6Ar[gDNIS2TE]WFl]LnRrroB{E";
 
         public LastFMService()
         {
@@ -25,6 +26,9 @@ namespace SmartHouse.Lib
 
         private async Task Authenticate(LastfmClient client)
         {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
             var fileName = "last.fm";
 
             if (!File.Exists(fileName))
@@ -35,6 +39,10 @@ namespace SmartHouse.Lib
                 {
                     var json = JsonConvert.SerializeObject(client.Auth.UserSession);
                     File.WriteAllText("last.fm", json, Encoding.UTF8);
+                }
+                else
+                {
+                    throw new Exception("Last.FM Authenticate problem");
                 }
             }
             else

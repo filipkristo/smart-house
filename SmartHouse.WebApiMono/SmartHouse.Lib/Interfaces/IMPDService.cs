@@ -20,7 +20,7 @@ namespace SmartHouse.Lib
 
 		MpdFile GetCurrentSong();
 
-        Task<SongResult> GetNowPlaying();
+        Task<SongResult> GetNowPlaying(bool lastFM);
 
         Task<Result> LoveSong();
     }

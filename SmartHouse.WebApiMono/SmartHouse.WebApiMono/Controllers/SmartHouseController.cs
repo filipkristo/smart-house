@@ -581,14 +581,14 @@ namespace SmartHouse.WebApiMono
 
         [HttpGet]
         [Route("NowPlaying")]
-        public async Task<SongResult> NowPlaying()
+        public async Task<SongResult> NowPlaying(bool lastFm = true)
         {
             var state = await SmartHouseService.GetCurrentState();
 
             if (state == SmartHouseState.Pandora)
                 return await PandoraService.GetNowPlaying();
             else if (state == SmartHouseState.Music)
-                return await MpdService.GetNowPlaying();
+                return await MpdService.GetNowPlaying(lastFm);
             else
                 return null;
         }

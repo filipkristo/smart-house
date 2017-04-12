@@ -8,13 +8,21 @@ namespace SmartHouse.Lib
 {
     public class MPDService : IMPDService
     {
-        private readonly Mpc MpdClient = new Mpc();
+        private readonly Mpc MpdClient;
 
         public MPDService()
         {
+            MpdClient = new Mpc();
+        }
+
+        private void ConnectIfNotConnected()
+        {
             try
             {
-                MpdClient.Connection = new MpcConnection(new System.Net.IPEndPoint(IPAddress.Loopback, 6600));
+                if (MpdClient.Connected)
+                    return;
+
+                MpdClient.Connection = new MpcConnection(new IPEndPoint(IPAddress.Loopback, 6600));
             }
             catch (Exception ex)
             {
@@ -25,6 +33,7 @@ namespace SmartHouse.Lib
 
         public Result Play()
         {
+            ConnectIfNotConnected();
             MpdClient.Play();
 
             return new Result()
@@ -37,6 +46,7 @@ namespace SmartHouse.Lib
 
         public Result Pause()
         {
+            ConnectIfNotConnected();
             MpdClient.Pause(true);
 
             return new Result()
@@ -49,6 +59,7 @@ namespace SmartHouse.Lib
 
         public Result Stop()
         {
+            ConnectIfNotConnected();
             MpdClient.Stop();
 
             return new Result()
@@ -61,6 +72,7 @@ namespace SmartHouse.Lib
 
         public Result Next()
         {
+            ConnectIfNotConnected();
             MpdClient.Next();
 
             return new Result()
@@ -73,6 +85,7 @@ namespace SmartHouse.Lib
 
         public Result Previous()
         {
+            ConnectIfNotConnected();
             MpdClient.Previous();
 
             return new Result()
@@ -85,16 +98,20 @@ namespace SmartHouse.Lib
 
         public MpdStatus GetStatus()
         {
+            ConnectIfNotConnected();
             return MpdClient.Status();
         }
 
         public MpdFile GetCurrentSong()
         {
+            ConnectIfNotConnected();
             return MpdClient.CurrentSong();
         }
 
-        public async Task<SongResult> GetNowPlaying()
+        public async Task<SongResult> GetNowPlaying(bool lastFM)
         {
+            ConnectIfNotConnected();
+
             var song = GetCurrentSong();
             var status = GetStatus();
             var lastFMService = new LastFMService();
@@ -111,16 +128,21 @@ namespace SmartHouse.Lib
                 Genre = song.Genre
             };
 
-            result.Loved = (await lastFMService.GetSongInfo(result.Artist, result.Song))?.IsLoved ?? false;
-            result.AlbumUri = (await lastFMService.GetAlbumInfo(result.Artist, result.Album))?.Images?.Large?.ToString();
+            if(lastFM)
+            {
+                result.Loved = (await lastFMService.GetSongInfo(result.Artist, result.Song))?.IsLoved ?? false;
+                result.AlbumUri = (await lastFMService.GetAlbumInfo(result.Artist, result.Album))?.Images?.Large?.ToString();
+            }            
 
             return result;
         }
 
         public async Task<Result> LoveSong()
         {
+            ConnectIfNotConnected();
+
             var lastFMService = new LastFMService();
-            var mpdInfo = await GetNowPlaying();
+            var mpdInfo = await GetNowPlaying(false);
             var mpdSong = GetCurrentSong();
 
             if (mpdInfo.Loved)
@@ -165,7 +187,8 @@ namespace SmartHouse.Lib
 
         public void Dispose()
         {
-            MpdClient?.Connection?.Disconnect();            
+            if(MpdClient.Connected)
+                MpdClient.Connection.Disconnect();            
         }
     }
 }
