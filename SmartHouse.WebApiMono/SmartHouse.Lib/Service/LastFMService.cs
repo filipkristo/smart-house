@@ -13,11 +13,11 @@ namespace SmartHouse.Lib
 {
     public class LastFMService : ILastFMService
     {
-        private const string API_KEY = "f6efd05dff7733d006993bdb97bbdb06";
-        private const string API_SECRET = "6fe8591b91d15471d484e3842fa96b96";
+        private const string API_KEY = "XXX";
+        private const string API_SECRET = "XXX";
 
-        private const string USERNAME = "filip_kristo";
-        private const string PASSWORD = "duKH1G6Ar[gDNIS2TE]WFl]LnRrroB{E";
+        private const string USERNAME = "XXX";
+        private const string PASSWORD = "XXX";
 
         public LastFMService()
         {
@@ -25,10 +25,7 @@ namespace SmartHouse.Lib
         }
 
         private async Task Authenticate(LastfmClient client)
-        {
-            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-
+        {            
             var fileName = "last.fm";
 
             if (!File.Exists(fileName))
