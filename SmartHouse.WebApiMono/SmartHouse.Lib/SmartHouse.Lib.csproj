@@ -29,8 +29,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IF.Lastfm.Core, Version=1.0.0.294, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inflatable.Lastfm.1.0.0.294\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
+    <Reference Include="IF.Lastfm.Core, Version=1.0.1.307, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Inflatable.Lastfm.1.0.1.307\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
