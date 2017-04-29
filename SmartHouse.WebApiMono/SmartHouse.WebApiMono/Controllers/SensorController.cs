@@ -10,9 +10,9 @@ namespace SmartHouse.WebApiMono
 	{
 		private readonly ITelemetryService TelemetryService;
 
-		public SensorController(ISettingsService settingsService) : base(settingsService)
+		public SensorController(ISettingsService settingsService, ITelemetryService telemetryService) : base(settingsService)
 		{
-			this.TelemetryService = new TelemetryService();
+            this.TelemetryService = telemetryService;
 		}
 
 		[HttpPost]
@@ -28,5 +28,11 @@ namespace SmartHouse.WebApiMono
 		{
 			return await TelemetryService.GetLastTemperature();
 		}
+
+        [HttpPost]
+        public async Task<Result> AirCondition(byte On)
+        {
+            return await TelemetryService.AirCondition(On);
+        }
 	}
 }

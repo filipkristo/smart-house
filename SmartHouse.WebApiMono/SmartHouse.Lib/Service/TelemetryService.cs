@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,6 +82,30 @@ namespace SmartHouse.Lib
 
                 var JSON = Encoding.UTF8.GetString(bytes);                
                 return JsonConvert.DeserializeObject(JSON, typeof(TemperatureData)) as TemperatureData;
+            }
+        }
+
+        public async Task<Result> AirCondition(byte On)
+        {
+            using (var tcpClient = new TcpClient("10.110.166.197", 9000))
+            {
+                using (var netStream = tcpClient.GetStream())
+                using (var streamReader = new StreamReader(netStream, Encoding.ASCII))
+                using (var streamWritter = new StreamWriter(netStream, Encoding.ASCII) { AutoFlush = true })
+                {
+                    tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+                    tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;                    
+
+                    await streamWritter.WriteLineAsync(On.ToString());                    
+                    var response = await streamReader.ReadLineAsync();
+
+                    return new Result()
+                    {
+                        Ok = true,
+                        ErrorCode = 0,
+                        Message = response
+                    };
+                }
             }
         }
 
