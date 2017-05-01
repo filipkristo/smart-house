@@ -67,7 +67,7 @@ namespace SmartHouse.WebApiMono
             await YamahaService.SetInput("HDMI1");
             sb.AppendLine("Setting HDMI1 input");
 
-            await SmartHouseService.SetMode(ModeEnum.Normal);
+            await SmartHouseService.SetMode(ModeEnum.Normal, VolumeChangeNotify);
             sb.AppendLine("Setting Normal mode");
 
             var state = await SmartHouseService.GetCurrentState();
@@ -334,7 +334,7 @@ namespace SmartHouse.WebApiMono
         {
             var modeEnum = (ModeEnum)Enum.Parse(typeof(ModeEnum), mode);
 
-            var result = await SmartHouseService.SetMode(modeEnum);
+            var result = await SmartHouseService.SetMode(modeEnum, VolumeChangeNotify);
             return result;
         }
 

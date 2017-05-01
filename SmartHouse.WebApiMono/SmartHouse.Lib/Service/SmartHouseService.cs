@@ -18,7 +18,7 @@ namespace SmartHouse.Lib
 
 
 
-        public async Task<Result> SetMode(ModeEnum mode)
+        public async Task<Result> SetMode(ModeEnum mode, Action<int> notifyAction)
         {
             var message = string.Empty;
             var setting = await settingsService.GetSettings();
@@ -30,6 +30,7 @@ namespace SmartHouse.Lib
                 message = $"Default volume for mode {mode} is {defaultMode.Value}";
 
                 await yamahaService.SetVolume(defaultMode.Value);
+                notifyAction?.Invoke(defaultMode.Value);
             }
             else
             {
