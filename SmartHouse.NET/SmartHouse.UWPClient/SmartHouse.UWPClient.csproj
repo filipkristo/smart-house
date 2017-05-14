@@ -11,8 +11,8 @@
     <AssemblyName>SmartHouse.UWPClient</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
@@ -102,6 +102,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\GeofenceTask.cs" />
     <Compile Include="Extensions\WebViewExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="ViewModels\RemoteControllerViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\SwaggerViewModel.cs" />
+    <Compile Include="ViewModels\TorrentViewModel.cs" />
     <Compile Include="Views\Busy.xaml.cs">
       <DependentUpon>Busy.xaml</DependentUpon>
     </Compile>
@@ -140,6 +142,9 @@
     </Compile>
     <Compile Include="Views\SwaggerWebView.xaml.cs">
       <DependentUpon>SwaggerWebView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TorrentWebView.xaml.cs">
+      <DependentUpon>TorrentWebView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -263,8 +268,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TorrentWebView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BackgroundTask\BackgroundTask.csproj">
+      <Project>{02e851ae-b6d4-4607-b42f-b1c9ee52fb09}</Project>
+      <Name>BackgroundTask</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SmartHouse.UWPLib\SmartHouse.UWPLib.csproj">
       <Project>{ab907ed3-ffbf-48e6-b0c3-bb1151408484}</Project>
       <Name>SmartHouse.UWPLib</Name>

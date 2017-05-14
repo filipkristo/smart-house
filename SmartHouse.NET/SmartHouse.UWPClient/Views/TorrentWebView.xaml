@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="SmartHouse.UWPClient.Views.TorrentWebView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SmartHouse.UWPClient.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Ext="using:SmartHouse.UWPClient.Extensions"
+    xmlns:vm="using:SmartHouse.UWPClient.ViewModels"
+    xmlns:controls="using:Template10.Controls"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:TorrentViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <controls:PageHeader x:Name="pageHeader" Content="Swagger"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True">
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.Refresh}" Label="Refresh" />
+            </controls:PageHeader.SecondaryCommands>
+        </controls:PageHeader>
+
+        <WebView Name="webView"
+                 Ext:WebViewExtensions.UriSource="{Binding ItemUrl}"
+                 PermissionRequested ="{x:Bind ViewModel.webView_PermissionRequested}"
+                 ContainsFullScreenElementChanged ="{x:Bind ViewModel.webView_ContainsFullScreenElementChanged}" 
+                 LoadCompleted="{x:Bind ViewModel.webView_Loaded}"                 
+                 RelativePanel.Below="pageHeader" 
+                 RelativePanel.AlignRightWithPanel="True" 
+                 RelativePanel.AlignLeftWithPanel="True" 
+                 RelativePanel.AlignBottomWithPanel="True"/>
+
+    </RelativePanel>
+</Page>

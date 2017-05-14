@@ -70,6 +70,15 @@
                                Text="Remote" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
+            <controls:HamburgerButtonInfo PageType="views:TorrentWebView" 
+                                          AutomationProperties.Name="Blue">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Download" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Torrent" />
+                </StackPanel>
+            </controls:HamburgerButtonInfo>
         </controls:HamburgerMenu.PrimaryButtons>
 
         <controls:HamburgerMenu.SecondaryButtons>
