@@ -92,7 +92,7 @@
     <Compile Include="TCP\TcpServer.cs" />
     <Compile Include="TCP\TcpCommands.cs" />
     <Compile Include="Model\SmartHouseState.cs" />
-    <Compile Include="Model\Sensors\TemperatureData.cs" />
+    <Compile Include="Model\Sensors\TelemetryData.cs" />
     <Compile Include="UDP\TemperatureUdp.cs" />
     <Compile Include="Model\Room.cs" />
     <Compile Include="Service\TelemetryService.cs" />

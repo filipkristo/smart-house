@@ -12,26 +12,26 @@ namespace SmartHouse.Lib
 	{
         private const string tempFile = "temperature";
 
-        private static TemperatureData TemperatureData { get; } = new TemperatureData();
+        private static TelemetryData TemperatureData { get; } = new TelemetryData();
 
-		private Action<TemperatureData> SignalR;
+		private Action<TelemetryData> SignalR;
 
         public TelemetryService()
         {
 
         }
 
-		public TelemetryService(Action<TemperatureData> signalR)
+		public TelemetryService(Action<TelemetryData> signalR)
 		{
 			SignalR = signalR;
 		}
 
-		public async Task<TemperatureData> GetLastTemperature()
+		public async Task<TelemetryData> GetLastTemperature()
 		{
             return await GetTemperatureFromFile();		
 		}
 
-		public Result SaveTemperature(TemperatureData data)
+		public Result SaveTemperature(TelemetryData data)
 		{			
 			return new Result()
 			{
@@ -49,7 +49,8 @@ namespace SmartHouse.Lib
 			{
 				TemperatureData.Temperature = Convert.ToDecimal(data.Split(';')[0]);
 				TemperatureData.Humidity = Convert.ToDecimal(data.Split(';')[1]);
-				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);				
+				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);
+                TemperatureData.GasValue = Convert.ToDecimal(data.Split(';')[3]);
                 TemperatureData.Measured = DateTime.UtcNow;
 
                 SignalR?.Invoke(TemperatureData);
@@ -60,7 +61,7 @@ namespace SmartHouse.Lib
             return new Result() { Ok = true, ErrorCode = 0, Message = "Saved temperature"};			
 		}
 
-        private async Task SaveTemperatureToFile(TemperatureData data)
+        private async Task SaveTemperatureToFile(TelemetryData data)
         {
             using (var fileStream = File.Open(tempFile, FileMode.Create, FileAccess.Write, FileShare.None))
             {
@@ -70,7 +71,7 @@ namespace SmartHouse.Lib
             }
         }
 
-        private async Task<TemperatureData> GetTemperatureFromFile()
+        private async Task<TelemetryData> GetTemperatureFromFile()
         {            
             if (!File.Exists(tempFile))
                 return null;
@@ -81,7 +82,7 @@ namespace SmartHouse.Lib
                 await fileStream.ReadAsync(bytes, 0, bytes.Length);
 
                 var JSON = Encoding.UTF8.GetString(bytes);                
-                return JsonConvert.DeserializeObject(JSON, typeof(TemperatureData)) as TemperatureData;
+                return JsonConvert.DeserializeObject(JSON, typeof(TelemetryData)) as TelemetryData;
             }
         }
 

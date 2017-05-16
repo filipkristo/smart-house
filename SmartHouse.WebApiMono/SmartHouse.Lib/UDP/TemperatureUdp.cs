@@ -11,7 +11,7 @@ namespace SmartHouse.Lib
 	{
 		private TelemetryService service;
 
-		public TemperatureUdp(Action<TemperatureData> signalR)
+		public TemperatureUdp(Action<TelemetryData> signalR)
 		{
 			service = new TelemetryService(signalR);
 		}

@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartHouse.Lib
 {
-	public class TemperatureData
-	{
+	public class TelemetryData
+    {
         [Required]
         [JsonProperty(PropertyName = "temperature")]
         public decimal Temperature { get; set; }
@@ -17,6 +17,10 @@ namespace SmartHouse.Lib
         [Required]
         [JsonProperty(PropertyName = "heatIndex")]
         public decimal HeatIndex { get; set; }
+
+        [Required]
+        [JsonProperty(PropertyName = "gasValue")]
+        public decimal GasValue { get; set; }
 
         [Required]
         [JsonProperty(PropertyName = "measured")]

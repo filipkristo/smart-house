@@ -5,9 +5,9 @@ namespace SmartHouse.Lib
 {
 	public interface ITelemetryService : IDisposable
 	{
-		Result SaveTemperature(TemperatureData data);
+		Result SaveTemperature(TelemetryData data);
 		Task<Result> SaveTemperatureUdp(string data);
-        Task<TemperatureData> GetLastTemperature();
+        Task<TelemetryData> GetLastTemperature();
         Task<Result> AirCondition(byte On);
     }
 }

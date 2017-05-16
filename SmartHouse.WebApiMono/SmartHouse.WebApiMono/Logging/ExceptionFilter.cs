@@ -13,7 +13,7 @@ namespace SmartHouse.WebApiMono
             if(context?.Exception != null)
             {
                 MainClass.Log.Error("HttpException", context.Exception);
-                context.Response = context.Request.CreateResponse(context.Response.StatusCode, new Error(context.Exception.Message, context.Exception.StackTrace));
+                context.Response = context.Request.CreateResponse(System.Net.HttpStatusCode.InternalServerError, new Error(context.Exception.Message, context.Exception.StackTrace));
             }			
 		}
 	}

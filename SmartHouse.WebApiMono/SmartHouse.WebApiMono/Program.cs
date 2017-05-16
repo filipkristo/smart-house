@@ -121,7 +121,7 @@ namespace SmartHouse.WebApiMono
             await pipe.Start();
         }
 
-        private static void SignalRTemperature(TemperatureData temperature)
+        private static void SignalRTemperature(TelemetryData temperature)
         {
             var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
             if (context == null)
