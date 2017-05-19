@@ -111,6 +111,12 @@
     <Compile Include="GeofenceBackgroundTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmartHouse.UWPLib\SmartHouse.UWPLib.csproj">
+      <Project>{ab907ed3-ffbf-48e6-b0c3-bb1151408484}</Project>
+      <Name>SmartHouse.UWPLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

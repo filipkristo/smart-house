@@ -118,6 +118,12 @@ namespace SmartHouse.UWPClient.VoiceCommands
                         case "smartHousePrevStation":
                             await ExecutePandoraCommands("PrevStation");
                             break;
+                        case "turnOnAirConditioner":
+                            await TurnOnAirCondition();
+                            break;
+                        case "turnOffAirConditioner":
+                            await TurnOffAirCondition();
+                            break;
                         default:                            
                             LaunchAppInForeground();
                             break;
@@ -201,6 +207,24 @@ namespace SmartHouse.UWPClient.VoiceCommands
             var result = await smartHouse.GetCurrentState();
             await CompleteMessage($"Connected input: {result}");
         }        
+
+        private async Task TurnOnAirCondition()
+        {
+            var smartHouse = new SmartHouseService();
+
+            await ShowProgressScreen("Please wait...");
+            var result = await smartHouse.TurnOnAirConditioner();
+            await CompleteMessage($"Air conditioner {result?.Message}");
+        }
+
+        private async Task TurnOffAirCondition()
+        {
+            var smartHouse = new SmartHouseService();
+
+            await ShowProgressScreen("Please wait...");
+            var result = await smartHouse.TurnOffAirConditioner();
+            await CompleteMessage($"Air conditioner {result?.Message}");
+        }
 
         private async Task ExecutePandoraCommands(string command)
         {            

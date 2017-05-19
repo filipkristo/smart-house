@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SmartHouse.Lib;
 using SmartHouse.UWPLib.Model;
+using SmartHouse.UWPLib.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,20 @@ namespace SmartHouse.UWPLib.BLL
 {
     public class SmartHouseService
     {
+        private readonly SettingsService settingsService;
+
+        public SmartHouseService()
+        {
+            settingsService = SettingsService.Instance;
+        }
+
         public async Task<Result> Run(SmartHouseCommands command)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/SmartHouse/{command}";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/{command}";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);
@@ -31,7 +39,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/SmartHouse/RestartOpenVPN";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/RestartOpenVPN";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);
@@ -44,7 +52,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/SmartHouse/SetMode?Mode={mode}";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/SetMode?Mode={mode}";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);
@@ -57,7 +65,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/SmartHouse/{input}";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/{input}";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);
@@ -70,7 +78,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = "http://10.110.166.90:8081/api/SmartHouse/GetCurrentState";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/GetCurrentState";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<string>(json);
@@ -83,8 +91,38 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = "http://10.110.166.90:8081/api/Remote/Love";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Remote/Love";
                 var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
+
+        public async Task<Result> TurnOnAirConditioner()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Sensor/AirCondition?On=1";
+
+                var response = await client.PostAsync(uri, null);
+                var json = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
+
+        public async Task<Result> TurnOffAirConditioner()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Sensor/AirCondition?On=0";
+
+                var response = await client.PostAsync(uri, null);
+                var json = await response.Content.ReadAsStringAsync();
 
                 return JsonConvert.DeserializeObject<Result>(json);
             }

@@ -79,18 +79,45 @@
                                       RelativePanel.AlignLeftWithPanel="True"
                                       RelativePanel.Below="UseShellDrawnBackButtonToggleSwtich" />
 
+                        <ToggleSwitch x:Name="UseBackgroundWorker" Header="Background worker"
+                                      IsOn="{Binding UseBackgroundWorker, Mode=TwoWay}"
+                                      OffContent="Disable" OnContent="Enable"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.Below="UseLightThemeToggleSwitch" />
+
                         <TextBox x:Name="txtHostIP" Header="Host IP"
                                       Text="{Binding HostIP, Mode=TwoWay}"                                                                            
                                       RelativePanel.AlignLeftWithPanel="True"    
                                       MinWidth="180"                                      
-                                      RelativePanel.Below="UseLightThemeToggleSwitch" />
-
+                                      RelativePanel.Below="UseBackgroundWorker" />
+                        
                         <TextBox x:Name="txtHostPort" Header="Host Port"
                                       Text="{Binding HostPort, Mode=TwoWay}"                                         
                                       MinWidth="180"
                                       HorizontalAlignment="Left"
                                       RelativePanel.AlignLeftWithPanel="True"                                      
                                       RelativePanel.Below="txtHostIP" />
+
+                        <TextBox Margin="0, 15, 0, 0" x:Name="txtWebHost" Header="Web host"
+                                      Text="{Binding WebHost, Mode=TwoWay}"                                         
+                                      MinWidth="180"
+                                      HorizontalAlignment="Left"
+                                      RelativePanel.AlignLeftWithPanel="True"                                      
+                                      RelativePanel.Below="txtHostPort" />
+
+                        <TextBox x:Name="txtUsername" Header="Username"
+                                      Text="{Binding Username, Mode=TwoWay}"                                         
+                                      MinWidth="180"
+                                      HorizontalAlignment="Left"
+                                      RelativePanel.AlignLeftWithPanel="True"                                      
+                                      RelativePanel.Below="txtWebHost" />
+
+                        <PasswordBox x:Name="txtPassword" Header="Password"
+                                      Password="{Binding Password, Mode=TwoWay}"                                         
+                                      MinWidth="180"
+                                      HorizontalAlignment="Left"
+                                      RelativePanel.AlignLeftWithPanel="True"                                      
+                                      RelativePanel.Below="txtUsername" />
 
                     </RelativePanel>
 

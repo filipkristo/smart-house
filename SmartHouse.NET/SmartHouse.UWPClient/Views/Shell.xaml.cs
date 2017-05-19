@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartHouse.UWPLib.Service;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,14 +27,14 @@ namespace SmartHouse.UWPClient.Views
     {
         public static Shell Instance { get; set; }
         public static HamburgerMenu HamburgerMenu => Instance.Menu;
-        Services.SettingsServices.SettingsService _settings;
+        SettingsService _settings;
 
         public Shell()
         {
             Instance = this;
             this.InitializeComponent();
 
-            _settings = Services.SettingsServices.SettingsService.Instance;
+            _settings = SettingsService.Instance;
         }        
 
         public Shell(INavigationService navigationService) : this()

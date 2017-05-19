@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SmartHouse.Lib;
 using SmartHouse.UWPLib.Model;
+using SmartHouse.UWPLib.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,20 @@ namespace SmartHouse.UWPLib.BLL
 {
     public class PandoraService
     {
+        private readonly SettingsService settingsService;
+
+        public PandoraService()
+        {
+            settingsService = SettingsService.Instance;
+        }
+
         public async Task<Result> Run(PandoraCommands command)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/Pandora/{command}";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Pandora/{command}";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);
@@ -31,7 +39,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/SmartHouse/NowPlaying";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/NowPlaying";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<SongResult>(json);
@@ -44,7 +52,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/Pandora/NextStation";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Pandora/NextStation";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);
@@ -57,7 +65,7 @@ namespace SmartHouse.UWPLib.BLL
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                var uri = $"http://10.110.166.90:8081/api/Pandora/PrevStation";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Pandora/PrevStation";
                 var json = await client.GetStringAsync(uri);
 
                 return JsonConvert.DeserializeObject<Result>(json);

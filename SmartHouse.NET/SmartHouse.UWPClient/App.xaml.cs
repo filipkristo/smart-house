@@ -1,5 +1,7 @@
+using Microsoft.AspNet.SignalR.Client;
 using Microsoft.HockeyApp;
-using SmartHouse.UWPClient.Services.SettingsServices;
+using SmartHouse.Lib;
+using SmartHouse.UWPLib.Service;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -20,9 +22,11 @@ namespace SmartHouse.UWPClient
     [Bindable]
     sealed partial class App : Template10.Common.BootStrapper
     {
+        private HubConnection hubConnection = null;
+
         public App()
         {
-            Microsoft.HockeyApp.HockeyClient.Current.Configure("c7217e3f12be43108f4de5b1c9fdd02a");
+            HockeyClient.Current.Configure("c7217e3f12be43108f4de5b1c9fdd02a");
             InitializeComponent();
 
             ShowShellBackButton = SettingsService.Instance.UseShellBackButton;
@@ -45,12 +49,48 @@ namespace SmartHouse.UWPClient
 
             (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();            
             Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);
+
+            if (ApiInformation.IsTypePresent("Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager"))
+            {
+                try
+                {
+                    Debug.WriteLine("Initialize Cortana file");
+                    var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"SmartHouseCommands.xml");
+                    await VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
+                    Debug.WriteLine("Initialized Cortana file");
+                }
+                catch (Exception ex)
+                {
+                    Microsoft.HockeyApp.HockeyClient.Current.TrackException(ex);
+                    Debug.WriteLine($"Failed initialized Cortana file: {ex.Message}");
+                }
+            }
+
+            if (SettingsService.Instance.UseBackgroundWorker)
+                StartSignalRClient();
+        }
+
+        private async void StartSignalRClient()
+        {
+            var IP = SettingsService.Instance.HostIP;
+            var Port = SettingsService.Instance.HostPort;
+
+            hubConnection = new HubConnection($"http://{IP}:{Port}/");
+            var hubProxy = hubConnection.CreateHubProxy("ServerHub");
+            hubProxy.On<TelemetryData>("temperature", telemetry => Debug.WriteLine($"Telemetry update.Temperature: {telemetry.Temperature} Humidity: {telemetry.Humidity} Gas: {telemetry.GasValue} Updated: {telemetry.Measured}"));
+
+            await hubConnection.Start();
         }
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            NavigationService.Navigate(typeof (Views.MainPage));
+            NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
+        }
+
+        public override Task OnSuspendingAsync(object s, SuspendingEventArgs e, bool prelaunchActivated)
+        {            
+            return base.OnSuspendingAsync(s, e, prelaunchActivated);
         }
     }
 }

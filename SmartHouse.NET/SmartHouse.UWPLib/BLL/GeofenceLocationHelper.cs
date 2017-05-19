@@ -42,7 +42,7 @@ namespace SmartHouse.UWPLib.BLL
 
         public Geofence GetWorkLocation()
         {
-            return GenerateGeofence(WORK_KEY, 43.5225312, 16.4312707, 0, 50);
+            return GenerateGeofence(WORK_KEY, 43.5224591232994, 16.433980106161, 0, 50);
         }
     }
 }

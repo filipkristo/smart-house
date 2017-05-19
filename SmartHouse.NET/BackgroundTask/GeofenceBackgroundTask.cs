@@ -1,6 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SmartHouse.UWPLib.BLL;
+using SmartHouse.UWPLib.Model;
+using SmartHouse.UWPLib.Service;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +13,7 @@ using Windows.ApplicationModel.Background;
 using Windows.Data.Json;
 using Windows.Devices.Geolocation;
 using Windows.Devices.Geolocation.Geofencing;
+using Windows.Security.Credentials;
 using Windows.Storage;
 using Windows.UI.Notifications;
 
@@ -16,7 +22,7 @@ namespace BackgroundTask
     public sealed class GeofenceBackgroundTask : IBackgroundTask
     {
         private ObservableCollection<string> _geofenceBackgroundEvents = null;
-        private const long oneHundredNanosecondsPerSecond = 10000000;   // conversion from 100 nano-second resolution to seconds
+        private WebClientService webclient;
         private const int maxEventDescriptors = 42;                     // Value determined by how many max length event descriptors (91 chars) 
                                                                         // stored as a JSON string can fit in 8K (max allowed for local settings)
 
@@ -25,13 +31,17 @@ namespace BackgroundTask
             _geofenceBackgroundEvents = new ObservableCollection<string>();
         }
 
-        void IBackgroundTask.Run(IBackgroundTaskInstance taskInstance)
+        async void IBackgroundTask.Run(IBackgroundTaskInstance taskInstance)
         {
-            BackgroundTaskDeferral deferral = taskInstance.GetDeferral();
+            var deferral = taskInstance.GetDeferral();
 
             try
-            {                
-                GetGeofenceStateChangedReports(GeofenceMonitor.Current.LastKnownGeoposition);
+            {
+                var geoLocator = new Geolocator();                
+                var position = await geoLocator.GetGeopositionAsync();
+
+                TryToInitializeWebClient();
+                await GetGeofenceStateChangedReports(position);
             }
             catch (UnauthorizedAccessException)
             {
@@ -56,7 +66,7 @@ namespace BackgroundTask
             settings.Values["Status"] = status;
         }
 
-        private void GetGeofenceStateChangedReports(Geoposition pos)
+        private async Task GetGeofenceStateChangedReports(Geoposition pos)
         {
             _geofenceBackgroundEvents.Clear();
             FillEventCollectionWithExistingEvents();
@@ -73,26 +83,30 @@ namespace BackgroundTask
             // NOTE TO DEVELOPER:
             // Registered geofence events can be filtered out if the
             // geofence event time is stale.
-            DateTimeOffset eventDateTime = pos.Coordinate.Timestamp;
+            var eventDateTime = pos.Coordinate.Timestamp;
 
             calendar.SetToNow();
-            DateTimeOffset nowDateTime = calendar.GetDateTime();
-            TimeSpan diffTimeSpan = nowDateTime - eventDateTime;
+            var nowDateTime = calendar.GetDateTime();
+            var diffTimeSpan = nowDateTime - eventDateTime;
 
-            long deltaInSeconds = diffTimeSpan.Ticks / oneHundredNanosecondsPerSecond;
+            var deltaInSeconds = diffTimeSpan.TotalSeconds;
 
-            // NOTE TO DEVELOPER:
-            // If the time difference between the geofence event and now is too large
-            // the eventOfInterest should be set to false.
+            if (deltaInSeconds > 120)
+                eventOfInterest = false;
 
-            if (true == eventOfInterest)
-            {                
+            if (eventOfInterest)
+            {
                 // NOTE TO DEVELOPER:
                 // This event can be filtered out if the
                 // geofence event location is too far away.
+                var distance = 0.0d;
+
                 if ((posLastKnown.Coordinate.Point.Position.Latitude != pos.Coordinate.Point.Position.Latitude) ||
                     (posLastKnown.Coordinate.Point.Position.Longitude != pos.Coordinate.Point.Position.Longitude))
                 {
+
+                    distance = new HaversineFormula().Distance(posLastKnown.Coordinate.Point.Position, pos.Coordinate.Point.Position, HaversineFormula.DistanceType.Kilometers);
+
                     // NOTE TO DEVELOPER:
                     // Use an algorithm like the Haversine formula or Vincenty's formulae to determine
                     // the distance between the current location (pos.Coordinate)
@@ -101,7 +115,7 @@ namespace BackgroundTask
                     // filter the event out.
                 }
 
-                if (true == eventOfInterest)
+                if (eventOfInterest)
                 {
                     string geofenceItemEvent = null;
                     int numEventsOfInterest = 0;
@@ -110,7 +124,7 @@ namespace BackgroundTask
                     var reports = GeofenceMonitor.Current.ReadReports();
 
                     foreach (var report in reports)
-                    {
+                    {                        
                         GeofenceState state = report.NewState;
                         geofenceItemEvent = report.Geofence.Id + " " + formatterLongTime.Format(eventDateTime);
 
@@ -135,15 +149,27 @@ namespace BackgroundTask
                             geofenceItemEvent += " (Exited)";
                         }
 
-                        AddGeofenceEvent(geofenceItemEvent);
+                        geofenceItemEvent += $" - {deltaInSeconds}";
+                        geofenceItemEvent += $"\nDistance - {distance}";
 
+                        AddGeofenceEvent(geofenceItemEvent);
                         ++numEventsOfInterest;
+
+                        var userLocation = new UserLocation()
+                        {
+                            Latitude = report.Geoposition.Coordinate.Point.Position.Latitude,
+                            Longitude = report.Geoposition.Coordinate.Point.Position.Longitude,
+                            Name = report.Geofence.Id,
+                            UpdatedUtc = eventDateTime.UtcDateTime,
+                            Status = (LocationStatus)(int)state
+                        };
+
+                        await UploadDataToCloud(userLocation);
                     }
 
-                    if (true == eventOfInterest && 0 != numEventsOfInterest)
+                    if (eventOfInterest == true && numEventsOfInterest != 0)
                     {
                         SaveExistingEvents();
-
                         // NOTE: Other notification mechanisms can be used here, such as Badge and/or Tile updates.
                         DoToast(numEventsOfInterest, geofenceItemEvent);
                     }
@@ -169,7 +195,7 @@ namespace BackgroundTask
             Windows.Data.Xml.Dom.XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
             toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode("Geolocation Sample"));
 
-            if (1 == numEventsOfInterest)
+            if (numEventsOfInterest == 1)
             {
                 toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode(eventName));
             }
@@ -193,9 +219,9 @@ namespace BackgroundTask
             var settings = ApplicationData.Current.LocalSettings;
             if (settings.Values.ContainsKey("BackgroundGeofenceEventCollection"))
             {
-                string geofenceEvent = settings.Values["BackgroundGeofenceEventCollection"].ToString();
+                var geofenceEvent = settings.Values["BackgroundGeofenceEventCollection"].ToString();
 
-                if (0 != geofenceEvent.Length)
+                if (geofenceEvent.Length != 0)
                 {
                     var events = JsonValue.Parse(geofenceEvent).GetArray();
 
@@ -235,6 +261,38 @@ namespace BackgroundTask
             }
 
             _geofenceBackgroundEvents.Insert(0, eventDescription);
+        }
+
+        private void TryToInitializeWebClient()
+        {
+            try
+            {
+                var settings = SettingsService.Instance;
+                var credential = settings.GetCredentialFromLocker();
+
+                if (!string.IsNullOrWhiteSpace(settings.WebHost) && credential != null)
+                {
+                    webclient = new WebClientService(settings.WebHost, credential.UserName, credential.Password);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+        
+        private async Task UploadDataToCloud(UserLocation userLocation)
+        {
+            try
+            {
+                await webclient.Login();
+                var id = await webclient.SendUserLocation(userLocation);
+                Debug.WriteLine($"Uploaded to web server: {id}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);                
+            }
         }
     }
 }

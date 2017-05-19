@@ -81,6 +81,20 @@
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
     
+    <Command Name="turnOnAirConditioner">
+      <Example> Turn on air conditioner </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> Turn on air conditioner </ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+    
+    <Command Name="turnOffAirConditioner">
+      <Example> Turn off air conditioner </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> Turn off air conditioner </ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+    
     <PhraseList Label="command">
       <Item>Play</Item>      
       <Item>Stop</Item>

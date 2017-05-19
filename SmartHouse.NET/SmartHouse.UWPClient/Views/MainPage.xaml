@@ -21,20 +21,29 @@
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" />
 
-        <StackPanel Margin="10, 0, 0, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="pageHeader" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+        <Grid x:Name="stackPanel" Margin="10, 0, 0, 0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="pageHeader" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
 
-            <TextBlock Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 10, 0, 0" />
-            <TextBlock Text="{Binding PingStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 10, 0, 0" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <TextBlock x:Name="LocationDisabledMessage"
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 10, 0, 0" />
+                <TextBlock Text="{Binding PingStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 10, 0, 0" />
+
+                <TextBlock x:Name="LocationDisabledMessage"
                  Visibility="{Binding VPNVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" TextWrapping="Wrap" >
                     <Run Text="You are not connected to network. Try with " />
                   <Hyperlink NavigateUri="ms-settings:ms-settings:network-wifi">
                       <Run Text="VPN" />
                   </Hyperlink>
-            </TextBlock>
+                </TextBlock>
+            </StackPanel>
 
-        </StackPanel>
+            <ListBox Grid.Row="1" ItemsSource="{Binding GeofenceBackgroundEvents}"/>
+
+        </Grid>
 
     </RelativePanel>
 

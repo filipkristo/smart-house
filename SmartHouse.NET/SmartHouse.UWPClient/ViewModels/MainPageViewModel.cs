@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel;
 using Windows.Networking.Sockets;
 using Windows.UI.Xaml;
-using SmartHouse.UWPClient.Services.SettingsServices;
+using SmartHouse.UWPLib.Service;
 using Windows.Devices.Geolocation;
 using Windows.Devices.Geolocation.Geofencing;
 using Windows.ApplicationModel.Background;
@@ -17,26 +17,38 @@ using SmartHouse.UWPClient.BackgroundTasks;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using SmartHouse.UWPLib.BLL;
+using Windows.Storage;
+using Windows.Data.Json;
+using Windows.Security.Credentials;
+using SmartHouse.UWPLib.Service;
+using SmartHouse.UWPLib.Model;
+using Windows.Foundation.Metadata;
 
 namespace SmartHouse.UWPClient.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
+        private WebClientService webClient;
         private readonly GeofenceTask geofenceTask;
+        private IList<Geofence> geofences = new List<Geofence>();
 
         public Visibility VPNVisible { get { return Get<Visibility>(); } set { Set(value); } }
 
         public string PingStatus { get { return Get<string>(); } set { Set(value); } }
-        private IList<Geofence> geofences = new List<Geofence>();
+        public ObservableCollection<string> GeofenceBackgroundEvents { get { return Get<ObservableCollection<string>>(); } set { Set(value); } }
 
         public MainPageViewModel()
         {
             geofenceTask = new GeofenceTask();
+            GeofenceBackgroundEvents = new ObservableCollection<string>();
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            await InitializeGeolocation();                            
+            if(ApiInformation.IsTypePresent("Windows.Devices.Geolocation.Geolocator"))
+            {
+                await InitializeGeolocation();
+            }            
             await Ping();
         }       
 
@@ -49,10 +61,15 @@ namespace SmartHouse.UWPClient.ViewModels
                 case GeolocationAccessStatus.Allowed:                    
                     CheckGeoFancesAddress();                    
                     await geofenceTask.RegisterBackgroundTask();
+                    FillEventListBoxWithExistingEvents();
 
                     // register for state change events
                     GeofenceMonitor.Current.GeofenceStateChanged += Current_GeofenceStateChanged;
                     GeofenceMonitor.Current.StatusChanged += Current_StatusChanged;
+
+                    TryToInitializeWebClient();
+                    await GetCurrentLocation();                    
+
                     break;
 
                 case GeolocationAccessStatus.Denied:
@@ -65,23 +82,65 @@ namespace SmartHouse.UWPClient.ViewModels
             }
         }
 
-        private void Current_StatusChanged(GeofenceMonitor sender, object args)
+        private async void Current_StatusChanged(GeofenceMonitor sender, object args)
         {
             Debug.Write("Sender: "); 
             Debug.WriteLine(JsonConvert.SerializeObject(sender));
 
             Debug.Write("Args: ");
             Debug.WriteLine(JsonConvert.SerializeObject(args));
+
+            var userLocation = new UserLocation()
+            {
+                Latitude = sender.LastKnownGeoposition.Coordinate.Point.Position.Latitude,
+                Longitude = sender.LastKnownGeoposition.Coordinate.Point.Position.Longitude,
+                Name = "Current_StatusChanged",
+                UpdatedUtc = DateTime.UtcNow,
+                Status = LocationStatus.None
+            };
+
+            if (webClient != null)
+                await UploadLocationToCloud(userLocation);
         }
 
-        private void Current_GeofenceStateChanged(GeofenceMonitor sender, object args)
+        private async void Current_GeofenceStateChanged(GeofenceMonitor sender, object args)
         {
             Debug.Write("Sender: ");
             Debug.WriteLine(JsonConvert.SerializeObject(sender));
 
             Debug.Write("Args: ");
             Debug.WriteLine(JsonConvert.SerializeObject(args));
+
+            var userLocation = new UserLocation()
+            {
+                Latitude = sender.LastKnownGeoposition.Coordinate.Point.Position.Latitude,
+                Longitude = sender.LastKnownGeoposition.Coordinate.Point.Position.Longitude,
+                Name = "GeofenceStateChanged",
+                UpdatedUtc = DateTime.UtcNow,
+                Status = LocationStatus.None
+            };
+
+            if(webClient != null)
+                await UploadLocationToCloud(userLocation);
         }
+
+        private void TryToInitializeWebClient()
+        {
+            try
+            {
+                var settings = SettingsService.Instance;
+                var credential = settings.GetCredentialFromLocker();
+
+                if (!string.IsNullOrWhiteSpace(settings.WebHost) && credential != null)
+                {
+                    webClient = new WebClientService(settings.WebHost, credential.UserName, credential.Password);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }                
 
         private void CheckGeoFancesAddress()
         {
@@ -138,6 +197,65 @@ namespace SmartHouse.UWPClient.ViewModels
 
             Status = "";
         }
+
+        private void FillEventListBoxWithExistingEvents()
+        {
+            var settings = ApplicationData.Current.LocalSettings;
+            if (settings.Values.ContainsKey("BackgroundGeofenceEventCollection"))
+            {
+                var geofenceEvent = settings.Values["BackgroundGeofenceEventCollection"].ToString();
+
+                if (geofenceEvent.Length != 0)
+                {                    
+                    GeofenceBackgroundEvents.Clear();
+
+                    var events = JsonValue.Parse(geofenceEvent).GetArray();
+
+                    // NOTE: the events are accessed in reverse order
+                    // because the events were added to JSON from
+                    // newer to older.  _geofenceBackgroundEvents.Insert() adds
+                    // each new entry to the beginning of the collection.
+                    for (int pos = events.Count - 1; pos >= 0; pos--)
+                    {
+                        var element = events.GetStringAt((uint)pos);
+                        GeofenceBackgroundEvents.Insert(0, element);
+                    }
+                }
+            }
+        }
+
+        private async Task GetCurrentLocation()
+        {
+            var geoLocator = new Geolocator();            
+            var position = await geoLocator.GetGeopositionAsync();
+
+            var userLocation = new UserLocation()
+            {
+                Latitude = position.Coordinate.Point.Position.Latitude,
+                Longitude = position.Coordinate.Point.Position.Longitude,
+                Name = "AppStart",
+                UpdatedUtc = DateTime.UtcNow,
+                Status = LocationStatus.None
+            };
+
+            if (webClient != null)
+                await UploadLocationToCloud(userLocation);
+        }
+
+        private async Task UploadLocationToCloud(UserLocation userLocation)
+        {
+            try
+            {
+                await webClient.Login();
+                var id = await webClient.SendUserLocation(userLocation);
+                Debug.WriteLine($"Uploaded to web server: {id}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
 
 
     }

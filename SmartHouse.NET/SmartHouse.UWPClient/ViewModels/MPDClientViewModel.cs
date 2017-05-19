@@ -1,4 +1,4 @@
-﻿using SmartHouse.UWPClient.Services.SettingsServices;
+﻿using SmartHouse.UWPLib.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;

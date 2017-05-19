@@ -17,10 +17,10 @@ namespace SmartHouse.UWPClient.BackgroundTasks
 
         private IBackgroundTaskRegistration backgroundTask = null;
 
-        public async Task RegisterBackgroundTask()
+        public async Task<IBackgroundTaskRegistration> RegisterBackgroundTask()
         {
             if (BackgroundTaskRegistration.AllTasks.Any(x => x.Value.Name == BackgroundTaskName))
-                return;
+                return null;
 
             var backgroundAccessStatus = await BackgroundExecutionManager.RequestAccessAsync();
             switch (backgroundAccessStatus)
@@ -43,7 +43,7 @@ namespace SmartHouse.UWPClient.BackgroundTasks
             geofenceTaskBuilder.SetTrigger(trigger);
 
             backgroundTask = geofenceTaskBuilder.Register();
-            backgroundTask.Completed += OnCompleted;
+            return backgroundTask;            
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="22816FilipKrito.SmartHouseMedia" Publisher="CN=15BC574E-1223-41E9-91CE-8F20D5F864E3" Version="1.1.11.0" />
+  <Identity Name="22816FilipKrito.SmartHouseMedia" Publisher="CN=15BC574E-1223-41E9-91CE-8F20D5F864E3" Version="1.1.14.0" />
   <mp:PhoneIdentity PhoneProductId="b9e8c451-bf00-4bee-8130-1f6649e8769c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Smart House Media</DisplayName>
@@ -24,15 +24,15 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="green" />
       </uap:VisualElements>
       <Extensions>
+        <uap:Extension Category="windows.personalAssistantLaunch" />
+        <uap:Extension Category="windows.appService" EntryPoint="SmartHouse.UWPClient.VoiceCommands.SmartHouseVoiceCommandService">
+          <uap:AppService Name="SmartHouseVoiceCommandService" />
+        </uap:Extension>
         <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundTask.GeofenceBackgroundTask">
           <BackgroundTasks>
             <Task Type="location" />
           </BackgroundTasks>
         </Extension>
-        <uap:Extension Category="windows.appService" EntryPoint="SmartHouse.UWPClient.VoiceCommands.SmartHouseVoiceCommandService">
-          <uap:AppService Name="SmartHouseVoiceCommandService" />
-        </uap:Extension>
-        <uap:Extension Category="windows.personalAssistantLaunch" />
       </Extensions>
       <uap:ApplicationContentUriRules>
         <uap:Rule Match="http://10.110.166.90/" Type="include" WindowsRuntimeAccess="all" />

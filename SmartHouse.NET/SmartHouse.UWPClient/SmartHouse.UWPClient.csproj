@@ -105,7 +105,6 @@
     <Compile Include="BackgroundTasks\GeofenceTask.cs" />
     <Compile Include="Extensions\WebViewExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SettingsServices\SettingsService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BaseWebViewViewModel.cs" />
     <Compile Include="ViewModels\LocationViewModel.cs" />
