@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SmartHouse.Lib;
 using SmartHouse.UWPLib.Model;
 using System;
 using System.Collections.Generic;
@@ -108,11 +109,56 @@ namespace SmartHouse.UWPLib.Service
                 {
                     return JsonConvert.DeserializeObject<int>(result);
                 }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    var settings = ApplicationData.Current.LocalSettings;
+                    settings.Values.Remove(TokenKey);
+                    return -1;
+                }
                 else
                 {
                     throw new Exception(result);
                 }
             }
-        }        
+        }
+
+        public async Task<int> SendTelemetryData(TelemetryData telemetry)
+        {
+            var telemetryDto = new TelemetryDataDto()
+            {
+                CreatedUtc = telemetry.Measured,
+                GasValue = (int)telemetry.GasValue,
+                HeatIndex = telemetry.HeatIndex,
+                Humidity = telemetry.Humidity,
+                Temperature = telemetry.Temperature                
+            };
+
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", oauthResponse.AccessToken);
+                httpClient.BaseAddress = new Uri(baseUrl);
+
+                var JSON = JsonConvert.SerializeObject(telemetryDto);
+                var content = new StringContent(JSON, Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync("/api/Telemetry/SaveTelemetryData", content);
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return JsonConvert.DeserializeObject<int>(result);
+                }
+                else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    var settings = ApplicationData.Current.LocalSettings;
+                    settings.Values.Remove(TokenKey);
+                    return -1;
+                }
+                else
+                {
+                    throw new Exception(result);
+                }
+            }
+        }
     }
 }

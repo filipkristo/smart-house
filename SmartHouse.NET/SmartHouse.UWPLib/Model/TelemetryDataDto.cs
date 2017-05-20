@@ -18,9 +18,7 @@ namespace SmartHouse.UWPLib.Model
 
         public int GasValue { get; set; }
 
-        public DateTime CreatedUtc { get; set; }
-        
-        public string UserId { get; set; }
+        public DateTime CreatedUtc { get; set; }                
 
         public int RoomId { get; set; }
     }

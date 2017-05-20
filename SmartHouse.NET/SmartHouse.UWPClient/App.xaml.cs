@@ -77,9 +77,42 @@ namespace SmartHouse.UWPClient
 
             hubConnection = new HubConnection($"http://{IP}:{Port}/");
             var hubProxy = hubConnection.CreateHubProxy("ServerHub");
-            hubProxy.On<TelemetryData>("temperature", telemetry => Debug.WriteLine($"Telemetry update.Temperature: {telemetry.Temperature} Humidity: {telemetry.Humidity} Gas: {telemetry.GasValue} Updated: {telemetry.Measured}"));
+            hubProxy.On<TelemetryData>("temperature", async (data) => await UploadToCloud(data));
 
             await hubConnection.Start();
+        }
+
+        int skiped;
+        private async Task UploadToCloud(TelemetryData telemetry)
+        {
+            if(skiped == 6)
+            {
+                skiped = 0;
+
+                try
+                {
+                    var settings = SettingsService.Instance;
+                    var credential = settings.GetCredentialFromLocker();
+
+                    if (!string.IsNullOrWhiteSpace(settings.WebHost) && credential != null)
+                    {
+                        var webclient = new WebClientService(settings.WebHost, credential.UserName, credential.Password);
+
+                        await webclient.Login();
+                        var result = await webclient.SendTelemetryData(telemetry);
+
+                        Debug.WriteLine($"Result: {result}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }                
+            }            
+            else
+            {
+                skiped++;
+            }
         }
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
