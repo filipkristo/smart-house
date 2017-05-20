@@ -14,6 +14,19 @@ namespace SmartHouseWeb
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/moment").Include(
+                       "~/Scripts/moment.js",
+                       "~/Scripts/moment-with-locales.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/signalR-scripts").Include(
+                       "~/Scripts/jquery.signalR-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include(
+                        "~/Scripts/app/chart.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/live-telemetry").Include(
+                        "~/Scripts/app/live-telemetry.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(

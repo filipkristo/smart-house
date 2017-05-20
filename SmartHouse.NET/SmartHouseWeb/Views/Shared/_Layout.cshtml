@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
 
     <script type = 'text/javascript' >
         var appInsights=window.appInsights||function(config)
@@ -36,6 +37,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("User Location", "Index", "UserLocation")</li>
+                        <li>@Html.ActionLink("Telemetry", "Index", "Telemetry")</li>
                     }
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>

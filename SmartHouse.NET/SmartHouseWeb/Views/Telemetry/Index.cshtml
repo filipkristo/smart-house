@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Current";
+}
+
+@section styles{
+
+    <style>
+        .telelabel {
+            font-weight: bold;
+            font-size: xx-large;
+        }
+    </style>
+
+}
+
+<h3>Telemetry data</h3>
+<hr />
+
+<div class="row">
+
+    <br />
+
+    <div class="col-md-4 col-xs-6">
+
+        <img class="sensorIcon centerSmall" alt="Temperature" title="Temperature" src="@Url.Content("~/img/Temperature.png")" />
+
+
+        <div id="temperature" class="temperature telelabel">
+            --- &deg;C
+        </div>
+
+    </div>
+
+    <div class="col-md-4 col-xs-6">
+
+        <img class="sensorIcon centerSmall" alt="Humidity" title="Humidity" src="@Url.Content("~/img/Humidity.png")" />
+
+        <div id="humidity" class="humidity telelabel">
+            --- %
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4 col-xs-12">
+
+        <img class="sensorIcon centerSmall" alt="Last updated" title="Clock" src="@Url.Content("~/img/Clock.png")" />
+
+        <div id="updated" class="updated telelabel">
+            ---
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts{
+
+    @Scripts.Render("~/bundles/signalR-scripts")
+    @Scripts.Render("~/bundles/moment")
+    <script type="text/javascript" src="@Url.Content("~/signalr/hubs")"></script>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Scripts.Render("~/bundles/live-telemetry")
+    }
+
+    <script>
+        function postFailure() {
+            alert('Ooops... Error');
+        }
+    </script>
+}

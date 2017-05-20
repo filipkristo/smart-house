@@ -16,6 +16,7 @@ namespace SmartHouseWeb
             config.MapHttpAttributeRoutes();
 
             config.Filters.Add(new ValidateModelAttribute());
+            config.Filters.Add(new ApiExceptionFilterAttribute());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

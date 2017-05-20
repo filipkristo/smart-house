@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using SmartHouseWeb.App_Start;
@@ -9,10 +10,12 @@ namespace SmartHouseWeb
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
-        {
+        {            
             ConfigureAuth(app);
             ConfigureOAuth(app);
+
             app.MapSignalR();
+            GlobalHost.HubPipeline.RequireAuthentication();
         }
 
         public void ConfigureOAuth(IAppBuilder app)
