@@ -14,5 +14,6 @@ namespace SmartHouseWebLib.DomainService.Interface
         Task<int> Insert(TelemetryData model);
         Task<int> Update(TelemetryData model);
         Task<int> Delete(TelemetryData model);
+        Task<TelemetryData> GetLastAsync(string userId);
     }
 }

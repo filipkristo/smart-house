@@ -75,6 +75,10 @@
     <Compile Include="Migrations\201705192120459_HeatIndex.Designer.cs">
       <DependentUpon>201705192120459_HeatIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705200851558_TElemetryUniqueIndex.cs" />
+    <Compile Include="Migrations\201705200851558_TElemetryUniqueIndex.Designer.cs">
+      <DependentUpon>201705200851558_TElemetryUniqueIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\House.cs" />
@@ -108,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705192120459_HeatIndex.resx">
       <DependentUpon>201705192120459_HeatIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705200851558_TElemetryUniqueIndex.resx">
+      <DependentUpon>201705200851558_TElemetryUniqueIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

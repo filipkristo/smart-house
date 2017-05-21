@@ -50,9 +50,9 @@ namespace SmartHouseWebLib.Migrations
                 Name = "Living room",
             };
 
-            context.House.AddOrUpdate(
+            context.Room.AddOrUpdate(
                 p => p.Name,
-                house);
+                room);
 
             context.SaveChanges();
         }

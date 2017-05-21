@@ -18,6 +18,9 @@ namespace SmartHouseWeb
                        "~/Scripts/moment.js",
                        "~/Scripts/moment-with-locales.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/locale-date").Include(
+                        "~/Scripts/app/locale-date.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR-scripts").Include(
                        "~/Scripts/jquery.signalR-{version}.js"));
 

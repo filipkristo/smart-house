@@ -29,8 +29,8 @@
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>        
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdatedUtc)
+        <td data-utcdate="@item.UpdatedUtc.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'")">
+            
         </td>        
         <td>            
             @Html.ActionLink("Details", "Details", new { id=item.Id })            
@@ -39,3 +39,10 @@
 }
 
 </table>
+
+@section Scripts{ 
+    
+    @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/locale-date")
+        
+}

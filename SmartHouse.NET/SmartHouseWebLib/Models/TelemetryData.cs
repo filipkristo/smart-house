@@ -20,6 +20,7 @@ namespace SmartHouseWebLib.Models
 
         public int GasValue { get; set; }
 
+        [Index("IDX_Date", IsUnique = true)]
         public DateTime CreatedUtc { get; set; }
 
         //[MaxLength(128)]

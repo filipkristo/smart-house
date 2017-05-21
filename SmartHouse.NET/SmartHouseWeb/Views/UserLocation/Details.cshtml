@@ -46,8 +46,8 @@
             @Html.DisplayNameFor(model => model.UpdatedUtc)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedUtc)
+        <dd data-utcdate="@Model.UpdatedUtc.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'")">
+            
         </dd>
 
         <dt>
@@ -71,3 +71,10 @@
         <input type="submit" value="Delete" class="btn btn-danger" />
     }
 </p>
+
+
+@section Scripts{
+
+    @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/locale-date")
+}

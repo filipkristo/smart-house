@@ -319,9 +319,11 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="img\Clock.png" />
     <Content Include="img\Humidity.png" />
+    <Content Include="img\Smoke.png" />
     <Content Include="img\Temperature.png" />
     <Content Include="Scripts\app\chart.js" />
     <Content Include="Scripts\app\live-telemetry.js" />
+    <Content Include="Scripts\app\locale-date.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />

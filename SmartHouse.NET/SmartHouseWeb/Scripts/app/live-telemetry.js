@@ -13,6 +13,7 @@
 
             $('#temperature').html(data.Temperature.toFixed(2) + ' &deg;C');
             $('#humidity').text(data.Humidity.toFixed(2) + ' %');
+            $('#smoke').text(data.GasValue.toFixed(0) + ' %');
 
             $('#updated').text(moment(new Date(data.CreatedUtc).toLocaleString()).format("LLL"));
 
@@ -28,6 +29,7 @@
 
         $('#temperature').html(data.Temperature.toFixed(2) + ' &deg;C');
         $('#humidity').text(data.Humidity.toFixed(2) + ' %');
+        $('#smoke').text(data.GasValue.toFixed(0) + ' %');
 
         $('#updated').text(moment(new Date(data.CreatedUtc).toLocaleString()).format("LLL"));
 

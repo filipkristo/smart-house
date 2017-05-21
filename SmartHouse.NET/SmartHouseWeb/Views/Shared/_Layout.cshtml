@@ -55,6 +55,9 @@
         </footer>
     </div>
 
+    <input type="hidden" id="cultureInfo" value="@Request.UserLanguages.FirstOrDefault()" />
+    <input type="hidden" id="cultureInfoAll" value="@string.Join(",", Request.UserLanguages)" />
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

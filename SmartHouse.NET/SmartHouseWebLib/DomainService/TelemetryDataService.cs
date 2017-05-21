@@ -34,6 +34,13 @@ namespace SmartHouseWebLib.DomainService
             return await unitOfWork.TelemetryDataRepository.GetByIDAsync(Id);
         }
 
+        public async Task<TelemetryData> GetLastAsync(string userId)
+        {
+            return await unitOfWork
+                .TelemetryDataRepository
+                .GetFirstOrDefaultAsync(filter: x => x.Room.House.Users.Any(u => u.Id == userId), orderBy: x => x.OrderByDescending(d => d.CreatedUtc));
+        }
+
         public async Task<int> Insert(TelemetryData model)
         {
             unitOfWork.TelemetryDataRepository.Insert(model);
