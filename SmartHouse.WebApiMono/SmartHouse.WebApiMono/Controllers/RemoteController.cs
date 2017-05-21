@@ -202,7 +202,10 @@ namespace SmartHouse.WebApiMono.Controllers
             var smartHouseState = await SmartHouseService.GetCurrentState();
 
             if (powerStatus == PowerStatusEnum.StandBy)
+            {
+                PushNotification("Smarthouse is turn off");
                 return;
+            }
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
@@ -227,12 +230,14 @@ namespace SmartHouse.WebApiMono.Controllers
             var smartHouseState = await SmartHouseService.GetCurrentState();
 
             if (powerStatus == PowerStatusEnum.StandBy)
+            {
+                PushNotification("Smarthouse is turn off");
                 return;
+            }                
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                PandoraService.Pause();
-                PushNotification("Pianobar has exited");
+                PandoraService.Pause();                
             }
             else if (smartHouseState == SmartHouseState.Music)
             {

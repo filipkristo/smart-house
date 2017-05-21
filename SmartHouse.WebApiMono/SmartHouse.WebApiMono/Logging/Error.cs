@@ -31,7 +31,7 @@ namespace SmartHouse.WebApiMono.Logging
         [Required]
         public string ErrorMessage { get; set; }
 
-        [JsonProperty(PropertyName = "StackTrace")]
+        [JsonProperty(PropertyName = "stackTrace")]
         [Required]
         public string StackTrace { get; set; }
 
@@ -42,9 +42,13 @@ namespace SmartHouse.WebApiMono.Logging
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Error {\n");
-            sb.Append("  Error: ").Append(ErrorMessage).Append("\n");
-            sb.Append("}\n");
+            sb.Append("class Error {");
+            sb.Append(Environment.NewLine);
+            sb.Append("  Error: ").Append(ErrorMessage).Append(Environment.NewLine);
+            sb.Append("  Stack Trace: ").Append(StackTrace).Append(Environment.NewLine);
+            sb.Append("}");
+            sb.Append(Environment.NewLine);
+
             return sb.ToString();
         }
 
