@@ -8,6 +8,7 @@ namespace SmartHouse.Lib
 		Result SaveTemperature(TelemetryData data);
 		Task<Result> SaveTemperatureUdp(string data);
         Task<TelemetryData> GetLastTemperature();
+        Task<byte> GetAirConditionState();
         Task<Result> AirCondition(byte On);
     }
 }

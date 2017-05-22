@@ -110,6 +110,25 @@ namespace SmartHouse.Lib
             }
         }
 
+        public async Task<byte> GetAirConditionState()
+        {
+            using (var tcpClient = new TcpClient("10.110.166.197", 9000))
+            {
+                using (var netStream = tcpClient.GetStream())
+                using (var streamReader = new StreamReader(netStream, Encoding.ASCII))
+                using (var streamWritter = new StreamWriter(netStream, Encoding.ASCII) { AutoFlush = true })
+                {
+                    tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+                    tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+
+                    await streamWritter.WriteLineAsync("?");
+                    var response = await streamReader.ReadLineAsync();
+
+                    return Convert.ToByte(response);
+                }
+            }
+        }
+
         public void Dispose()
 		{
 			

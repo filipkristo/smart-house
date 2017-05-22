@@ -30,6 +30,13 @@ namespace SmartHouse.WebApiMono
 			return await TelemetryService.GetLastTemperature();
 		}
 
+        [HttpGet]
+        [Route("GetAirConditionState")]
+        public async Task<byte> GetAirConditionState()
+        {
+            return await TelemetryService.GetAirConditionState();
+        }
+
         [HttpPost]
         [Route("AirCondition")]
         public async Task<Result> AirCondition(byte On)
