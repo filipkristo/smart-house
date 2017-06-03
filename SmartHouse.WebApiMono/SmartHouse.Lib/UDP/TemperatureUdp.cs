@@ -13,8 +13,9 @@ namespace SmartHouse.Lib
 
 		public TemperatureUdp(Action<TelemetryData> signalR)
 		{
-			service = new TelemetryService(signalR);
-		}
+			service = new TelemetryService();
+            service.SignalR = signalR;
+        }
 
 		public async Task StartListen()
 		{			

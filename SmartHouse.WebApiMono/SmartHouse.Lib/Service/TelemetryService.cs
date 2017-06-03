@@ -14,17 +14,12 @@ namespace SmartHouse.Lib
 
         private static TelemetryData TemperatureData { get; } = new TelemetryData();
 
-		private Action<TelemetryData> SignalR;
+        public Action<TelemetryData> SignalR { get; set; }        
 
         public TelemetryService()
         {
 
-        }
-
-		public TelemetryService(Action<TelemetryData> signalR)
-		{
-			SignalR = signalR;
-		}
+        }		
 
 		public async Task<TelemetryData> GetLastTemperature()
 		{

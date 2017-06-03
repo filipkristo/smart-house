@@ -15,8 +15,9 @@ namespace SmartHouse.WebApiMono
         private readonly ISmartHouseService SmartHouseService;
         private readonly IMPDService MpdService;
         private readonly ITVService TVService;
+        private readonly ITelemetryService TelemetryService;
 
-        public SmartHouseController(ISettingsService settingsService, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService)
+        public SmartHouseController(ISettingsService settingsService, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ITelemetryService telemetryService)
             : base(settingsService)
         {
             YamahaService = yamahaService;
@@ -24,6 +25,7 @@ namespace SmartHouse.WebApiMono
             SmartHouseService = smartHouseService;
             MpdService = mpdService;
             TVService = tvService;
+            TelemetryService = telemetryService;
         }
 
         [HttpGet]
@@ -131,6 +133,9 @@ namespace SmartHouse.WebApiMono
 
                 await TVService.Power();
             }
+
+            if (await TelemetryService.GetAirConditionState() == 1)
+                await TelemetryService.AirCondition(0);
 
             NotifyClients();
             PushNotification("Turn off");
