@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
-	public interface ITelemetryService : IDisposable
+	public interface ITelemetryService
 	{
         Action<TelemetryData> SignalR { get; set; }
         Result SaveTemperature(TelemetryData data);

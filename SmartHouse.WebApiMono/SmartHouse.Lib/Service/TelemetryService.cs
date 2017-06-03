@@ -122,11 +122,6 @@ namespace SmartHouse.Lib
                     return Convert.ToByte(response);
                 }
             }
-        }
-
-        public void Dispose()
-		{
-			
-		}
+        }      
 	}
 }
