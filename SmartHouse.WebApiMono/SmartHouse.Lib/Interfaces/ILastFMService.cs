@@ -7,7 +7,8 @@ namespace SmartHouse.Lib
 {
 	public interface ILastFMService
 	{
-		Task<string> StartScrobble(SongDetails song);
+        string StartScrobbleBash(SongDetails song);
+        Task<string> StartScrobble(SongDetails song);
 		Task<string> UpdateNowPlaying(SongDetails song);
 		Task<string> LoveSong(string artistName, string trackName);
         Task<string> UnloveSong(string artistName, string trackName);

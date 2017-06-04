@@ -22,12 +22,12 @@ namespace SmartHouse.WebApiMono
 
         [Route("StartScrobble")]
         [HttpPost]
-        public async Task<HttpResponseMessage> StartScrobble(SongDetails song)
+        public HttpResponseMessage StartScrobble(SongDetails song)
         {
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
 
-            await LastFMService.StartScrobble(song);
+            LastFMService.StartScrobbleBash(song);
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 

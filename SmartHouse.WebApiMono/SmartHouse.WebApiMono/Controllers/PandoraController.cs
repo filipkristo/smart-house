@@ -175,7 +175,7 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("StartScrobble")]
-		public async Task<string> StartScrobble()
+		public string StartScrobble()
 		{
 			var pandoraInfo = PandoraService.GetCurrentSongInfo();
 			var song = new SongDetails()
@@ -185,7 +185,7 @@ namespace SmartHouse.WebApiMono
 				Song = pandoraInfo.Song
 			};
 
-			return await LastFMService.StartScrobble(song);
+			return LastFMService.StartScrobbleBash(song);
 		}
 
 		[HttpGet]

@@ -71,6 +71,19 @@ namespace SmartHouse.Lib
             }
         }
 
+        /// <summary>
+        /// Dependency: https://github.com/filipkristo/LastfmWSClient.git
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        public string StartScrobbleBash(SongDetails song)
+        {            
+            var script = "./scrobble";
+
+            var result = BashHelper.ExecBashScript(script, song.Artist, song.Song, song.Album, Environment.NewLine);
+            return string.IsNullOrWhiteSpace(result.Error) ? $"StartScrobbleBash - OK: {result.Message}" : $"StartScrobbleBash - FAIL: {result.Error}";
+        }
+
         public async Task<string> UpdateNowPlaying(SongDetails song)
         {
             using (var client = new LastfmClient(API_KEY, API_SECRET))
