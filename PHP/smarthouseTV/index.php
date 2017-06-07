@@ -177,10 +177,6 @@
 		runSmartHouseCommand(command).done(function(){
 			
 			console.log('command ' + command + new Date());			
-
-			//yamahaState();
-			//smartHouseState();
-			//pandoraState();
 			
 		});
 
@@ -204,10 +200,6 @@
 			
 			if(button.hasClass('prog'))
 				waitingDialog.hide();
-
-			//yamahaState();
-			//smartHouseState();
-			//pandoraState();
 			
 		});
 
@@ -237,10 +229,6 @@
 
 				$(this).removeAttr('disabled', 'disabled');
 				waitingDialog.hide();
-
-				//yamahaState();
-				//smartHouseState();
-				//pandoraState();
 
 			});
 
@@ -326,9 +314,7 @@
 		  "hideEasing": "linear",
 		  "showMethod": "fadeIn",
 		  "hideMethod": "fadeOut"
-		};
-
-		//toastr["success"]('Hello ');
+		};		
 
 	});
 	
@@ -355,41 +341,7 @@ function toogleDialog(){
 		$('#btnMusicInfo').click();
 }
 
-document.onkeydown = function (e) {
-  e = e || window.event;
-  switch (e.which || e.keyCode) {
-        case 179 : 
-        	runCommand('Play');
-            break;
-        case 176 : 
-        	runCommand('Next');
-            break;
-        case 177 : 
-        	runCommand('Prev');
-            break;
-        case 175 : 
-        	runCommand('VolumeUp');
-            break;
-        case 174 : 
-        	runCommand('VolumeDown');
-            break;
-        case 49 : 
-        	runCommand('Pandora');
-            break;
-        case 50 : 
-        	runCommand('Music');
-            break;
-        case 51 : 
-        	runCommand('XBox');
-            break;
-        case 52 : 
-        	runCommand('TV');
-            break;
-        case 76 : 
-        	love();   	
-            break;
-  }
-}
+$(document).keydown(function(e) { e.preventDefault(); });
 
 </script>
 

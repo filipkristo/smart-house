@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <label>
-                    Timeout (seconds) :
+                    Timeout (minutes) :
                     <input id="timerSeconds" type="numeric" class="form-control" value="60">
                 </label>
             </div>

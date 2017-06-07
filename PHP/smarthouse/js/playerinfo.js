@@ -34,14 +34,12 @@ function initializeInfoControl(){
 			$('#info-player').append(data);
 
 			updatePandora();
-			//timer = setInterval(updatePandora, 10000); 
+			timer = setInterval(updatePandora, 10000); 
 
 			yamahaState();
 		});			
 
 	}				
-
-	$("#lblVolume").text(lastVolume);
 
 }
 
@@ -49,33 +47,28 @@ function updatePandora(){
 
 	pandoraState().done(function(result){
 
-		updatePandoraValues(result);
+		$('#currentArtist').html(result.artist);
+		$('#currentAlbum').html(result.album);
+		$('#currentRadio').html(result.radio);
+		$('#currentSong').html(result.song);
+
+		$('#imagePic').show();
+		$('#imagePic').attr('src', result.albumUri);
+
+		if(result.loved == true){
+
+			$('#loved').show();
+			$('#btnThumpUp').hide();
+
+		}
+		else{
+
+			$('#loved').hide();
+			$('#btnThumpUp').show();
+		}
+
 
 	});
-
-}
-
-function updatePandoraValues(result){
-
-	$('#currentArtist').html(result.artist);
-	$('#currentAlbum').html(result.album);
-	$('#currentRadio').html(result.radio);
-	$('#currentSong').html(result.song);
-
-	$('#imagePic').show();
-	$('#imagePic').attr('src', result.albumUri);
-
-	if(result.loved == true){
-
-		$('#loved').show();
-		$('#btnThumpUp').hide();
-
-	}
-	else{
-
-		$('#loved').hide();
-		$('#btnThumpUp').show();
-	}
 
 }
 

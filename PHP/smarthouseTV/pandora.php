@@ -2,7 +2,7 @@
 
 	<div class="col-md-12 well">
 
-		<div class="col-md-6">
+		<div class="col-md-8">
 
 			<div class="row">
 
@@ -65,7 +65,7 @@
 
 		</div>
 	
-		<div class="col-md-6" style="text-align: right;">
+		<div class="col-md-4" style="text-align: right;">
 
 			<img id="imagePic" class="img-thumbnail" width="330" height="330" style="display: inline-block;">
 		</div>			

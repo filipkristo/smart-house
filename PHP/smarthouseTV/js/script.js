@@ -1,6 +1,7 @@
 
 var baseUrl = 'http://10.110.166.90:8081/api/';
 var lastState = '';
+var lastVolume = 0.0;
 
 function yamahaState(){
 
@@ -14,7 +15,8 @@ function yamahaState(){
 
 			var volume = data.main_Zone.basic_Status.volume.lvl.val / 10;			
 			$('#lblVolume').text(volume);
-
+			lastVolume = volume;
+			
 			if(data.main_Zone.basic_Status.power_Control.power != "Standby")
 			{
 				$('.bfunc').removeAttr("disabled");

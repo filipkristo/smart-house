@@ -4,20 +4,56 @@
 		"selected_items":
 		[
 			[
+				"Sers",
+				"Sensor"
+			],
+			[
+				"a",
+				"artist"
+			],
+			[
+				"valu",
+				"values"
+			],
+			[
+				"last",
+				"lastArtist"
+			],
+			[
+				"win",
+				"window"
+			],
+			[
+				"sho",
+				"dialogShow"
+			],
+			[
+				"lo",
+				"love"
+			],
+			[
+				"fnu",
+				"function"
+			],
+			[
+				"vol",
+				"volumeKnowInitialization"
+			],
+			[
+				"bfun",
+				"bfuncEventHandler"
+			],
+			[
+				"dia",
+				"dialogShow"
+			],
+			[
 				"pa",
 				"padding-top"
 			],
 			[
 				"el",
 				"elapsed"
-			],
-			[
-				"lo",
-				"log"
-			],
-			[
-				"a",
-				"attr"
 			],
 			[
 				"play",
@@ -57,67 +93,10 @@
 			}
 		},
 		{
-			"contents": "<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\">\n\t<meta name=\"author\" content=\"Filip Krišto\">\n  \t<title>Smart House</title>\n\n  \t<link href=\"css/bootstrap.min.css\" rel=\"stylesheet\">\t\n\t<link href=\"css/Site.css\" rel=\"stylesheet\">\n\t<link rel=\"icon\" href=\"favicon.ico\">\n\n</head>\n<body>\n\n<br />\t\t\t\t\t\t\n\n<div class=\"container body-content\">\t\t\t\n\t\t\n\t\t<?php\n\t\t\tinclude 'header.php';\t\n\t\t?>\n\n\t\t<br />\t\t\n\n\t\t\t<div id=\"infoPanel\">\n\n\t\t\t</div>\t\t\t\n\n\t\t<br />\n\n\t\t<div class=\"tab-content\">\n\t\t  \t<div role=\"tabpanel\" class=\"tab-pane active\" id=\"main\">\n\n\t\t\t\t<div class=\"row\">\n\n\t\t\t\t\t<div class=\"col-md-3 col-xs-3\">\n\t\t\t\t\t\t<a href = \"#\" class = \"bfunc thumbnail smartInput prog\" data-command=\"Pandora\">\n\t\t\t\t \t\t\t<img src = \"/smarthouse/img/pandora.png\" alt = \"Pandora input\">\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"col-md-3 col-xs-3\">\n\t\t\t\t\t\t<a href = \"#\" class = \"bfunc thumbnail smartInput prog\" data-command=\"Music\">\n\t\t\t\t \t\t\t<img src = \"/smarthouse/img/music.png\" alt = \"Music input\">\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"col-md-3 col-xs-3\">\n\t\t\t\t\t\t<a href = \"#\" class = \"bfunc thumbnail smartInput prog\" data-command=\"XBox\">\n\t\t\t\t \t\t\t<img src = \"/smarthouse/img/xbox.png\" alt = \"XBox input\">\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"col-md-3 col-xs-3\">\n\t\t\t\t\t\t<a href = \"#\" class = \"bfunc thumbnail smartInput prog\" data-command=\"TV\">\n\t\t\t\t \t\t\t<img src = \"/smarthouse/img/TV.png\" alt = \"TV input\">\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</div>\n\n\t\t\t\t</div>\n\n\t\t\t\t<br />\n\t\t\t\t<br />\t\t\t\t\t\t\t\t\n\n\t\t\t\t<br />\n\n\t\t\t\t<div class=\"row\" style=\"text-align: center;\">\n\t\t\t\t\t<input id=\"volumeKnob\" class=\"knob\" data-min=\"-50\" data-max=\"-10\" data-step=\"0.5\" data-val=\"0\" data-displayPrevious=true data-fgColor=\"#0ce3ac\" />\n\t\t\t\t</div>\t\n\n\t\t  \t</div>  \n\n\t\t\t<div role=\"tabpanel\" class=\"tab-pane\" id=\"info\">\n\t\t\t\n\t\t\t\t<h3>Temperature </h3>\n\t\t  \t\t<div class=\"row\">\n\n                        <br />\n\n                        <div class=\"col-md-4 col-xs-6\">                            \n\n                            <img class=\"sensorIcon centerSmall\" alt=\"Temperature\" title=\"Temperature\" src=\"./img/Temperature.png\" />\n\n                            <h4>                                \n                                <div id=\"temperature\" style=\"font-weight:bold;\">\n                                    --- &deg;C \n                                </div>                                \n                            </h4>                                                                           \n\n                        </div>\n\n                        <div class=\"col-md-4 col-xs-6\">\n\n                            <img class=\"sensorIcon centerSmall\" alt=\"Humidity\" title=\"Humidity\" src=\"./img/Humidity.png\" />\n\n                            <h4>                                \n                                <div id=\"humidity\" style=\"font-weight:bold;\">\n                                    --- %\n                                </div>\n                            </h4>                            \n                           \n                        </div>\n\n\n                        <div class=\"col-md-4 col-xs-12\">\n\n                            <img class=\"sensorIcon centerSmall\" alt=\"Last updated\" title=\"Clock\" src=\"./img/Clock.png\" />\n\n                            <h4>                                \n                                <div id=\"updated\" style=\"font-weight:bold;\">\n                                    --- \n                                </div>\n                            </h4>                            \n                           \n                        </div>\n\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t\t<div role=\"tabpanel\" class=\"tab-pane\" id=\"action\">\n\t\t  \t\t<div class=\"row\">\n\t\t            <div class=\"list-group table-of-contents\">\n\t\t              <a id=\"restartVPN\" class=\"list-group-item\" href=\"#\">Restart VPN</a>\n\t\t              <a id=\"playAlarm\" class=\"list-group-item\" href=\"#\">Play alarm sound</a>\n\t\t              <a id=\"pandoraState\" class=\"list-group-item\" href=\"#\">Pandora state</a>\n\t\t              <a id=\"yamahaState\" class=\"list-group-item\" href=\"#\">Yamaha state</a>\n\t\t              <a id=\"mpdState\" class=\"list-group-item\" href=\"#\">MPD state</a>\n\t\t              <a id=\"mpdSong\" class=\"list-group-item\" href=\"#\">MPD song</a>\n\t\t              <a id=\"turnOffTimer\" data-target=\"#timer-dialog\" data-toggle=\"modal\" class=\"list-group-item\" href=\"#\">Turn off timer</a>\n\t\t            </div>\n      \t\t\t</div>\n\n  \t\t\t\t<div class=\"row\">\n  \t\t\t\t\t<h4>Result:</h4>\n  \t\t\t\t</div>\t\t\t\t\n\n      \t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-md-12\">\n\t\t\t\t\t\t<textarea class=\"form-control shadow\" id=\"response\" rows=\"30\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t</div>\t\t\t\n\n\t\t\t<div role=\"tabpanel\" class=\"tab-pane\" id=\"settings\">\n\t\t\t  \t\tSample for Settings\n\t\t\t</div>\n\n\t\t<?php include 'player.php';?>\n        <?php include 'footer.php';?>\n        <?php include 'timerDialog.php';?>\n        <?php include 'infoDialog.php';?>\n</div> \n \n<script src=\"js/jquery-2.1.3.min.js\"></script>\n<script src=\"js/bootstrap.min.js\"></script>\n<script src=\"js/jquery.knob.min.js\"></script>\n<script src=\"js/script.js\"></script>\n<script src=\"js/dialog.js\"></script>\n\n<script>\n\n\tvar timer = null;\n\n \t$(document).ready(function(){\n\t\t\n\t\t//http://anthonyterrien.com/demo/knob/\n\t\t//http://bootswatch.com/darkly/#buttons\n\t\t$('#volumeKnob').knob({\n\n\t\t\tchange : function (value) {               \n                console.log(\"change : \" + value);\n                setVolume(value);\n            },\n            release : function (value) {                \n                console.log(\"release : \" + value);\n            },\n            cancel : function () {\n                console.log(\"cancel : \", this);\n            },\n            format : function (value) {\n                 return value + '';\n                 },\n             draw : function () {\n\n                    // \"tron\" case\n                    if(this.$.data('skin') == 'tron') {\n\n                        this.cursorExt = 0.3;\n\n                        var a = this.arc(this.cv)  // Arc\n                                , pa                   // Previous arc\n                                , r = 1;\n\n                        this.g.lineWidth = this.lineWidth;\n\n                        if (this.o.displayPrevious) {\n                            pa = this.arc(this.v);\n                            this.g.beginPath();\n                            this.g.strokeStyle = this.pColor;\n                            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);\n                            this.g.stroke();\n                        }\n\n                        this.g.beginPath();\n                        this.g.strokeStyle = r ? this.o.fgColor : this.fgColor ;\n                        this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);\n                        this.g.stroke();\n\n                        this.g.lineWidth = 2;\n                        this.g.beginPath();\n                        this.g.strokeStyle = this.o.fgColor;\n                        this.g.arc( this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);\n                        this.g.stroke();\n\n                        return false;\n                    }\n                }\n\t\t});\n\n\n\t\t$('.bfunc').click(function() {\n\t\t\t\n\t\t\tvar button = $(this);\n\t\t\tvar command = $(this).data(\"command\");\n\n\t\t\tbutton.attr('disabled', 'disabled');\n\n\t\t\tif(button.hasClass('prog'))\n\t\t\t\twaitingDialog.show('Please wait...');\n\n\t\t\trunSmartHouseCommand(command).done(function(){\n\t\t\t\t\n\t\t\t\tbutton.removeAttr('disabled', 'disabled');\n\t\t\t\t\n\t\t\t\tif(button.hasClass('prog'))\n\t\t\t\t\twaitingDialog.hide();\n\n\t\t\t\tyamahaState();\n\t\t\t\tsmartHouseState();\n\t\t\t\tpandoraState();\n\t\t\t\t\n\t\t\t});\n\t\t\t\n\t\t});\n\t\t\n\t\t$('#turnon').click(function(){\n\n\t\t\tvar command = $(this).data(\"command\");\n\n\t\t\t$(this).attr('disabled', 'disabled');\n\t\t\twaitingDialog.show('Please wait...');\n\n\t\t\trunSmartHouseCommand(command).done(function(){\n\t\t\t\t\n\t\t\t\t$(this).removeAttr('disabled', 'disabled');\n\t\t\t\twaitingDialog.hide();\n\n\t\t\t\tyamahaState();\n\t\t\t\tsmartHouseState();\n\t\t\t\tpandoraState();\n\n\t\t\t});\n\n\t\t});\n\n\t\t$('#restartVPN').click(function(){\n\n\t\t\trestartVPN();\n\t\t});\n\n\t\t$('#playAlarm').click(function(){\n\t\t\t\n\t\t\tplayAlarm();\n\t\t});\n\n\t\t$('#pandoraState').click(function(){\n\n\t\t\tpandoraState();\n\t\t});\n\n\t\t$('#yamahaState').click(function(){\n\n\t\t\tyamahaState();\n\t\t});\n\n\t\t$('#mpdState').click(function(){\n\n\t\t\tmusicState();\n\t\t});\n\n\t\t$('#mpdSong').click(function(){\n\n\t\t\tmpdCurrentSong();\n\t\t});\n\n\t\t$('#btnTimerOk').click(function(){\n\n\t\t\tvar value = Number($('#timerSeconds').val());\n\t\t\tturnOffTimer(value);\n\n\t\t});\n\n\t\t$('#btnMusicInfo').click(function(){\n\n\t\t\tsmartHouseState().done(function(result){\n\n\n\t\t\t\tvar state = result;\t\n\n\t\t\t\t$('#loved').hide();\n\t\t\t\t$('#imagePic').hide();\n\t\t\t\t$('#extrabutton').empty();\n\n\t\t\t\tif(state == 'Music'){\t\n\n\t\t\t\t\tvar delegateMusic = function(){\n\n\t\t\t\t\t\tmusicState().done(function(mpdResult){\n\n\t\t\t\t\t\t\tmpdCurrentSong().done(function(mpdSong){\n\n\t\t\t\t\t\t\t\tvar elapsed = (Number(mpdResult.timeElapsed) / 60).toFixed(2);\n\t\t\t\t\t\t\t\tvar total = (Number(mpdResult.timeTotal) / 60).toFixed(2);\n\n\t\t\t\t\t\t\t\tconsole.log('Duration ' + elapsed + '/ ' + total)\n\n\t\t\t\t\t\t\t\t$('#currentArtist').html('Artist: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.artist + '</strong>');\n\t\t\t\t\t\t\t\t$('#currentAlbum').html('Album: &nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.album + '</strong>');\n\t\t\t\t\t\t\t\t$('#currentRadio').html('Genre: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.genre + '</strong>');\n\t\t\t\t\t\t\t\t$('#currentSong').html('Song: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + mpdSong.title + '</strong>');\n\n\t\t\t\t\t\t\t\tif($('#lblDuration').length == 0){\n\n\t\t\t\t\t\t\t\t\t$('#extrabutton').append('<div class=\"row\"><div class=\"progress\"><div role=\"progressbar\" class=\"progress-bar progress-bar-success\"></div></div></div>')\n\t\t\t\t\t\t\t\t\t$('#extrabutton').append('<div class=\"row\"><label id=\"lblDuration\">Duration ' + elapsed + '/ ' + total +' </label></div>');\n\t\t\t\t\t\t\t\t\t$('#extrabutton').append('<div class=\"row\"><label id=\"lblPosition\">Position: ' + (Number(mpdSong.pos) + 1) + '/ ' + mpdResult.playlistLength +' </label></div>');\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t}\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\telse{\n\t\t\t\t\t\t\t\t\t$('#lblDuration').html('Duration ' + elapsed + '/ ' + total);\n\t\t\t\t\t\t\t\t\t$('#lblPosition').html('Position: ' + (Number(mpdSong.pos) + 1) + '/ ' + mpdResult.playlistLength);\n\n\t\t\t\t\t\t\t\t\tvar perc = 100 / (mpdResult.timeTotal / mpdResult.timeElapsed);\n\n\t\t\t\t\t\t\t\t\t$('.progress-bar').attr('aria-valuemin', 0);\n\t\t\t\t\t\t\t\t\t$('.progress-bar').attr('aria-valuemax', mpdResult.timeTotal);\n\t\t\t\t\t\t\t\t\t$('.progress-bar').attr('aria-valuenow', mpdResult.timeElapsed);\n\t\t\t\t\t\t\t\t\t$('.progress-bar').css('width', perc+'%');\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t\tif(!$('#infoModalLabel').is(':visible')){\n\n\t\t\t\t\t\t\t\t\tconsole.log('show dialog');\n\t\t\t\t\t\t\t\t\t$('#infoModalLabel').text(state);\n\t\t\t\t\t\t\t\t\t$('#info-dialog').modal();\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t});\n\n\t\t\t\t\t\t});\n\n\t\t\t\t\t};\n\n\t\t\t\t\tdelegateMusic();\n\t\t\t\t\ttimer = setInterval(delegateMusic, 1000); \n\t\t\t\t}\t\n\n\t\t\t\telse if(state == 'Pandora'){\n\n\t\t\t\t\tpandoraState().done(function(result){\n\n\t\t\t\t\t\t$('#currentArtist').html('Artist: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + result.artist + '</strong>');\n\t\t\t\t\t\t$('#currentAlbum').html('Album: &nbsp&nbsp&nbsp&nbsp <strong>' + result.album + '</strong>');\n\t\t\t\t\t\t$('#currentRadio').html('Radio: &nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + result.radio + '</strong>');\n\t\t\t\t\t\t$('#currentSong').html('Song: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <strong>' + result.song + '</strong>');\n\n\t\t\t\t\t\t$('#imagePic').show();\n\t\t\t\t\t\t$('#imagePic').attr('src', result.albumUri);\n\n\t\t\t\t\t\tif(result.loved == true){\n\n\t\t\t\t\t\t\t$('#loved').show();\n\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse{\n\n\t\t\t\t\t\t\t$('#extrabutton').append('<br/><div class=\"row\"><button title=\"Thumb up\" class=\"btn btn-default button-down\" id=\"btnThumpUp\"><span class=\"glyphicon glyphicon-thumbs-up\"</span></button></div>');\n\n\t\t\t\t\t\t\t$('#btnThumpUp').click(function(){\n\n\t\t\t\t\t\t\t\tpandoraThumbUp().done(function(thumbResult){\n\n\t\t\t\t\t\t\t\t\tif(thumbResult.ok == true)\n\t\t\t\t\t\t\t\t\t\t$('#extrabutton').empty();\n\n\t\t\t\t\t\t\t\t});\n\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\t$('#infoModalLabel').text(state);\n\t\t\t\t\t\t$('#info-dialog').modal();\n\n\t\t\t\t\t});\n\n\t\t\t\t}\t\t\t\n\n\t\t\t});\n\n\t\t});\n\n\t\t$('.bfunc').attr('disabled', 'disabled');\n\t\tdisableKnob();\n\n\t\trefreshAll();\n\t\tsetTemperatureTimer();\n\n\t\t$('#info-dialog').on('hidden.bs.modal', function () {\n\n    \t\tconsole.log('dialog closed ' + new Date());\n\n    \t\tclearInterval(timer);\n      \t\ttimer = null\n\t\t});\n\n\t});\n\t\n</script>\n\n</body>\n</html> ",
 			"file": "index.php",
-			"file_size": 13033,
-			"file_write_time": 131235195834414210,
 			"settings":
 			{
-				"buffer_size": 12464,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "js/jquery.knob.min.js",
-			"settings":
-			{
-				"buffer_size": 10804,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "player.php",
-			"settings":
-			{
-				"buffer_size": 1877,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "timerDialog.php",
-			"settings":
-			{
-				"buffer_size": 998,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "infoDialog.php",
-			"settings":
-			{
-				"buffer_size": 1833,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "js/dialog.js",
-			"settings":
-			{
-				"buffer_size": 2107,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "/**"
-			}
-		},
-		{
-			"file": "js/script.js",
-			"settings":
-			{
-				"buffer_size": 4686,
+				"buffer_size": 20034,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -126,7 +105,106 @@
 			"file": "header.php",
 			"settings":
 			{
-				"buffer_size": 1422,
+				"buffer_size": 598,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "info.php",
+			"settings":
+			{
+				"buffer_size": 1056,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/hub.js",
+			"settings":
+			{
+				"buffer_size": 2810,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "artistInfo.php",
+			"settings":
+			{
+				"buffer_size": 6541,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "settings.php",
+			"settings":
+			{
+				"buffer_size": 3425,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/settings.js",
+			"settings":
+			{
+				"buffer_size": 1197,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/script.js",
+			"settings":
+			{
+				"buffer_size": 5852,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lyricsDialog.php",
+			"settings":
+			{
+				"buffer_size": 1123,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "infoDialog.php",
+			"settings":
+			{
+				"buffer_size": 2017,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/util.js",
+			"settings":
+			{
+				"buffer_size": 3215,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "js/winapi.js",
+			"settings":
+			{
+				"buffer_size": 15509,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "player.php",
+			"settings":
+			{
+				"buffer_size": 1877,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -166,12 +244,21 @@
 	[
 		"/C/xampp/htdocs/smarthouse",
 		"/C/xampp/htdocs/smarthouse/css",
-		"/C/xampp/htdocs/smarthouse/fonts",
 		"/C/xampp/htdocs/smarthouse/img",
 		"/C/xampp/htdocs/smarthouse/js"
 	],
 	"file_history":
 	[
+		"/C/xampp/htdocs/smarthouse/js/dialog.js",
+		"/C/xampp/htdocs/smarthouse/header.php",
+		"/C/xampp/htdocs/smarthouse/artistInfo.php",
+		"/C/xampp/htdocs/smarthouse/lyricsDialog.php",
+		"/C/xampp/htdocs/smarthouse/js/hub.js",
+		"/C/xampp/htdocs/smarthouse/infoDialog.php",
+		"/C/xampp/htdocs/smarthouse/buttonplay.php",
+		"/C/xampp/htdocs/smarthouse/js/script.js",
+		"/C/xampp/htdocs/smarthouse/timerDialog.php",
+		"/C/Users/fkristo/Desktop/sifrenamjene.txt",
 		"/C/xampp/htdocs/smarthouse/player.php",
 		"/C/xampp/htdocs/smarthouse/css/Site.css",
 		"/C/xampp/htdocs/smarthouse/css/bootstrap.css",
@@ -219,6 +306,15 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"infoModalLabel",
+			"waitingDialog",
+			"pandoraStat",
+			"mpd.js",
+			"MPD",
+			"similarArtist",
+			"timer",
+			"bfuncEventHandler",
+			"deleting",
 			"loved",
 			"setError",
 			"readonly",
@@ -254,7 +350,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -283,7 +379,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -292,15 +388,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12464,
+						"buffer_size": 20034,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8745,
-								8750
+								3782,
+								3782
 							]
 						],
 						"settings":
@@ -309,19 +405,19 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3930.0,
+						"translation.y": 6979.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "js/jquery.knob.min.js",
-					"semi_transient": true,
+					"file": "header.php",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10804,
+						"buffer_size": 598,
 						"regions":
 						{
 						},
@@ -334,7 +430,9 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -345,6 +443,300 @@
 				},
 				{
 					"buffer": 3,
+					"file": "info.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1056,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								374,
+								374
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "js/hub.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2810,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1783,
+								1783
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 126.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "artistInfo.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6541,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 924.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "settings.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3425,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								916,
+								916
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 783.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "js/settings.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1197,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1179,
+								1179
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "js/script.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5852,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2328,
+								2328
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4949.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "lyricsDialog.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1123,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								406,
+								419
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "infoDialog.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2017,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								995,
+								995
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 41.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "js/util.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3215,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3215,
+								3215
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "js/winapi.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15509,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15190,
+								15211
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4320.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
 					"file": "player.php",
 					"semi_transient": false,
 					"settings":
@@ -356,164 +748,14 @@
 						"selection":
 						[
 							[
-								1779,
-								1779
+								0,
+								0
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 15.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "timerDialog.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 998,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2,
-								2
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "infoDialog.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1833,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								971,
-								971
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 44.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "js/dialog.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2107,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1309,
-								1309
-							]
-						],
-						"settings":
-						{
-							"auto_name": "/**",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "js/script.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4686,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								911,
-								911
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 280.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "header.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1422,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1302,
-								1302
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -602,7 +844,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 267.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

@@ -14,19 +14,22 @@
                     <div class="row">
                         <label id = "currentArtist"> </label> 
                     </div>
-            
-                    <div class="row">
-                        <label id = "currentAlbum"> </label> 
-                    </div>
-            
+                    
                     <div class="row">
                         <label id = "currentSong"> </label> 
                     </div>
+
+                    <div class="row">
+                        <label id = "currentAlbum"> </label> 
+                    </div>                            
                     
                     <div class="row">
                         <label id = "currentRadio"> </label> 
                     </div>
-
+                    <div class="row">
+                        <label id = "lblVolume"> </label> 
+                    </div>
+                    
                     <br />
                     <div class="row">
                         <img id="imagePic" class="img-thumbnail" width="125" height="125">
@@ -34,8 +37,8 @@
                     
                     <div class="row" style="padding-top: 10px;">
                         <img id="loved" class="img-thumbnail" src="./img/heart.png" width="25" height="25">
-                    </div>                
-                    
+                    </div>                                                    
+
                     <div id="extrabutton">
 
                     </div>

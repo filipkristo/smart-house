@@ -28,10 +28,11 @@ var hub;
 	        
 	        console.log(data);
 
-	        $('.temperature').html(Number(data.Temperature).toFixed(2) + ' &deg;C');
-	        $('.humidity').text(Number(data.Humidity).toFixed(2) + ' %');
+	        $('.temperature').html(Number(data.temperature).toFixed(2) + ' &deg;C');
+	        $('.humidity').text(Number(data.humidity).toFixed(2) + ' %');
+        	$('.gas').text(Number(data.gasValue).toFixed(0) + ' G');
 
-	        var now = new Date(data.Measured);
+	        var now = new Date(data.measured);
 			var formatted = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
 	        $('.updated').text(formatted);
 	        
@@ -47,6 +48,13 @@ var hub;
 	        else if(lastState == 'Music'){
 	        	updatePlayer();
 	        }
+	    };	    
+
+		hub.client.volumeChange = function (volume) {
+	        
+	        var vol = Number(volume) / 10;			
+			$('#lblVolume').text(vol);
+				        
 	    };	    
 
 	    hub.client.pandoraRefresh = function (data) {

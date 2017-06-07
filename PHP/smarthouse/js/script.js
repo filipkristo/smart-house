@@ -1,5 +1,6 @@
 
 var baseUrl = 'http://10.110.166.90:8081/api/';
+var lastVolume = 0.0;
 
 function yamahaState(){
 
@@ -12,7 +13,10 @@ function yamahaState(){
 		}).done(function(data) {
 
 			var volume = data.main_Zone.basic_Status.volume.lvl.val / 10;			
+			lastVolume = volume;
+
 			$('#volumeKnob').val(volume).trigger('change');
+			$('#lblVolume').html("Volume: &nbsp <strong>" + volume + " Db</strong>");
 
 			if(data.main_Zone.basic_Status.power_Control.power != "Standby")
 			{
@@ -56,23 +60,9 @@ function mpdCurrentSong(){
 		});
 }
 
-function pandoraState(){
-
-	var uri = baseUrl + 'Pandora/CurrentSongInfo';
-
-	return $.ajax({
-		method: "GET",
-		url: uri,
-		cache: false,
-		}).done(function(data) {
-			
-			
-		});
-}
-
 function pandoraThumbUp(){
 
-	var uri = baseUrl + 'Pandora/ThumbUp';
+	var uri = baseUrl + 'Remote/Love';
 
 	return $.ajax({
 		method: "GET",
@@ -97,8 +87,6 @@ function smartHouseState(){
 			
 			$('.smartInput').removeClass('active');
 			$('*[data-command="' + data + '"]').addClass('active');
-
-			
 
 		});
 }
@@ -136,6 +124,37 @@ function runSmartHouseCommand(name){
 
 }
 
+function getNowPlaying(){
+
+	var uri = baseUrl + 'SmartHouse/NowPlaying';
+		
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		});
+}
+
+function showLyrics(artist, song){
+	
+	var uri = baseUrl + 'Lyrics/GetMetroLyrics?artist=' + encodeURI(artist) + '&song=' + encodeURI(song);
+	
+	$('#lyricsBody').empty();
+	$('#lyricsBody').html('Please wait....');
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data){
+
+			$('#lyricsBody').empty();
+			$('#lyricsBody').html(data);
+			
+		});
+}
+
+
 function getTemperature(){
 
 	var uri = baseUrl + 'Sensor/GetCurrentTemperature';
@@ -148,6 +167,7 @@ function getTemperature(){
 			
 			$('#temperature').html(data.temperature + ' &deg;C');
 	        $('#humidity').text(data.humidity + ' %');
+        	$('#smoke').text(Number(data.gasValue).toFixed(0) + ' %');
 
 	        $('#updated').text(new Date(data.measured).toLocaleString());
 
@@ -202,26 +222,104 @@ function turnOffTimer(value){
 		});	
 }
 
+function startPandora(){
+
+	var uri = baseUrl + 'Pandora/Start';
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			$("#response").text(JSON.stringify(data,null,4));		
+
+		});	
+}
+
+function stopPandora(){
+
+	var uri = baseUrl + 'Pandora/Stop';
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			$("#response").text(JSON.stringify(data,null,4));		
+
+		});	
+
+}
+
 function refreshAll(){
 
-	var dtemp = getTemperature();
-	var dyamm = yamahaState();	
-	var dpand = pandoraState();
+	var dyamm = yamahaState();		
 	var dsmar = smartHouseState();
 
-	$.when(dtemp, dyamm, dpand, dsmar).done(function (v1, v2, v3, v4) {
+	$.when(dyamm, dsmar).done(function (v1, v2) {
 
 	    console.log(v1);
-	    console.log(v2);
-    	console.log(v3);
-	    console.log(v4);
+	    console.log(v2);    	
+
+		getNowPlaying().done(function(data){
+			
+			lastArtist = data.artist;
+	        lastSong = data.song;
+			lastAlbum = data.album;
+
+		});
 
 	});
+	  		
+}
+
+function pandoraState(){
+
+	var uri = baseUrl + 'Pandora/CurrentSongInfo';
+
+	return $.ajax({
+		method: "GET",
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			
+		});
+}
+
+function TurnOnAC(){
+
+	var uri = baseUrl + 'Sensor/AirCondition?On=1';
+
+	return $.ajax({
+		method: "POST",		
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			
+		});
+}
+
+function TurnOffAC(){
+
+	var uri = baseUrl + 'Sensor/AirCondition?On=0';
+
+	return $.ajax({
+		method: "POST",		
+		url: uri,
+		cache: false,
+		}).done(function(data) {
+			
+			
+		});
 }
 
 function setTemperatureTimer(){
 
-	setInterval(getTemperature, 15000);
+	setInterval(getTemperature, 30000);
 
 }
 
@@ -238,7 +336,7 @@ function enableKnob(){
 function setInfo(info){
 
 	$('#infoPanel').empty();
-	$('#infoPanel').append('<div class="alert alert-success"><strong>' + info + '</strong></div>');
+	//$('#infoPanel').append('<div class="alert alert-success"><strong>' + info + '</strong></div>');
 
 }
 

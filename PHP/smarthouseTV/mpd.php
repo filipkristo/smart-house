@@ -39,7 +39,21 @@
 
 		</div>
 	</div>			
-		
+	
+	<div class="row">
+		<div class="col-md-12">
+			<label class="artist-details">
+				Volume: 
+			</label>
+			<label id="lblVolume" class="artist-details">
+				----
+			</label>
+			<label  class="artist-details">
+				dB
+			</label>
+		</div>
+	</div>	
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="progress">
