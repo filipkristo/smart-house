@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Libmpc;
 using SmartHouse.Lib;
+using System.Collections.Generic;
 
 namespace SmartHouse.WebApiMono
 {
@@ -596,6 +597,73 @@ namespace SmartHouse.WebApiMono
                 return await MpdService.GetNowPlaying(lastFm);
             else
                 return null;
+        }
+
+        [HttpPost]
+        [Route("PhoneCallStarted")]
+        public async Task<bool> PhoneCallStarted(PhoneCallData phoneCall)
+        {
+            var powerStatus = await YamahaService.PowerStatus();
+            var isTurnOn = powerStatus == PowerStatusEnum.On;
+
+            var state = await SmartHouseService.GetCurrentState();
+            var isPlaying = false;
+
+            if (state == SmartHouseState.Pandora && isTurnOn)
+                isPlaying = PandoraService.IsPlaying();
+            else if (state == SmartHouseState.Music && isTurnOn)
+                isPlaying = MpdService.GetStatus().State == MpdState.Play;
+
+            if(isPlaying)
+            {
+                if (state == SmartHouseState.Pandora)
+                {
+                    if(!PhoneCallsStack.PhoneCallActive())
+                        PandoraService.Pause();
+
+                    PhoneCallsStack.AddPhoneCall(phoneCall);
+                }                    
+                else if (state == SmartHouseState.Music)
+                {
+                    if(!PhoneCallsStack.PhoneCallActive())
+                        MpdService.Pause();
+
+                    PhoneCallsStack.AddPhoneCall(phoneCall);
+                }                    
+            }
+
+            return isPlaying;
+        }
+
+        [HttpPost]
+        [Route("PhoneCallEnded")]
+        public async Task<bool> PhoneCallEnded()
+        {
+            var shouldStartWithMusic = PhoneCallsStack.ShouldStartWithMusic();
+            if (!shouldStartWithMusic)
+                return false;
+
+            var powerStatus = await YamahaService.PowerStatus();
+            var isTurnOn = powerStatus == PowerStatusEnum.On;
+            var state = await SmartHouseService.GetCurrentState();            
+
+            if(shouldStartWithMusic && state == SmartHouseState.Pandora && isTurnOn)
+            {                
+                PandoraService.Play();
+            }
+            else if(shouldStartWithMusic && state == SmartHouseState.Music && isTurnOn && MpdService.GetStatus().State == MpdState.Pause)
+            {                
+                MpdService.Play();
+            }
+
+            return shouldStartWithMusic;
+        }
+
+        [HttpGet]
+        [Route("PhoneCalls")]
+        public IEnumerable<PhoneCallData> AllPhoneCalls()
+        {
+            return PhoneCallsStack.AllPhoneCalls();            
         }
     }
 }

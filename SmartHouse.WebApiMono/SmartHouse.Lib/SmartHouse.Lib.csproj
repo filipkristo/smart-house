@@ -58,6 +58,7 @@
     <Compile Include="Interfaces\ITVService.cs" />
     <Compile Include="Model\IRCommands.cs" />
     <Compile Include="Model\Pandora\SongResult.cs" />
+    <Compile Include="Model\PhoneCallData.cs" />
     <Compile Include="Model\ProcessResult.cs" />
     <Compile Include="NamedPipes\CommandPipe.cs" />
     <Compile Include="NamedPipes\IRRemotePipe.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Model\Result.cs" />
     <Compile Include="Service\LyricsService.cs" />
     <Compile Include="Service\OrviboService.cs" />
+    <Compile Include="Service\PhoneCallsStack.cs" />
     <Compile Include="Service\TVService.cs" />
     <Compile Include="Util\BashHelper.cs" />
     <Compile Include="Model\PandoraCommandEnum.cs" />

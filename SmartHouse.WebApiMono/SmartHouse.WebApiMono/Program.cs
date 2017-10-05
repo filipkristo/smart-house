@@ -103,7 +103,7 @@ namespace SmartHouse.WebApiMono
                     Logger.LogInfoMessage("orvibioService.TurnOff");
                     Logger.LogInfoMessage(turnOffResult.Message);
 
-                    Thread.Sleep(TimeSpan.FromMinutes(5));
+                    Thread.Sleep(TimeSpan.FromMinutes(1));
 
                     var turnOnResult = orvibioService.TurnOn();
                     Logger.LogInfoMessage("orvibioService.TurnOn");
