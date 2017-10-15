@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\DefaultVolumeSetterState.cs" />
     <Compile Include="Interfaces\ILyricsService.cs" />
     <Compile Include="Interfaces\IOrviboService.cs" />
     <Compile Include="Interfaces\ITVService.cs" />

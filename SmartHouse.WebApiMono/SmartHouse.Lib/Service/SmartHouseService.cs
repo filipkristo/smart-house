@@ -16,8 +16,6 @@ namespace SmartHouse.Lib
         private readonly SettingService settingsService = new SettingService();
         private readonly YamahaService yamahaService = new YamahaService();
 
-
-
         public async Task<Result> SetMode(ModeEnum mode, Action<int> notifyAction)
         {
             var message = string.Empty;

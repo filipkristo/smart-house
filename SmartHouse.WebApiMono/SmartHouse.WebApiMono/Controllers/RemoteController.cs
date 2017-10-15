@@ -130,7 +130,7 @@ namespace SmartHouse.WebApiMono.Controllers
                 else if (smartHouseState == SmartHouseState.Pandora)
                 {
                     PandoraService.Next();
-                    sb.AppendLine("Pandora next song");
+                    sb.AppendLine("Pandora next song");                    
                 }
                 else if (smartHouseState == SmartHouseState.TV)
                 {
@@ -296,6 +296,26 @@ namespace SmartHouse.WebApiMono.Controllers
 
                 NotifyClients();
                 PushNotification("Thumb Down");
+            }
+        }
+
+        [HttpGet]
+        [Route("TiredOfThisSong")]
+        public async Task TiredOfThisSong()
+        {
+            var smartHouseState = await SmartHouseService.GetCurrentState();
+
+            if (smartHouseState == SmartHouseState.Pandora)
+            {
+                var result = PandoraService.TiredOfThisSong();
+
+                NotifyClients();
+                PushNotification("Tired of this song");
+            }
+            else
+            {
+                NotifyClients();
+                PushNotification("This works only for Pandora player");
             }
         }
     }

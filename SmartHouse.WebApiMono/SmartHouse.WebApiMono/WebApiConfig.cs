@@ -10,6 +10,7 @@ using Owin;
 using SmartHouse.Lib;
 using Swashbuckle.Application;
 using System.Web.Http.Routing;
+using SmartHouse.WebApiMono.Utils;
 
 namespace SmartHouse.WebApiMono
 {
@@ -35,6 +36,7 @@ namespace SmartHouse.WebApiMono
 
             //config.MessageHandlers.Add(new MessageLoggingHandler());
             config.Filters.Add(new ExceptionFilter());
+            config.Filters.Add(new ValidateModelAttribute());
 
             var formatters = config.Formatters;
             var jsonFormatter = formatters.JsonFormatter;

@@ -25,15 +25,8 @@ namespace SmartHouse.WebApiMono
 		[Route("SaveSettings")]
 		public async Task<HttpResponseMessage> SaveSettings(Settings Settings)
 		{
-			if (ModelState.IsValid)
-			{
-				await SettingsService.SaveSettings(Settings);
-				return new HttpResponseMessage(HttpStatusCode.OK);
-			}
-			else
-			{
-				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);	
-			}				
-		}
+            await SettingsService.SaveSettings(Settings);
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
 	}
 }
