@@ -79,5 +79,12 @@ namespace SmartHouse.WebApiMono
         {
             return await LastFMService.GetSimilarArtist(artist, limit);
         }
+
+        [Route("GetRecentTopArtists")]
+        [HttpGet]
+        public async Task<IEnumerable<ArtistTileData>> GetRecentTopArtists()
+        {
+            return await LastFMService.GetRecentTopArtists();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace SmartHouse.WebApiMono
 	{
 		private readonly ITelemetryService TelemetryService;
 
-		public SensorController(ISettingsService settingsService) 
+		public SensorController(ISettingsService settingsService)
             : base(settingsService)
 		{
             this.TelemetryService = new TelemetryService();

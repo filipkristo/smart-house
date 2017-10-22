@@ -68,7 +68,7 @@ namespace SmartHouse.WebApiMono
 			var context = Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
 			if (context == null)
 				return false;
-			
+
 			context.Clients.All.hello(param ?? "Call from server");
 			return true;
 		}

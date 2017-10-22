@@ -19,7 +19,7 @@ namespace SmartHouse.WebApiMono.Controllers
         private readonly ITVService TVService;
         private readonly ILastFMService LastFMService;
 
-        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService) 
+        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService)
 			: base(service)
 		{
             YamahaService = yamahaService;
@@ -100,7 +100,7 @@ namespace SmartHouse.WebApiMono.Controllers
             {
                 sb.AppendLine("Yamaha is turned off. Operation canceled");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            } 
+            }
 
             return new Result()
             {
@@ -130,7 +130,7 @@ namespace SmartHouse.WebApiMono.Controllers
                 else if (smartHouseState == SmartHouseState.Pandora)
                 {
                     PandoraService.Next();
-                    sb.AppendLine("Pandora next song");                    
+                    sb.AppendLine("Pandora next song");
                 }
                 else if (smartHouseState == SmartHouseState.TV)
                 {
@@ -142,7 +142,7 @@ namespace SmartHouse.WebApiMono.Controllers
             {
                 sb.AppendLine("Yamaha is turned off. Operation canceled");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            }            
+            }
 
             return new Result()
             {
@@ -184,7 +184,7 @@ namespace SmartHouse.WebApiMono.Controllers
             {
                 sb.AppendLine("Yamaha is turned off. Operation canceled");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            }            
+            }
 
             return new Result()
             {
@@ -219,7 +219,7 @@ namespace SmartHouse.WebApiMono.Controllers
             else if(smartHouseState == SmartHouseState.TV)
             {
                 await TVService.Stop();
-            } 
+            }
         }
 
         [HttpGet]
@@ -233,11 +233,11 @@ namespace SmartHouse.WebApiMono.Controllers
             {
                 PushNotification("Smarthouse is turn off");
                 return;
-            }                
+            }
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                PandoraService.Pause();                
+                PandoraService.Pause();
             }
             else if (smartHouseState == SmartHouseState.Music)
             {
@@ -246,14 +246,14 @@ namespace SmartHouse.WebApiMono.Controllers
             else if (smartHouseState == SmartHouseState.TV)
             {
                 await TVService.Pause();
-            }            
+            }
         }
 
         [HttpGet]
         [Route("Love")]
         public async Task<Result> Love()
         {
-            var smartHouseState = await SmartHouseService.GetCurrentState();            
+            var smartHouseState = await SmartHouseService.GetCurrentState();
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
@@ -281,7 +281,7 @@ namespace SmartHouse.WebApiMono.Controllers
                     Message = "You can like only on Pandora or Music input",
                     Ok = true
                 };
-            }            
+            }
         }
 
         [HttpGet]

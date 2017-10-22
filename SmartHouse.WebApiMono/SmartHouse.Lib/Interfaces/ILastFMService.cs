@@ -5,7 +5,7 @@ using IF.Lastfm.Core.Objects;
 
 namespace SmartHouse.Lib
 {
-	public interface ILastFMService
+	public interface ILastFMService : IDisposable
 	{
         string StartScrobbleBash(SongDetails song);
         Task<string> StartScrobble(SongDetails song);
@@ -17,5 +17,6 @@ namespace SmartHouse.Lib
         Task<LastAlbum> GetAlbumInfo(string artist, string album);
         Task<LastArtist> GetArtistInfo(string artist);
         Task<IEnumerable<LastArtist>> GetSimilarArtist(string artist, int limit = 50);
+        Task<IEnumerable<ArtistTileData>> GetRecentTopArtists();
     }
 }

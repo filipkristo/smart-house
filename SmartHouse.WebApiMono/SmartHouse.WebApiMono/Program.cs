@@ -11,7 +11,7 @@ namespace SmartHouse.WebApiMono
 {
     public class MainClass
     {
-        public static readonly ILog Log = LogManager.GetLogger(typeof(MainClass));               
+        public static readonly ILog Log = LogManager.GetLogger(typeof(MainClass));
         public static string Port { get; private set; } = "8081";
         public static string Url => $"http://*:{Port}";
 
@@ -20,10 +20,10 @@ namespace SmartHouse.WebApiMono
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;                
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
                 if (args.Length > 0)
-                    Port = args[0];                
+                    Port = args[0];
 
                 log4net.Config.XmlConfigurator.Configure();
                 Log.Info("Application_Start");
@@ -33,7 +33,7 @@ namespace SmartHouse.WebApiMono
                 StartAlarmClock();
                 //StartIRCommandPipes();                
 
-                StartSelfHosting();                
+                StartSelfHosting();
 
                 Console.ReadLine();
             }
@@ -107,7 +107,7 @@ namespace SmartHouse.WebApiMono
 
                     var turnOnResult = orvibioService.TurnOn();
                     Logger.LogInfoMessage("orvibioService.TurnOn");
-                    Logger.LogInfoMessage(turnOnResult.Message);                    
+                    Logger.LogInfoMessage(turnOnResult.Message);
                 }
             };
 

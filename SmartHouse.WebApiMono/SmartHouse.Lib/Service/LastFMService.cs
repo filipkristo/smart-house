@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 using System.Net;
+using IF.Lastfm.Core.Api.Helpers;
 
 namespace SmartHouse.Lib
 {
@@ -19,13 +20,15 @@ namespace SmartHouse.Lib
         private const string USERNAME = "XXX";
         private const string PASSWORD = "XXX";
 
+        private readonly LastfmClient client;
+
         public LastFMService()
         {
-
+            client = new LastfmClient(API_KEY, API_SECRET);
         }
 
         private async Task Authenticate(LastfmClient client)
-        {            
+        {
             var fileName = "last.fm";
 
             if (!File.Exists(fileName))
@@ -60,15 +63,13 @@ namespace SmartHouse.Lib
 
         public async Task<string> StartScrobble(SongDetails song)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var scrobble = new Scrobble(song.Artist, song.Album, song.Song, DateTime.UtcNow);
-                var response = await client.Scrobbler.ScrobbleAsync(scrobble);
+            var scrobble = new Scrobble(song.Artist, song.Album, song.Song, DateTime.UtcNow);
+            var response = await client.Scrobbler.ScrobbleAsync(scrobble);
 
-                return response.Status.ToString();
-            }
+            return response.Status.ToString();
         }
 
         /// <summary>
@@ -86,93 +87,132 @@ namespace SmartHouse.Lib
 
         public async Task<string> UpdateNowPlaying(SongDetails song)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var scrobble = new Scrobble(song.Artist, song.Album, song.Song, DateTime.UtcNow);
-                var response = await client.Track.UpdateNowPlayingAsync(scrobble);
+            var scrobble = new Scrobble(song.Artist, song.Album, song.Song, DateTime.UtcNow);
+            var response = await client.Track.UpdateNowPlayingAsync(scrobble);
 
-                return response.Status.ToString();
-            }
+            return response.Status.ToString();
         }
 
         public async Task<string> LoveSong(string artistName, string trackName)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var response = await client.Track.LoveAsync(trackName, artistName);
-                return response.Status.ToString();
-            }
+            var response = await client.Track.LoveAsync(trackName, artistName);
+            return response.Status.ToString();
         }
 
         public async Task<string> UnloveSong(string artistName, string trackName)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var response = await client.Track.UnloveAsync(trackName, artistName);
-                return response.Status.ToString();
-            }
+            var response = await client.Track.UnloveAsync(trackName, artistName);
+            return response.Status.ToString();
         }
 
         public async Task<LastTrack> GetSongInfo(string artistName, string trackName)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var response = await client.Track.GetInfoAsync(trackName, artistName, USERNAME);
-
-                return response.Content;
-            }
+            var response = await client.Track.GetInfoAsync(trackName, artistName, USERNAME);
+            return response.Content;
         }
 
         public async Task<List<LastTrack>> GetTopTracks()
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var response = await client.Chart.GetTopTracksAsync(1, 50);
-                return response.Content.ToList();
-            }
+            var response = await client.Chart.GetTopTracksAsync(1, 50);
+            return response.Content.ToList();
         }
 
         public async Task<LastAlbum> GetAlbumInfo(string artist, string album)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var response = await client.Album.GetInfoAsync(artist, album, true);
-                return response.Content;
-            }
+            var response = await client.Album.GetInfoAsync(artist, album, true);
+            return response.Content;
         }
 
         public async Task<LastArtist> GetArtistInfo(string artist)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if (!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var response = await client.Artist.GetInfoAsync(artist: artist, autocorrect: true);
-                return response.Content;
-            }
+            var response = await client.Artist.GetInfoAsync(artist: artist, autocorrect: true);
+            return response.Content;
         }
 
         public async Task<IEnumerable<LastArtist>> GetSimilarArtist(string artist, int limit = 50)
         {
-            using (var client = new LastfmClient(API_KEY, API_SECRET))
-            {
+            if(!client.Auth.Authenticated)
                 await Authenticate(client);
 
-                var response = await client.Artist.GetSimilarAsync(artist, true, limit);
-                return response.Content;
+            var response = await client.Artist.GetSimilarAsync(artist, true, limit);
+            return response.Content;
+        }
+
+        public async Task<IEnumerable<ArtistTileData>> GetRecentTopArtists()
+        {
+            if (!client.Auth.Authenticated)
+                await Authenticate(client);
+
+            var pageNum = 1;
+            var scrobblers = new List<LastTrack>();
+            IEnumerable<LastTrack> pagedTracks = null;
+
+            do
+            {
+                pagedTracks = await LoadScrobbles(pageNum).ConfigureAwait(false);
+                scrobblers.AddRange(pagedTracks);
+
+                pageNum++;
+
+            } while (pagedTracks.Any());            
+
+            var artists = scrobblers
+                .GroupBy(x => new { Id = x.ArtistMbid, Name = x.ArtistName })
+                .OrderByDescending(x => x.Count())
+                .Select(x => new ArtistTileData()
+                {
+                    Id = x.Key.Id,
+                    Name = x.Key.Name,
+                    Count = x.Count()
+                })
+                .Take(10)
+                .ToList();
+
+            foreach (var item in artists)
+            {
+                LastResponse<LastArtist> artistInfo = null;
+
+                if (!string.IsNullOrWhiteSpace(item.Id))
+                    artistInfo = await client.Artist.GetInfoByMbidAsync(item.Id).ConfigureAwait(false);
+                else
+                    artistInfo = await client.Artist.GetInfoAsync(item.Name, autocorrect: true).ConfigureAwait(false);
+
+                item.Url = artistInfo.Content?.MainImage?.Large?.OriginalString ?? artistInfo.Content?.MainImage?.LastOrDefault(x => !string.IsNullOrWhiteSpace(x?.OriginalString))?.OriginalString;
             }
+
+            return artists;
+        }
+
+        private async Task<IEnumerable<LastTrack>> LoadScrobbles(int page)
+        {
+            var tracks = await client.User.GetRecentScrobbles(USERNAME, DateTime.Today.AddDays(-1), page, 20).ConfigureAwait(false);
+            return tracks.Where(x => !(x.IsNowPlaying == true));
+        }
+
+        public void Dispose()
+        {
+            client.Dispose();
         }
     }
 }

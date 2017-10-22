@@ -208,26 +208,28 @@ namespace SmartHouse.Lib
 
         public async Task<Result> LoveSong()
         {
-            var lastFMService = new LastFMService();
-            var songInfo = await GetNowPlaying();            
+            using (var lastFMService = new LastFMService())
+            {
+                var songInfo = await GetNowPlaying();
 
-            if (songInfo.Loved)
-                return new Result()
+                if (songInfo.Loved)
+                    return new Result()
+                    {
+                        Ok = true,
+                        ErrorCode = 0,
+                        Message = "You already liked this song"
+                    };
+
+                var status = await lastFMService.LoveSong(songInfo.Artist, songInfo.Song);
+                ThumbUp();
+
+                return new Result
                 {
                     Ok = true,
                     ErrorCode = 0,
-                    Message = "You already liked this song"
+                    Message = $"You liked {songInfo.Song} song. Status: {status}"
                 };
-
-            var status = await lastFMService.LoveSong(songInfo.Artist, songInfo.Song);
-            ThumbUp();
-
-            return new Result
-            {
-                Ok = true,
-                ErrorCode = 0,
-                Message = $"You liked {songInfo.Song} song. Status: {status}"
-            };
+            }            
         }
 
         public IEnumerable<KeyValue> GetStationList()

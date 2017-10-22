@@ -57,6 +57,9 @@
     <Compile Include="Interfaces\ILyricsService.cs" />
     <Compile Include="Interfaces\IOrviboService.cs" />
     <Compile Include="Interfaces\ITVService.cs" />
+    <Compile Include="Model\ArtistTileData.cs" />
+    <Compile Include="Model\ContentCategoryEnum.cs" />
+    <Compile Include="Model\ContentUploadModel.cs" />
     <Compile Include="Model\IRCommands.cs" />
     <Compile Include="Model\Pandora\SongResult.cs" />
     <Compile Include="Model\PhoneCallData.cs" />

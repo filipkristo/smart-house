@@ -11,7 +11,7 @@ namespace SmartHouse.WebApiMono
 	{
 		public SettingsController(ISettingsService service) : base(service)
 		{
-			
+
 		}
 
 		[HttpGet]

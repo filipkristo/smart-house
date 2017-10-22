@@ -18,7 +18,7 @@ namespace SmartHouse.Lib
 
         public static bool ShouldStartWithMusic()
         {
-            var oldphoneCalls = phoneCalls.Where(x => (DateTime.Now - x.Started).TotalHours > TIMEOUT).ToList();
+            var oldphoneCalls = phoneCalls.Where(x => (DateTime.UtcNow - x.Started).TotalHours > TIMEOUT).ToList();
 
             if(oldphoneCalls.Any())
                 oldphoneCalls.ForEach(x => phoneCalls.Remove(x));
@@ -32,7 +32,7 @@ namespace SmartHouse.Lib
 
         public static bool PhoneCallActive()
         {
-            return phoneCalls.Any(x => (DateTime.Now - x.Started).TotalHours < TIMEOUT);
+            return phoneCalls.Any(x => (DateTime.UtcNow - x.Started).TotalHours < TIMEOUT);
         }
 
         public static IEnumerable<PhoneCallData> AllPhoneCalls()

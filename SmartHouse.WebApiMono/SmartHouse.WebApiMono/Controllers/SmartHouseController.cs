@@ -64,10 +64,10 @@ namespace SmartHouse.WebApiMono
                 sb.AppendLine("Turning on TV");
 
                 await YamahaService.TurnOn();
-                sb.AppendLine("Yamaha Turn on");                
+                sb.AppendLine("Yamaha Turn on");
 
                 await Task.Delay(TimeSpan.FromSeconds(8));
-            }                        
+            }
 
             if(!DefaultVolumeSetterState.IsDefaultVolumeSetted())
             {
@@ -75,7 +75,7 @@ namespace SmartHouse.WebApiMono
                 sb.AppendLine("Setting Normal mode");
 
                 DefaultVolumeSetterState.DefaultVolumeSetted();
-            }            
+            }
 
             var state = await SmartHouseService.GetCurrentState();
 
@@ -101,7 +101,7 @@ namespace SmartHouse.WebApiMono
                     await PandoraService.StartTcp();
                     PandoraService.Play();
                     sb.AppendLine("Playing pandora radio");
-                }                
+                }
             }
             else if (state == SmartHouseState.TV)
             {
@@ -186,7 +186,7 @@ namespace SmartHouse.WebApiMono
             {
                 sb.AppendLine("Yamaha is turned off");
                 PushNotification("Yamaha is turned off. Operation canceled.");
-            }                       
+            }
 
             return new Result()
             {
@@ -215,7 +215,7 @@ namespace SmartHouse.WebApiMono
             {
                 sb.AppendLine("Yamaha is turned off.");
                 PushNotification("Yamaha is turned off. Operation canceled");
-            }                        
+            }
 
             return new Result()
             {
@@ -427,7 +427,7 @@ namespace SmartHouse.WebApiMono
             {
                 MpdService.Stop();
                 sb.AppendLine("Stopping MPD");
-            }            
+            }
 
             if (!PandoraService.IsPlaying())
             {
@@ -470,13 +470,13 @@ namespace SmartHouse.WebApiMono
                 await YamahaService.TurnOn();
                 sb.AppendLine("Yamaha Turn on");
                 await Task.Delay(TimeSpan.FromSeconds(8));
-            }            
+            }
 
             if(PandoraService.IsPlaying())
             {
                 PandoraService.Pause();
                 sb.AppendLine("Stopping pandora radio");
-            }            
+            }
 
             await YamahaService.SetInput("HDMI1");
             sb.AppendLine("Set HDMI1 input");
@@ -642,14 +642,14 @@ namespace SmartHouse.WebApiMono
                         PandoraService.Pause();
 
                     PhoneCallsStack.AddPhoneCall(phoneCall);
-                }                    
+                }
                 else if (state == SmartHouseState.Music)
                 {
                     if(!PhoneCallsStack.PhoneCallActive())
                         MpdService.Pause();
 
                     PhoneCallsStack.AddPhoneCall(phoneCall);
-                }                    
+                }
             }
 
             return isPlaying;
@@ -667,14 +667,14 @@ namespace SmartHouse.WebApiMono
 
             var powerStatus = await YamahaService.PowerStatus();
             var isTurnOn = powerStatus == PowerStatusEnum.On;
-            var state = await SmartHouseService.GetCurrentState();            
+            var state = await SmartHouseService.GetCurrentState();
 
             if(shouldStartWithMusic && state == SmartHouseState.Pandora && isTurnOn)
-            {                
+            {
                 PandoraService.Play();
             }
             else if(shouldStartWithMusic && state == SmartHouseState.Music && isTurnOn && MpdService.GetStatus().State == MpdState.Pause)
-            {                
+            {
                 MpdService.Play();
             }
 
@@ -685,7 +685,19 @@ namespace SmartHouse.WebApiMono
         [Route("PhoneCalls")]
         public IEnumerable<PhoneCallData> AllPhoneCalls()
         {
-            return PhoneCallsStack.AllPhoneCalls();            
+            return PhoneCallsStack.AllPhoneCalls();
+        }
+
+        [HttpPost]
+        [Route("UploadContent")]
+        public void UploadContent(ContentUploadModel model)
+        {
+            if (model?.ContentCategoryEnum != ContentCategoryEnum.Image)
+                throw new Exception("Only image files are supported");
+
+            var contentBytes = Convert.FromBase64String(model.ContentBase64);
+
+
         }
     }
 }
