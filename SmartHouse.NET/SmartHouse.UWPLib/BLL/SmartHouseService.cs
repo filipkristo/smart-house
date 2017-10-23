@@ -127,5 +127,52 @@ namespace SmartHouse.UWPLib.BLL
                 return JsonConvert.DeserializeObject<Result>(json);
             }
         }
+
+        public async Task PhoneCallStarted(PhoneCallData model)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/PhoneCallStarted";
+
+                var modelString = JsonConvert.SerializeObject(model);
+                var content = new StringContent(modelString, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(uri, content);
+                var json = await response.Content.ReadAsStringAsync();                
+            }
+        }
+
+        public async Task UploadContent(ContentUploadModel model)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/UploadContent";
+
+                var modelString = JsonConvert.SerializeObject(model);
+                var content = new StringContent(modelString, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(uri, content);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        public async Task PhoneCallEnded()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/PhoneCallEnded";
+
+                var response = await client.PostAsync(uri, null);
+                var json = await response.Content.ReadAsStringAsync();                
+            }
+        }
     }
 }

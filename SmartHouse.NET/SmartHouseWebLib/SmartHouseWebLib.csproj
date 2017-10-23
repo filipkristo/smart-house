@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainModels\TelemetryChartHourUI.cs" />
+    <Compile Include="DomainModels\TelemetryChartUI.cs" />
     <Compile Include="DomainService\Interface\IRoomService.cs" />
     <Compile Include="DomainService\Interface\ITelemetryDataService.cs" />
     <Compile Include="DomainService\Interface\IUserLocationService.cs" />

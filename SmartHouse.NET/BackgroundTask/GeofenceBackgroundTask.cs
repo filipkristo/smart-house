@@ -171,7 +171,7 @@ namespace BackgroundTask
                     {
                         SaveExistingEvents();
                         // NOTE: Other notification mechanisms can be used here, such as Badge and/or Tile updates.
-                        DoToast(numEventsOfInterest, geofenceItemEvent);
+                        //DoToast(numEventsOfInterest, geofenceItemEvent);
                     }
                 }
             }

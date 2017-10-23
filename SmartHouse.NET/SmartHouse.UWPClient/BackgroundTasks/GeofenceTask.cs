@@ -22,8 +22,7 @@ namespace SmartHouse.UWPClient.BackgroundTasks
             if (BackgroundTaskRegistration.AllTasks.Any(x => x.Value.Name == BackgroundTaskName))
                 return null;
 
-            var backgroundAccessStatus = await BackgroundExecutionManager.RequestAccessAsync();
-            switch (backgroundAccessStatus)
+            switch (await BackgroundExecutionManager.RequestAccessAsync())
             {
                 case BackgroundAccessStatus.AlwaysAllowed:
                 case BackgroundAccessStatus.AllowedSubjectToSystemPolicy:
@@ -76,7 +75,7 @@ namespace SmartHouse.UWPClient.BackgroundTasks
         private void OnCompleted(IBackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs e)
         {
             if (sender != null)
-            {                
+            {
                 try
                 {
                     // If the background task threw an exception, display the exception in
@@ -95,11 +94,7 @@ namespace SmartHouse.UWPClient.BackgroundTasks
 
                     //FillEventListBoxWithExistingEvents();
                 }
-                catch (Exception ex)
-                {
-                    // The background task had an error
-                    //_rootPage.NotifyUser(ex.ToString(), NotifyType.ErrorMessage);
-                }
+                catch { }
             }
         }        
     }

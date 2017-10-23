@@ -11,7 +11,7 @@
     <AssemblyName>SmartHouse.UWPClient</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
@@ -23,6 +23,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <HockeyAppResourceId>c7217e3f12be43108f4de5b1c9fdd02a</HockeyAppResourceId>
+    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -95,7 +96,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="project.json" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
@@ -103,10 +103,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="BackgroundTasks\GeofenceTask.cs" />
+    <Compile Include="BackgroundTasks\PhoneCallTask.cs" />
+    <Compile Include="BackgroundTasks\TileBackgroundTaskRegister.cs" />
     <Compile Include="Extensions\WebViewExtensions.cs" />
+    <Compile Include="Messaging\AzureIotMessaging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BaseWebViewViewModel.cs" />
+    <Compile Include="ViewModels\ContentViewModel.cs" />
+    <Compile Include="ViewModels\ImageViewerViewModel.cs" />
     <Compile Include="ViewModels\LocationViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\MPDClientViewModel.cs" />
@@ -117,6 +122,12 @@
     <Compile Include="ViewModels\TorrentViewModel.cs" />
     <Compile Include="Views\Busy.xaml.cs">
       <DependentUpon>Busy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ContentPage.xaml.cs">
+      <DependentUpon>ContentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageViewer.xaml.cs">
+      <DependentUpon>ImageViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Location.xaml.cs">
       <DependentUpon>Location.xaml</DependentUpon>
@@ -160,6 +171,11 @@
     <Content Include="Assets\SplashScreen.scale-150.png" />
     <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Help.htm" />
+    <Content Include="images\BadgeLogo.scale-100.png" />
+    <Content Include="images\BadgeLogo.scale-125.png" />
+    <Content Include="images\BadgeLogo.scale-150.png" />
+    <Content Include="images\BadgeLogo.scale-200.png" />
+    <Content Include="images\BadgeLogo.scale-400.png" />
     <Content Include="images\Home-Server-icon.png" />
     <Content Include="images\Home-Server-icon_300.png" />
     <Content Include="images\NewStoreLogo.scale-100.png" />
@@ -235,6 +251,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ContentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImageViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Location.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -273,9 +297,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BackgroundPhoneTask\BackgroundPhoneTask.csproj">
+      <Project>{646af942-cd8e-4971-b9b3-7c18b4e0de65}</Project>
+      <Name>BackgroundPhoneTask</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BackgroundTask\BackgroundTask.csproj">
       <Project>{02e851ae-b6d4-4607-b42f-b1c9ee52fb09}</Project>
       <Name>BackgroundTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartHouse.LastFMApi\SmartHouse.LastFMApi.csproj">
+      <Project>{2500d7a6-c39a-4c79-a668-315b57bea94f}</Project>
+      <Name>SmartHouse.LastFMApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\SmartHouse.UWPLib\SmartHouse.UWPLib.csproj">
       <Project>{ab907ed3-ffbf-48e6-b0c3-bb1151408484}</Project>
@@ -289,7 +321,34 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="HockeySDK.UWP">
+      <Version>4.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.SignalR.Client">
+      <Version>2.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.Devices.Client">
+      <Version>1.5.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>10.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Template10">
+      <Version>1.1.12</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

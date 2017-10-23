@@ -1,0 +1,112 @@
+﻿@model SmartHouseWebLib.DomainModels.TelemetryChartUI
+@{
+    ViewBag.Title = "Chart";
+}
+
+@section styles{
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+
+    <style>
+        .telelabel {
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        .teledata {
+            font-weight: bold;
+            font-size: x-large;
+        }
+    </style>
+
+}
+
+<h2>Temperature & Humidity data</h2>
+
+<div class="row">
+
+    <div class="col-md-6 col-xs-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Temperature</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    @Html.Label("Min temperature", new { @class = "col-md-8 control-label telelabel" })
+                    <div class="col-md-10 teledata">
+                        @Model.MinTemperature.ToString("F2") &deg;C
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Max temperature", new { @class = "col-md-8 control-label telelabel" })
+                    <div class="col-md-10 teledata">
+                        @Model.MaxTemperature.ToString("F2") &deg;C
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Average temperature", new { @class = "col-md-8 control-label telelabel" })
+                    <div class="col-md-10 teledata">
+                        @Model.AverageTemperature.ToString("F2") &deg;C
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6 col-xs-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Humidity</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    @Html.Label("Min humidity", new { @class = "col-md-8 control-label telelabel" })
+                    <div class="col-md-10 teledata">
+                        @Model.MinHumidity.ToString("F2") %
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Max humidity", new { @class = "col-md-8 control-label telelabel" })
+                    <div class="col-md-10 teledata">
+                        @Model.MaxHumidity.ToString("F2") %
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Average humidity", new { @class = "col-md-8 control-label telelabel" })
+                    <div class="col-md-10 teledata">
+                        @Model.AverageHumidity.ToString("F2") %
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<h4>Count: @Model.TotalRows</h4>
+<hr />
+
+<div class="row">
+    <div id="temperatureChart">
+
+    </div>
+</div>
+
+<input id="charUrl" type="hidden" data-url="@Url.Action("GetLastHour", "Temperature")" />
+
+@section scripts{
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+    @Scripts.Render("~/bundles/chart")
+}
+

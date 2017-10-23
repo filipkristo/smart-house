@@ -79,6 +79,15 @@
                                Text="Torrent" />
                 </StackPanel>
             </controls:HamburgerButtonInfo>
+            <controls:HamburgerButtonInfo PageType="views:ContentPage" 
+                                          AutomationProperties.Name="Blue">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Camera" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Content" />
+                </StackPanel>
+            </controls:HamburgerButtonInfo>
         </controls:HamburgerMenu.PrimaryButtons>
 
         <controls:HamburgerMenu.SecondaryButtons>

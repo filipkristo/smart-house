@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SmartHouseWebLib.Models;
 using SmartHouseWebLib.UnitOfWork;
+using SmartHouseWebLib.DomainModels;
 
 namespace SmartHouseWebLib.DomainService
 {
@@ -32,6 +33,18 @@ namespace SmartHouseWebLib.DomainService
         public async Task<TelemetryData> GetAsync(int Id)
         {
             return await unitOfWork.TelemetryDataRepository.GetByIDAsync(Id);
+        }
+
+        public Task<TelemetryChartUI> GetChartData(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<TelemetryChartHourUI>> GetChartLastHoutData(string userId)
+        {
+            return await unitOfWork
+                .TelemetryDataRepository
+                .GetModelAsync(filter: x => x.Room.House.Users.Any(u => u.Id == userId), orderBy: x => x.OrderByDescending(d => d.CreatedUtc), select: TelemetryChartHourUI.Select);
         }
 
         public async Task<TelemetryData> GetLastAsync(string userId)

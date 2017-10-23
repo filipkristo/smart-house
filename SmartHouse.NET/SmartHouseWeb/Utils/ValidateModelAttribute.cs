@@ -17,7 +17,7 @@ namespace SmartHouseWeb.Utils
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            if (actionContext.ModelState.IsValid == false)
+            if (actionContext.ModelState.IsValid == false && actionContext.Request.Method != HttpMethod.Get)
             {                
                 var errors = new List<ValidationMessage>();
                 foreach (var state in actionContext.ModelState)

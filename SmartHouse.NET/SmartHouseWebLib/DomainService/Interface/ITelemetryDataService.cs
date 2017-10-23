@@ -1,4 +1,5 @@
-﻿using SmartHouseWebLib.Models;
+﻿using SmartHouseWebLib.DomainModels;
+using SmartHouseWebLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace SmartHouseWebLib.DomainService.Interface
     {
         Task<IEnumerable<TelemetryData>> GetAllAsync();
         Task<TelemetryData> GetAsync(int Id);
+        Task<TelemetryChartUI> GetChartData(string userId);
+        Task<IEnumerable<TelemetryChartHourUI>> GetChartLastHoutData(string userId);
         Task<int> Insert(TelemetryData model);
         Task<int> Update(TelemetryData model);
         Task<int> Delete(TelemetryData model);

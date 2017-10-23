@@ -45,12 +45,31 @@ namespace SmartHouse.UWPClient.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            if(ApiInformation.IsTypePresent("Windows.Devices.Geolocation.Geolocator"))
+            await Ping();
+
+            if (ApiInformation.IsTypePresent("Windows.Devices.Geolocation.Geolocator"))
             {
                 await InitializeGeolocation();
-            }            
-            await Ping();
-        }       
+            }        
+            if(ApiInformation.IsTypePresent("Windows.ApplicationModel.Background.PhoneTrigger"))
+            {
+                InitializePhoneTask();
+            }
+
+            InitializeTileBackgroundTask();
+        }      
+        
+        private void InitializePhoneTask()
+        {
+            var task = new PhoneCallTask();
+            var backgroundTask = task.RegisterBackgroundTask();
+        }
+
+        private void InitializeTileBackgroundTask()
+        {
+            var register = new TileBackgroundTaskRegister();
+            register.RegisterBackgroundTask();
+        }
 
         private async Task InitializeGeolocation()
         {
@@ -67,9 +86,7 @@ namespace SmartHouse.UWPClient.ViewModels
                     GeofenceMonitor.Current.GeofenceStateChanged += Current_GeofenceStateChanged;
                     GeofenceMonitor.Current.StatusChanged += Current_StatusChanged;
 
-                    TryToInitializeWebClient();
-                    await GetCurrentLocation();                    
-
+                    TryToInitializeWebClient();                                  
                     break;
 
                 case GeolocationAccessStatus.Denied:
@@ -222,24 +239,6 @@ namespace SmartHouse.UWPClient.ViewModels
                     }
                 }
             }
-        }
-
-        private async Task GetCurrentLocation()
-        {
-            var geoLocator = new Geolocator();            
-            var position = await geoLocator.GetGeopositionAsync();
-
-            var userLocation = new UserLocation()
-            {
-                Latitude = position.Coordinate.Point.Position.Latitude,
-                Longitude = position.Coordinate.Point.Position.Longitude,
-                Name = "AppStart",
-                UpdatedUtc = DateTime.UtcNow,
-                Status = LocationStatus.None
-            };
-
-            if (webClient != null)
-                await UploadLocationToCloud(userLocation);
         }
 
         private async Task UploadLocationToCloud(UserLocation userLocation)

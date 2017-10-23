@@ -1,6 +1,7 @@
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.HockeyApp;
 using SmartHouse.Lib;
+using SmartHouse.UWPClient.Messaging;
 using SmartHouse.UWPLib.Service;
 using System;
 using System.Diagnostics;
@@ -67,10 +68,19 @@ namespace SmartHouse.UWPClient
             }
 
             if (SettingsService.Instance.UseBackgroundWorker)
-                StartSignalRClient();
+            {
+                await StartSignalRClient();
+                var task = StartAzureIotMessaging();                
+            }                
         }
 
-        private async void StartSignalRClient()
+        private async Task StartAzureIotMessaging()
+        {
+            var messaging = new AzureIotMessaging();
+            await messaging.ReceiveDataFromAzure();
+        }
+
+        private async Task StartSignalRClient()
         {
             var IP = SettingsService.Instance.HostIP;
             var Port = SettingsService.Instance.HostPort;
@@ -125,5 +135,7 @@ namespace SmartHouse.UWPClient
         {            
             return base.OnSuspendingAsync(s, e, prelaunchActivated);
         }
+
+
     }
 }

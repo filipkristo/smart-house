@@ -14,7 +14,7 @@ namespace SmartHouse.UWPLib.Service
 {
     public class WebClientService
     {
-        private const string TokenKey = "Tokek";
+        private const string TokenKey = "Token";
 
         private OAuthResponse oauthResponse;
 
