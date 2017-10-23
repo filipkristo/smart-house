@@ -29,7 +29,7 @@ namespace SmartHouse.Lib
 
         private async Task Authenticate(LastfmClient client)
         {
-            var fileName = "last.fm";
+            const string fileName = "last.fm";
 
             if (!File.Exists(fileName))
             {
@@ -48,7 +48,7 @@ namespace SmartHouse.Lib
             else
             {
                 var json = File.ReadAllText(fileName, Encoding.UTF8);
-                var session = JsonConvert.DeserializeObject(json, typeof(LastUserSession)) as LastUserSession;
+                var session = JsonConvert.DeserializeObject<LastUserSession>(json);
 
                 client.Auth.LoadSession(session);
 
@@ -78,8 +78,8 @@ namespace SmartHouse.Lib
         /// <param name="song"></param>
         /// <returns></returns>
         public string StartScrobbleBash(SongDetails song)
-        {            
-            var script = "./scrobble";
+        {
+            const string script = "./scrobble";
 
             var result = BashHelper.ExecBashScript(script, song.Artist, song.Song, song.Album, Environment.NewLine);
             return string.IsNullOrWhiteSpace(result.Error) ? $"StartScrobbleBash - OK: {result.Message}" : $"StartScrobbleBash - FAIL: {result.Error}";
@@ -175,7 +175,7 @@ namespace SmartHouse.Lib
 
                 pageNum++;
 
-            } while (pagedTracks.Any());            
+            } while (pagedTracks.Any());
 
             var artists = scrobblers
                 .GroupBy(x => new { Id = x.ArtistMbid, Name = x.ArtistName })
@@ -189,16 +189,17 @@ namespace SmartHouse.Lib
                 .Take(10)
                 .ToList();
 
-            foreach (var item in artists)
+            foreach (var artist in artists)
             {
                 LastResponse<LastArtist> artistInfo = null;
 
-                if (!string.IsNullOrWhiteSpace(item.Id))
-                    artistInfo = await client.Artist.GetInfoByMbidAsync(item.Id).ConfigureAwait(false);
+                if (!string.IsNullOrWhiteSpace(artist.Id))
+                    artistInfo = await client.Artist.GetInfoByMbidAsync(artist.Id).ConfigureAwait(false);
                 else
-                    artistInfo = await client.Artist.GetInfoAsync(item.Name, autocorrect: true).ConfigureAwait(false);
+                    artistInfo = await client.Artist.GetInfoAsync(artist.Name, autocorrect: true).ConfigureAwait(false);
 
-                item.Url = artistInfo.Content?.MainImage?.Large?.OriginalString ?? artistInfo.Content?.MainImage?.LastOrDefault(x => !string.IsNullOrWhiteSpace(x?.OriginalString))?.OriginalString;
+                artist.ImageUrl = artistInfo?.Content?.MainImage?.Large?.OriginalString ?? artistInfo.Content?.MainImage?.LastOrDefault(x => !string.IsNullOrWhiteSpace(x?.OriginalString))?.OriginalString;
+                artist.Url = artistInfo?.Content?.Url?.OriginalString;
             }
 
             return artists;

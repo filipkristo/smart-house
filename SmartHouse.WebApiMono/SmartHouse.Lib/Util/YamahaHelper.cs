@@ -14,7 +14,7 @@ namespace SmartHouse.Lib
 
 		public async static Task<string> DoRequest(string command)
 		{
-			var uri = "http://10.110.167.49/YamahaRemoteControl/ctrl";
+            const string uri = "http://10.110.167.49/YamahaRemoteControl/ctrl";
 
 			using (var client = new HttpClient())
 			{	
