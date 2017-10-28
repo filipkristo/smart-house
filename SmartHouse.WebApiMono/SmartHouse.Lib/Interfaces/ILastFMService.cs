@@ -17,6 +17,6 @@ namespace SmartHouse.Lib
         Task<LastAlbum> GetAlbumInfo(string artist, string album);
         Task<LastArtist> GetArtistInfo(string artist);
         Task<IEnumerable<LastArtist>> GetSimilarArtist(string artist, int limit = 50);
-        Task<IEnumerable<ArtistTileData>> GetRecentTopArtists();
-    }
+	    Task<IEnumerable<ArtistTileData>> GetRecentTopArtists(DateTimeOffset since, int count);
+	}
 }

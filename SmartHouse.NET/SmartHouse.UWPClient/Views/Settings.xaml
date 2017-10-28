@@ -90,12 +90,19 @@
                                     OnContent="Enable" OffContent="Disable"                                    
                                     RelativePanel.AlignLeftWithPanel="True"                                      
                                     RelativePanel.Below="UseBackgroundWorker" />
-
-                            <TextBox x:Name="txtHostIP" Header="Host IP"
+                        
+                        <ToggleSwitch x:Name="PhoneBackgroundTask" Header="Phone background task"
+                                      IsOn="{Binding PhoneTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      OnContent="Enable" OffContent="Disable"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.Below="LiveTileNotification" 
+                                      Visibility="{Binding PhoneTaskVisibility}" />
+                        
+                        <TextBox x:Name="txtHostIP" Header="Host IP"
                                       Text="{Binding HostIP, Mode=TwoWay}"                                                                            
                                       RelativePanel.AlignLeftWithPanel="True"    
                                       MinWidth="180"                                      
-                                      RelativePanel.Below="LiveTileNotification" />
+                                      RelativePanel.Below="PhoneBackgroundTask" />
                         
                         <TextBox x:Name="txtHostPort" Header="Host Port"
                                       Text="{Binding HostPort, Mode=TwoWay}"                                         

@@ -80,6 +80,12 @@ namespace SmartHouse.UWPLib.Service
             set => _helper.Write(nameof(LiveTile), value);
         }
 
+        public bool PhoneTask
+        {
+            get => _helper.Read<bool>(nameof(PhoneTask), false);
+            set => _helper.Write(nameof(PhoneTask), value);
+        }
+
         public string HostPort
         {
             get => _helper.Read<string>(nameof(HostPort), "", Template10.Services.SettingsService.SettingsStrategies.Roam);
@@ -114,7 +120,7 @@ namespace SmartHouse.UWPLib.Service
 
         public void SaveUsernamePassword(string username, string password)
         {
-            var vault = new PasswordVault();                                
+            var vault = new PasswordVault();
             vault.Add(new PasswordCredential(WebApp, username, password));
         }
 

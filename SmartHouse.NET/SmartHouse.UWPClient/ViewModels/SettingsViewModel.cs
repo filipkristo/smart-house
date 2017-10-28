@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Foundation.Metadata;
 using Template10.Common;
 using Template10.Mvvm;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
+using SmartHouse.UWPClient.BackgroundTasks;
 using Template10.Utils;
 using SmartHouse.UWPLib.Service;
 
@@ -31,7 +33,7 @@ namespace SmartHouse.UWPClient.ViewModels
 
     public class SettingsPartViewModel : BaseViewModel
     {
-        private readonly SettingsService _settings;        
+        private readonly SettingsService _settings;
 
         public SettingsPartViewModel()
         {
@@ -111,6 +113,24 @@ namespace SmartHouse.UWPClient.ViewModels
             set => _settings.LiveTile = value;
         }
 
+        public bool PhoneTask
+        {
+            get => _settings.PhoneTask;
+            set
+            {
+                _settings.PhoneTask = value;
+                if(value)
+                    EnablePhoneTask();
+                else
+                    DisablePhoneTask();
+            }
+        }
+
+        public Visibility PhoneTaskVisibility =>
+            ApiInformation.IsTypePresent("Windows.ApplicationModel.Background.PhoneTrigger")
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
         public bool UseLightThemeButton
         {
             get => _settings.AppTheme.Equals(ApplicationTheme.Light);
@@ -121,7 +141,19 @@ namespace SmartHouse.UWPClient.ViewModels
                 (Window.Current.Content as FrameworkElement).RequestedTheme = _settings.AppTheme.ToElementTheme();
                 Views.Shell.HamburgerMenu.RefreshStyles(_settings.AppTheme);
             }
-        }                
+        }
+
+        private void EnablePhoneTask()
+        {
+            var task = new PhoneCallTask();
+            task.RegisterBackgroundTask();
+        }
+
+        private void DisablePhoneTask()
+        {
+            var task = new PhoneCallTask();
+            task.UnRegisterBackgroundTask();
+        }
     }
 
     public class AboutPartViewModel : BaseViewModel

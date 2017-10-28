@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Networking.Sockets;
 using Windows.Storage;
+using SmartHouse.UWPLib.Service;
 
 namespace BackgroundPhoneTask
 {
     public sealed class PhoneBackgroundTask : IBackgroundTask
     {
-        private const string Key = "PhoneCallStarted";
+        private const string Key = "PhoneCallStartedKey";
 
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
             var deferral = taskInstance.GetDeferral();
-
             var isLocalNetwork = await IsInLocalNetwork();
 
             if(isLocalNetwork)
@@ -81,7 +81,7 @@ namespace BackgroundPhoneTask
                 using (var tcpClient = new StreamSocket())
                 {
                     await tcpClient.ConnectAsync(
-                        new Windows.Networking.HostName("10.110.166.90"),
+                        new Windows.Networking.HostName(SettingsService.Instance.HostIP),
                         "80",
                         SocketProtectionLevel.PlainSocket);
                 }

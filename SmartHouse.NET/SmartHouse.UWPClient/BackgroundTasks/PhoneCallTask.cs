@@ -13,8 +13,6 @@ namespace SmartHouse.UWPClient.BackgroundTasks
         private const string BackgroundTaskName = "SmartHousePhonecallBackgroundTask";
         private const string BackgroundTaskEntryPoint = "BackgroundPhoneTask.PhoneBackgroundTask";
 
-        private IBackgroundTaskRegistration backgroundTask = null;
-
         public IBackgroundTaskRegistration RegisterBackgroundTask()
         {
             if (BackgroundTaskRegistration.AllTasks.Any(x => x.Value.Name == BackgroundTaskName))
@@ -29,8 +27,14 @@ namespace SmartHouse.UWPClient.BackgroundTasks
             var trigger = new PhoneTrigger(PhoneTriggerType.CallHistoryChanged, false);
             phoneTaskBuilder.SetTrigger(trigger);
 
-            backgroundTask = phoneTaskBuilder.Register();
+            var backgroundTask = phoneTaskBuilder.Register();
             return backgroundTask;
+        }
+
+        public void UnRegisterBackgroundTask()
+        {
+            var task = BackgroundTaskRegistration.AllTasks.Values.FirstOrDefault(x => x.Name == BackgroundTaskName);
+            task?.Unregister(true);
         }
     }
 }

@@ -159,7 +159,7 @@ namespace SmartHouse.Lib
             return response.Content;
         }
 
-        public async Task<IEnumerable<ArtistTileData>> GetRecentTopArtists()
+        public async Task<IEnumerable<ArtistTileData>> GetRecentTopArtists(DateTimeOffset since, int count)
         {
             if (!client.Auth.Authenticated)
                 await Authenticate(client);
@@ -170,7 +170,7 @@ namespace SmartHouse.Lib
 
             do
             {
-                pagedTracks = await LoadScrobbles(pageNum).ConfigureAwait(false);
+                pagedTracks = await LoadScrobbles(pageNum, since).ConfigureAwait(false);
                 scrobblers.AddRange(pagedTracks);
 
                 pageNum++;
@@ -186,7 +186,7 @@ namespace SmartHouse.Lib
                     Name = x.Key.Name,
                     Count = x.Count()
                 })
-                .Take(10)
+                .Take(count)
                 .ToList();
 
             foreach (var artist in artists)
@@ -198,17 +198,17 @@ namespace SmartHouse.Lib
                 else
                     artistInfo = await client.Artist.GetInfoAsync(artist.Name, autocorrect: true).ConfigureAwait(false);
 
-                artist.ImageUrl = artistInfo?.Content?.MainImage?.Large?.OriginalString ?? artistInfo.Content?.MainImage?.LastOrDefault(x => !string.IsNullOrWhiteSpace(x?.OriginalString))?.OriginalString;
+                artist.ImageUrl = artistInfo?.Content?.MainImage?.Large?.OriginalString ?? artistInfo?.Content?.MainImage?.LastOrDefault(x => !string.IsNullOrWhiteSpace(x?.OriginalString))?.OriginalString;
                 artist.Url = artistInfo?.Content?.Url?.OriginalString;
             }
 
             return artists;
         }
 
-        private async Task<IEnumerable<LastTrack>> LoadScrobbles(int page)
+        private async Task<IEnumerable<LastTrack>> LoadScrobbles(int pageNum, DateTimeOffset since)
         {
-            var tracks = await client.User.GetRecentScrobbles(USERNAME, DateTime.Today.AddDays(-1), page, 20).ConfigureAwait(false);
-            return tracks.Where(x => !(x.IsNowPlaying == true));
+            var tracks = await client.User.GetRecentScrobbles(USERNAME, DateTime.Today.AddDays(-1), pageNum, 20).ConfigureAwait(false);
+            return tracks.Where(x => x.IsNowPlaying != true);
         }
 
         public void Dispose()

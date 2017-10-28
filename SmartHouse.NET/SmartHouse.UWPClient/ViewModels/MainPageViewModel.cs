@@ -63,10 +63,10 @@ namespace SmartHouse.UWPClient.ViewModels
             {
                 await InitializeGeolocation();
             }
-            //if(ApiInformation.IsTypePresent("Windows.ApplicationModel.Background.PhoneTrigger"))
-            //{
-            //    InitializePhoneTask();
-            //}
+            if (ApiInformation.IsTypePresent("Windows.ApplicationModel.Background.PhoneTrigger") && SettingsService.Instance.PhoneTask)
+            {
+                InitializePhoneTask();
+            }
             if (ApiInformation.IsTypePresent("Windows.UI.Notifications.TileUpdateManager"))
             {
                 InitializeTileBackgroundTask();
