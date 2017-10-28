@@ -42,7 +42,7 @@ namespace BackgroundTask
             updater.Clear();
 
             // Keep track of the number feed items that get tile notifications.
-            int itemCount = 0;
+            var itemCount = 0;
 
             // Create a tile notification for each feed item.
             foreach (var item in artists)

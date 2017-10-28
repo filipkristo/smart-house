@@ -28,18 +28,30 @@ namespace SmartHouse.UWPClient.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        private WebClientService webClient;
-        private readonly GeofenceTask geofenceTask;
-        private IList<Geofence> geofences = new List<Geofence>();
+        private WebClientService _webClient;
+        private readonly GeofenceTask _geofenceTask;
+        private IList<Geofence> _geofences = new List<Geofence>();
 
-        public Visibility VPNVisible { get { return Get<Visibility>(); } set { Set(value); } }
+        public Visibility VPNVisible
+        {
+            get => Get<Visibility>();
+            set => Set(value);
+        }
 
-        public string PingStatus { get { return Get<string>(); } set { Set(value); } }
-        public ObservableCollection<string> GeofenceBackgroundEvents { get { return Get<ObservableCollection<string>>(); } set { Set(value); } }
+        public string PingStatus
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+        public ObservableCollection<string> GeofenceBackgroundEvents
+        {
+            get => Get<ObservableCollection<string>>();
+            set => Set(value);
+        }
 
         public MainPageViewModel()
         {
-            geofenceTask = new GeofenceTask();
+            _geofenceTask = new GeofenceTask();
             GeofenceBackgroundEvents = new ObservableCollection<string>();
         }
 
@@ -50,14 +62,16 @@ namespace SmartHouse.UWPClient.ViewModels
             if (ApiInformation.IsTypePresent("Windows.Devices.Geolocation.Geolocator"))
             {
                 await InitializeGeolocation();
-            }        
-            if(ApiInformation.IsTypePresent("Windows.ApplicationModel.Background.PhoneTrigger"))
-            {
-                InitializePhoneTask();
             }
-
-            InitializeTileBackgroundTask();
-        }      
+            //if(ApiInformation.IsTypePresent("Windows.ApplicationModel.Background.PhoneTrigger"))
+            //{
+            //    InitializePhoneTask();
+            //}
+            if (ApiInformation.IsTypePresent("Windows.UI.Notifications.TileUpdateManager"))
+            {
+                InitializeTileBackgroundTask();
+            }
+        }
         
         private void InitializePhoneTask()
         {
@@ -79,7 +93,7 @@ namespace SmartHouse.UWPClient.ViewModels
             {
                 case GeolocationAccessStatus.Allowed:                    
                     CheckGeoFancesAddress();                    
-                    await geofenceTask.RegisterBackgroundTask();
+                    await _geofenceTask.RegisterBackgroundTask();
                     FillEventListBoxWithExistingEvents();
 
                     // register for state change events
@@ -116,7 +130,7 @@ namespace SmartHouse.UWPClient.ViewModels
                 Status = LocationStatus.None
             };
 
-            if (webClient != null)
+            if (_webClient != null)
                 await UploadLocationToCloud(userLocation);
         }
 
@@ -137,7 +151,7 @@ namespace SmartHouse.UWPClient.ViewModels
                 Status = LocationStatus.None
             };
 
-            if(webClient != null)
+            if(_webClient != null)
                 await UploadLocationToCloud(userLocation);
         }
 
@@ -150,7 +164,7 @@ namespace SmartHouse.UWPClient.ViewModels
 
                 if (!string.IsNullOrWhiteSpace(settings.WebHost) && credential != null)
                 {
-                    webClient = new WebClientService(settings.WebHost, credential.UserName, credential.Password);
+                    _webClient = new WebClientService(settings.WebHost, credential.UserName, credential.Password);
                 }
             }
             catch (Exception ex)
@@ -163,18 +177,18 @@ namespace SmartHouse.UWPClient.ViewModels
         {
             var helper = new GeofenceLocationHelper();
 
-            geofences = GeofenceMonitor.Current.Geofences;            
+            _geofences = GeofenceMonitor.Current.Geofences;            
 
-            if(!geofences.Any(x => x.Id == GeofenceLocationHelper.HOME_KEY))
+            if(!_geofences.Any(x => x.Id == GeofenceLocationHelper.HOME_KEY))
             {
                 var geofence = helper.GetHomeLocation();
-                geofences.Add(geofence);
+                _geofences.Add(geofence);
             }
 
-            if (!geofences.Any(x => x.Id == GeofenceLocationHelper.WORK_KEY))
+            if (!_geofences.Any(x => x.Id == GeofenceLocationHelper.WORK_KEY))
             {
                 var geofence = helper.GetWorkLocation();
-                geofences.Add(geofence);
+                _geofences.Add(geofence);
             }
         }
 
@@ -245,8 +259,8 @@ namespace SmartHouse.UWPClient.ViewModels
         {
             try
             {
-                await webClient.Login();
-                var id = await webClient.SendUserLocation(userLocation);
+                await _webClient.Login();
+                var id = await _webClient.SendUserLocation(userLocation);
                 Debug.WriteLine($"Uploaded to web server: {id}");
             }
             catch (Exception ex)

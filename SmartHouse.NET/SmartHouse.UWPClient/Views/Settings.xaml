@@ -80,16 +80,16 @@
                                       RelativePanel.Below="UseShellDrawnBackButtonToggleSwtich" />
 
                         <ToggleSwitch x:Name="UseBackgroundWorker" Header="Background worker"
-                                      IsOn="{Binding UseBackgroundWorker, Mode=TwoWay}"
-                                      OffContent="Disable" OnContent="Enable"
-                                      RelativePanel.AlignLeftWithPanel="True"
-                                      RelativePanel.Below="UseLightThemeToggleSwitch" />
+                                    IsOn="{Binding UseBackgroundWorker, Mode=TwoWay}"
+                                    OffContent="Disable" OnContent="Enable"
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.Below="UseLightThemeToggleSwitch" />
 
-                        <CheckBox x:Name="LiveTileNotification"
-                                  IsChecked="{Binding LiveTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  RelativePanel.AlignLeftWithPanel="True"
-                                  RelativePanel.Below="UseBackgroundWorker" 
-                                  Content="Live tile background worker"/>
+                        <ToggleSwitch x:Name="LiveTileNotification" Header="Live tile notification"
+                                    IsOn="{Binding LiveTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    OnContent="Enable" OffContent="Disable"                                    
+                                    RelativePanel.AlignLeftWithPanel="True"                                      
+                                    RelativePanel.Below="UseBackgroundWorker" />
 
                             <TextBox x:Name="txtHostIP" Header="Host IP"
                                       Text="{Binding HostIP, Mode=TwoWay}"                                                                            
