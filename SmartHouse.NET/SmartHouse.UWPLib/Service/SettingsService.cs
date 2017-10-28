@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using Template10.Common;
 using Template10.Utils;
 using Windows.Security.Credentials;
@@ -9,19 +10,19 @@ namespace SmartHouse.UWPLib.Service
 {
     public class SettingsService
     {
-        private const string WEB_APP = "SmartHouseWeb";        
+        private const string WebApp = "SmartHouseWeb";
 
         public static SettingsService Instance { get; } = new SettingsService();
-        Template10.Services.SettingsService.ISettingsHelper _helper;        
+        private readonly Template10.Services.SettingsService.ISettingsHelper _helper;
 
         private SettingsService()
         {
-            _helper = new Template10.Services.SettingsService.SettingsHelper();            
+            _helper = new Template10.Services.SettingsService.SettingsHelper();
         }
 
         public bool UseShellBackButton
         {
-            get { return _helper.Read<bool>(nameof(UseShellBackButton), true); }
+            get => _helper.Read<bool>(nameof(UseShellBackButton), true);
             set
             {
                 _helper.Write(nameof(UseShellBackButton), value);
@@ -36,11 +37,8 @@ namespace SmartHouse.UWPLib.Service
 
         public bool UseBackgroundWorker
         {
-            get { return _helper.Read<bool>(nameof(UseBackgroundWorker), false); }
-            set
-            {
-                _helper.Write(nameof(UseBackgroundWorker), value);                
-            }
+            get => _helper.Read<bool>(nameof(UseBackgroundWorker), false);
+            set => _helper.Write(nameof(UseBackgroundWorker), value);
         }
 
         public ApplicationTheme AppTheme
@@ -51,15 +49,12 @@ namespace SmartHouse.UWPLib.Service
                 var value = _helper.Read<string>(nameof(AppTheme), theme.ToString(), Template10.Services.SettingsService.SettingsStrategies.Roam);
                 return Enum.TryParse<ApplicationTheme>(value, out theme) ? theme : ApplicationTheme.Dark;
             }
-            set
-            {
-                _helper.Write(nameof(AppTheme), value.ToString(), Template10.Services.SettingsService.SettingsStrategies.Roam);                
-            }
+            set => _helper.Write(nameof(AppTheme), value.ToString(), Template10.Services.SettingsService.SettingsStrategies.Roam);
         }
 
         public TimeSpan CacheMaxDuration
         {
-            get { return _helper.Read<TimeSpan>(nameof(CacheMaxDuration), TimeSpan.FromDays(2)); }
+            get => _helper.Read<TimeSpan>(nameof(CacheMaxDuration), TimeSpan.FromDays(2));
             set
             {
                 _helper.Write(nameof(CacheMaxDuration), value);
@@ -69,30 +64,27 @@ namespace SmartHouse.UWPLib.Service
 
         public string WebHost
         {
-            get { return _helper.Read<string>(nameof(WebHost), "", Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set
-            {
-                _helper.Write(nameof(WebHost), value, Template10.Services.SettingsService.SettingsStrategies.Roam);
-            }
+            get => _helper.Read<string>(nameof(WebHost), "", Template10.Services.SettingsService.SettingsStrategies.Roam);
+            set => _helper.Write(nameof(WebHost), value, Template10.Services.SettingsService.SettingsStrategies.Roam);
         }
 
         public string HostIP
         {
-            get { return _helper.Read<string>(nameof(HostIP), "", Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set
-            {
-                _helper.Write(nameof(HostIP), value, Template10.Services.SettingsService.SettingsStrategies.Roam);
-            }
+            get => _helper.Read<string>(nameof(HostIP), "", Template10.Services.SettingsService.SettingsStrategies.Roam);
+            set => _helper.Write(nameof(HostIP), value, Template10.Services.SettingsService.SettingsStrategies.Roam);
+        }
+
+        public bool LiveTile
+        {
+            get => _helper.Read<bool>(nameof(LiveTile), true);
+            set => _helper.Write(nameof(LiveTile), value);
         }
 
         public string HostPort
         {
-            get { return _helper.Read<string>(nameof(HostPort), "", Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set
-            {
-                _helper.Write(nameof(HostPort), value, Template10.Services.SettingsService.SettingsStrategies.Roam);
-            }
-        }        
+            get => _helper.Read<string>(nameof(HostPort), "", Template10.Services.SettingsService.SettingsStrategies.Roam);
+            set => _helper.Write(nameof(HostPort), value, Template10.Services.SettingsService.SettingsStrategies.Roam);
+        }
 
         public PasswordCredential GetCredentialFromLocker()
         {
@@ -101,7 +93,7 @@ namespace SmartHouse.UWPLib.Service
             try
             {
                 var vault = new PasswordVault();
-                var credentialList = vault.FindAllByResource(WEB_APP);
+                var credentialList = vault.FindAllByResource(WebApp);
 
                 if (credentialList.Count > 0)
                 {
@@ -112,7 +104,10 @@ namespace SmartHouse.UWPLib.Service
                     }
                 }
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
 
             return credential;
         }
@@ -120,7 +115,7 @@ namespace SmartHouse.UWPLib.Service
         public void SaveUsernamePassword(string username, string password)
         {
             var vault = new PasswordVault();                                
-            vault.Add(new PasswordCredential(WEB_APP, username, password));
+            vault.Add(new PasswordCredential(WebApp, username, password));
         }
 
         public void DeviceInformation()

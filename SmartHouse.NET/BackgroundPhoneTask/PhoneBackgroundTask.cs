@@ -3,6 +3,7 @@ using SmartHouse.UWPLib.BLL;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace BackgroundPhoneTask
         private void PhoneCallStarted()
         {
             var settings = ApplicationData.Current.LocalSettings;
-            settings.Values[Key] = DateTime.UtcNow.ToString();
+            settings.Values[Key] = DateTime.UtcNow;
         }
 
         private void PhoneCallEnded()
@@ -83,9 +84,6 @@ namespace BackgroundPhoneTask
                         new Windows.Networking.HostName("10.110.166.90"),
                         "80",
                         SocketProtectionLevel.PlainSocket);
-
-                    var localIp = tcpClient.Information.LocalAddress.DisplayName;
-                    var remoteIp = tcpClient.Information.RemoteAddress.DisplayName;
                 }
 
                 return true;

@@ -23,15 +23,15 @@ namespace SmartHouse.UWPClient.ViewModels
             {
                 var settings = SettingsService.Instance;
                 settings.SaveUsernamePassword(SettingsPartViewModel.Username, SettingsPartViewModel.Password);
-            }            
+            }
 
-            return base.OnNavigatedFromAsync(pageState, suspending);            
+            return base.OnNavigatedFromAsync(pageState, suspending);
         }
     }
 
     public class SettingsPartViewModel : BaseViewModel
     {
-        SettingsService _settings;        
+        private readonly SettingsService _settings;        
 
         public SettingsPartViewModel()
         {
@@ -48,19 +48,19 @@ namespace SmartHouse.UWPClient.ViewModels
                 {
                     Username = credentials.UserName;
                     Password = credentials.Password;
-                }                
+                }
             }
         }
 
         public bool UseBackgroundWorker
         {
-            get { return _settings.UseBackgroundWorker; }
+            get => _settings.UseBackgroundWorker;
             set { _settings.UseBackgroundWorker = value; base.RaisePropertyChanged(); }
         }
 
         public bool UseShellBackButton
         {
-            get { return _settings.UseShellBackButton; }
+            get => _settings.UseShellBackButton;
             set
             {
                 _settings.UseShellBackButton = value;
@@ -77,20 +77,20 @@ namespace SmartHouse.UWPClient.ViewModels
 
         public string WebHost
         {
-            get { return _settings.WebHost; }
-            set { _settings.WebHost = value; }
+            get => _settings.WebHost;
+            set => _settings.WebHost = value;
         }
 
         public string HostIP
         {
-            get { return _settings.HostIP; }
-            set { _settings.HostIP = value; }
+            get => _settings.HostIP;
+            set => _settings.HostIP = value;
         }
 
         public string HostPort
         {
-            get { return _settings.HostPort; }
-            set { _settings.HostPort = value; }
+            get => _settings.HostPort;
+            set => _settings.HostPort = value;
         }
 
         public string Password
@@ -105,9 +105,15 @@ namespace SmartHouse.UWPClient.ViewModels
             set => Set(value);
         }
 
+        public bool LiveTile
+        {
+            get => _settings.LiveTile;
+            set => _settings.LiveTile = value;
+        }
+
         public bool UseLightThemeButton
         {
-            get { return _settings.AppTheme.Equals(ApplicationTheme.Light); }
+            get => _settings.AppTheme.Equals(ApplicationTheme.Light);
             set
             {
                 _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; base.RaisePropertyChanged();

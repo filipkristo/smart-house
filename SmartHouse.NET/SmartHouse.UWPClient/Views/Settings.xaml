@@ -85,11 +85,17 @@
                                       RelativePanel.AlignLeftWithPanel="True"
                                       RelativePanel.Below="UseLightThemeToggleSwitch" />
 
-                        <TextBox x:Name="txtHostIP" Header="Host IP"
+                        <CheckBox x:Name="LiveTileNotification"
+                                  IsChecked="{Binding LiveTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  RelativePanel.AlignLeftWithPanel="True"
+                                  RelativePanel.Below="UseBackgroundWorker" 
+                                  Content="Live tile background worker"/>
+
+                            <TextBox x:Name="txtHostIP" Header="Host IP"
                                       Text="{Binding HostIP, Mode=TwoWay}"                                                                            
                                       RelativePanel.AlignLeftWithPanel="True"    
                                       MinWidth="180"                                      
-                                      RelativePanel.Below="UseBackgroundWorker" />
+                                      RelativePanel.Below="LiveTileNotification" />
                         
                         <TextBox x:Name="txtHostPort" Header="Host Port"
                                       Text="{Binding HostPort, Mode=TwoWay}"                                         

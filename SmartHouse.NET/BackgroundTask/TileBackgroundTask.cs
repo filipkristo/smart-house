@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Data.Xml.Dom;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
+using SmartHouse.UWPLib.Service;
 
 namespace BackgroundTask
 {
@@ -16,14 +17,18 @@ namespace BackgroundTask
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
             var deferral = taskInstance.GetDeferral();
-
-            using (var lastFMService = new LastFMService())
+            
+            if (SettingsService.Instance.LiveTile)
             {
-                await lastFMService.Login();
-                var artists = await lastFMService.RecentTopArtists();
+                using (var lastFmService = new LastFMService())
+                {
+                    await lastFmService.Login();
+                    var artists = await lastFmService.RecentTopArtists();
 
-                if(artists.Any())
-                    UpdateTile(artists);
+                    if (artists.Any())
+                        UpdateTile(artists);
+                }
+
             }
 
             deferral.Complete();
