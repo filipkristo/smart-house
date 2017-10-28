@@ -14,7 +14,6 @@ using Windows.Devices.Geolocation.Geofencing;
 using Windows.ApplicationModel.Background;
 using System.Collections.ObjectModel;
 using SmartHouse.UWPClient.BackgroundTasks;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using SmartHouse.UWPLib.BLL;
 using Windows.Storage;
@@ -23,6 +22,7 @@ using Windows.Security.Credentials;
 using SmartHouse.UWPLib.Service;
 using SmartHouse.UWPLib.Model;
 using Windows.Foundation.Metadata;
+using static System.Diagnostics.Debug;
 
 namespace SmartHouse.UWPClient.ViewModels
 {
@@ -100,7 +100,7 @@ namespace SmartHouse.UWPClient.ViewModels
                     GeofenceMonitor.Current.GeofenceStateChanged += Current_GeofenceStateChanged;
                     GeofenceMonitor.Current.StatusChanged += Current_StatusChanged;
 
-                    TryToInitializeWebClient();                                  
+                    TryToInitializeWebClient();
                     break;
 
                 case GeolocationAccessStatus.Denied:
@@ -110,16 +110,18 @@ namespace SmartHouse.UWPClient.ViewModels
                 case GeolocationAccessStatus.Unspecified:
                     Status = "Unspecified error.";
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
         private async void Current_StatusChanged(GeofenceMonitor sender, object args)
         {
-            Debug.Write("Sender: "); 
-            Debug.WriteLine(JsonConvert.SerializeObject(sender));
+            Write("Sender: "); 
+            WriteLine(JsonConvert.SerializeObject(sender));
 
-            Debug.Write("Args: ");
-            Debug.WriteLine(JsonConvert.SerializeObject(args));
+            Write("Args: ");
+            WriteLine(JsonConvert.SerializeObject(args));
 
             var userLocation = new UserLocation()
             {
@@ -136,11 +138,11 @@ namespace SmartHouse.UWPClient.ViewModels
 
         private async void Current_GeofenceStateChanged(GeofenceMonitor sender, object args)
         {
-            Debug.Write("Sender: ");
-            Debug.WriteLine(JsonConvert.SerializeObject(sender));
+            Write("Sender: ");
+            WriteLine(JsonConvert.SerializeObject(sender));
 
-            Debug.Write("Args: ");
-            Debug.WriteLine(JsonConvert.SerializeObject(args));
+            Write("Args: ");
+            WriteLine(JsonConvert.SerializeObject(args));
 
             var userLocation = new UserLocation()
             {
@@ -169,7 +171,7 @@ namespace SmartHouse.UWPClient.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                WriteLine(ex);
             }
         }                
 
@@ -196,7 +198,7 @@ namespace SmartHouse.UWPClient.ViewModels
         {
             try
             {
-                if(String.IsNullOrWhiteSpace(SettingsService.Instance.HostIP) || String.IsNullOrWhiteSpace(SettingsService.Instance.HostPort))
+                if(string.IsNullOrWhiteSpace(SettingsService.Instance.HostIP) || string.IsNullOrWhiteSpace(SettingsService.Instance.HostPort))
                 {
                     Status = "Host IP or port are empty";
                     return;
@@ -261,11 +263,11 @@ namespace SmartHouse.UWPClient.ViewModels
             {
                 await _webClient.Login();
                 var id = await _webClient.SendUserLocation(userLocation);
-                Debug.WriteLine($"Uploaded to web server: {id}");
+                WriteLine($"Uploaded to web server: {id}");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                WriteLine(ex);
             }
         }
 
