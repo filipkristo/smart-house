@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
@@ -165,7 +166,7 @@ namespace SmartHouse.Lib
 		public PandoraResult GetCurrentSongInfo()
 		{
 			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
-			var path = Path.Combine(homeDir, @".config/pianobar/nowplaying");
+			var path = Path.Combine(homeDir ?? throw new NullReferenceException("Can't get home directory"), @".config/pianobar/nowplaying");
 
 			var lines = File.ReadLines(path).Select(x => x?.Trim()).ToList();
 
@@ -186,9 +187,9 @@ namespace SmartHouse.Lib
 			};
 		}
 
-        public async Task<SongResult> GetNowPlaying()
+        public Task<SongResult> GetNowPlaying()
         {
-            return await Task.Run(() =>
+            return Task.Run(() =>
             {
                 var result = GetCurrentSongInfo();
 
@@ -229,7 +230,7 @@ namespace SmartHouse.Lib
                     ErrorCode = 0,
                     Message = $"You liked {songInfo.Song} song. Status: {status}"
                 };
-            }            
+            }
         }
 
         public IEnumerable<KeyValue> GetStationList()
@@ -237,14 +238,24 @@ namespace SmartHouse.Lib
 			var homeDir = System.Environment.GetEnvironmentVariable("HOME");
 			var path = Path.Combine(homeDir, @".config/pianobar/stationlist");
 
-			var lines = File.ReadLines(path)						
+			return File.ReadLines(path)
 						.Select(x => new KeyValue
 						{
-							Key = x.Replace(")", "").Substring(0, x.Replace(")", "").IndexOf(' ')),
-							Value = x.Replace(")", "")
-						}).ToList();
-			
-			return lines;
+							Key = ParseKey(x),
+							Value = ParseName(x)
+						})
+						.ToList();
+
+			string ParseKey(string name)
+			{
+				return name.Replace(")", "").Substring(0, name.Replace(")", "").IndexOf(' '));
+			}
+
+			string ParseName(string name)
+			{
+				var nameWithDigit = name.Replace(")", "");
+				return Regex.Replace(nameWithDigit, "[0-9]", "").Trim();
+			}
 		}
 
 		public bool IsPlaying()
@@ -254,7 +265,7 @@ namespace SmartHouse.Lib
 
 		private Result CommandExecuter(PandoraCommandEnum command)
 		{
-			var message = String.Empty;
+			var message = string.Empty;
 			switch (command)
 			{
 				case PandoraCommandEnum.Play:
@@ -297,6 +308,7 @@ namespace SmartHouse.Lib
 					BashHelper.ExecBashCommand("echo 't' >> /home/pi/.config/pianobar/ctl");
 					message = "Tired of this song";
 					break;
+				case PandoraCommandEnum.ChangeStation:
 				default:
 					throw new Exception($"Command {command} is not defined");
 			}

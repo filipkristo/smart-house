@@ -9,5 +9,6 @@ namespace SmartHouse.Lib
 		KodiSettings KodiSettings { get; set; }
 		List<ModeSettings> ModeSettings { get; set; }
 		bool LastFM { get; set; }
+		bool RestartVpn { get; set; }
 	}
 }

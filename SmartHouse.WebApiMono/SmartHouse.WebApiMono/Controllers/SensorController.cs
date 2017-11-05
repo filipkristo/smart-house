@@ -39,9 +39,22 @@ namespace SmartHouse.WebApiMono
 
         [HttpPost]
         [Route("AirCondition")]
-        public async Task<Result> AirCondition(byte On)
+        public async Task<Result> AirCondition(byte on)
         {
-            return await TelemetryService.AirCondition(On);
+            var result = await TelemetryService.AirCondition(on);
+			PushNotification($"Air conditioner is {result.Message}");
+
+	        return result;
         }
+
+		[HttpPost]
+		[Route("ToogleAirCondition")]
+		public async Task<Result> ToogleAirCondition()
+		{
+			var result = await TelemetryService.ToogleAirCondition();
+			PushNotification($"Air conditioner is {result.Message}");
+
+			return result;
+		}
 	}
 }

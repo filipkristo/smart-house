@@ -95,7 +95,7 @@ namespace SmartHouse.WebApiMono
 
                 Logger.LogInfoMessage("Smart house turn off");
 
-                var smartHouse = new SmartHouseService();
+                var smartHouse = new SmartHouseService();				
 
                 using (var orvibioService = new OrviboService())
                 {
@@ -109,6 +109,9 @@ namespace SmartHouse.WebApiMono
                     Logger.LogInfoMessage("orvibioService.TurnOn");
                     Logger.LogInfoMessage(turnOnResult.Message);
                 }
+
+	            Thread.Sleep(TimeSpan.FromMinutes(1));
+	            smartHouse.RestartOpenVPNService().Wait();
             };
 
             var alarmClock = new AlarmClock(DateTime.Today.AddDays(1).Date.AddTicks(timeSpan.Ticks), action);

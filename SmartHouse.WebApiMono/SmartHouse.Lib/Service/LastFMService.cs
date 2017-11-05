@@ -161,9 +161,6 @@ namespace SmartHouse.Lib
 
         public async Task<IEnumerable<ArtistTileData>> GetRecentTopArtists(DateTimeOffset since, int count)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
-
             var pageNum = 1;
             var scrobblers = new List<LastTrack>();
             IEnumerable<LastTrack> pagedTracks = null;
@@ -207,7 +204,7 @@ namespace SmartHouse.Lib
 
         private async Task<IEnumerable<LastTrack>> LoadScrobbles(int pageNum, DateTimeOffset since)
         {
-            var tracks = await client.User.GetRecentScrobbles(USERNAME, DateTime.Today.AddDays(-1), pageNum, 20).ConfigureAwait(false);
+            var tracks = await client.User.GetRecentScrobbles(USERNAME, DateTime.Today.AddDays(-1), pageNum, 30).ConfigureAwait(false);
             return tracks.Where(x => x.IsNowPlaying != true);
         }
 

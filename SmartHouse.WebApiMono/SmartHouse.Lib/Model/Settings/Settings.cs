@@ -10,6 +10,7 @@ namespace SmartHouse.Lib
 		public MPDSettings MPDSettings { get; set; }
 		public List<ModeSettings> ModeSettings { get; set; }
 		public bool LastFM { get; set; } = true;
+		public bool RestartVpn { get; set; } = true;
 
 		public Settings()
 		{

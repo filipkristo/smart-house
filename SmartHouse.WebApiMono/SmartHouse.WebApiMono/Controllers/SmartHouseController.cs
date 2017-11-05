@@ -669,16 +669,16 @@ namespace SmartHouse.WebApiMono
             var isTurnOn = powerStatus == PowerStatusEnum.On;
             var state = await SmartHouseService.GetCurrentState();
 
-            if(shouldStartWithMusic && state == SmartHouseState.Pandora && isTurnOn)
+            if(state == SmartHouseState.Pandora && isTurnOn)
             {
                 PandoraService.Play();
             }
-            else if(shouldStartWithMusic && state == SmartHouseState.Music && isTurnOn && MpdService.GetStatus().State == MpdState.Pause)
+            else if(state == SmartHouseState.Music && isTurnOn && MpdService.GetStatus().State == MpdState.Pause)
             {
                 MpdService.Play();
             }
 
-            return shouldStartWithMusic;
+            return true;
         }
 
         [HttpGet]
@@ -696,8 +696,6 @@ namespace SmartHouse.WebApiMono
                 throw new Exception("Only image files are supported");
 
             var contentBytes = Convert.FromBase64String(model.ContentBase64);
-
-
         }
     }
 }

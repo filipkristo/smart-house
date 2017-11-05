@@ -14,20 +14,15 @@ namespace SmartHouse.Lib
 
         private static TelemetryData TemperatureData { get; } = new TelemetryData();
 
-        public Action<TelemetryData> SignalR { get; set; }        
-
-        public TelemetryService()
-        {
-
-        }		
+        public Action<TelemetryData> SignalR { get; set; }        		
 
 		public async Task<TelemetryData> GetLastTemperature()
 		{
-            return await GetTemperatureFromFile();		
+            return await GetTemperatureFromFile();
 		}
 
 		public Result SaveTemperature(TelemetryData data)
-		{			
+		{
 			return new Result()
 			{
 				Message = $"Temperature {data.Temperature}, humidity: {data.Humidity}, heatindex: {data.HeatIndex}",
@@ -53,7 +48,7 @@ namespace SmartHouse.Lib
 
             await SaveTemperatureToFile(TemperatureData);
 
-            return new Result() { Ok = true, ErrorCode = 0, Message = "Saved temperature"};			
+            return new Result() { Ok = true, ErrorCode = 0, Message = "Saved temperature"};
 		}
 
         private async Task SaveTemperatureToFile(TelemetryData data)
@@ -76,7 +71,7 @@ namespace SmartHouse.Lib
                 var bytes = new byte[fileStream.Length];
                 await fileStream.ReadAsync(bytes, 0, bytes.Length);
 
-                var JSON = Encoding.UTF8.GetString(bytes);                
+                var JSON = Encoding.UTF8.GetString(bytes);
                 return JsonConvert.DeserializeObject(JSON, typeof(TelemetryData)) as TelemetryData;
             }
         }
@@ -89,10 +84,10 @@ namespace SmartHouse.Lib
                 using (var streamReader = new StreamReader(netStream, Encoding.ASCII))
                 using (var streamWritter = new StreamWriter(netStream, Encoding.ASCII) { AutoFlush = true })
                 {
-                    tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
-                    tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;                    
+                    tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
+                    tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
 
-                    await streamWritter.WriteLineAsync(On.ToString());                    
+                    await streamWritter.WriteLineAsync(On.ToString());
                     var response = await streamReader.ReadLineAsync();
 
                     return new Result()
@@ -105,7 +100,7 @@ namespace SmartHouse.Lib
             }
         }
 
-        public async Task<byte> GetAirConditionState()
+		public async Task<byte> GetAirConditionState()
         {
             using (var tcpClient = new TcpClient("10.110.166.197", 9000))
             {
@@ -113,8 +108,8 @@ namespace SmartHouse.Lib
                 using (var streamReader = new StreamReader(netStream, Encoding.ASCII))
                 using (var streamWritter = new StreamWriter(netStream, Encoding.ASCII) { AutoFlush = true })
                 {
-                    tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
-                    tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+                    tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
+                    tcpClient.ReceiveTimeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
 
                     await streamWritter.WriteLineAsync("?");
                     var response = await streamReader.ReadLineAsync();
@@ -122,6 +117,12 @@ namespace SmartHouse.Lib
                     return Convert.ToByte(response);
                 }
             }
-        }      
+        }
+
+		public async Task<Result> ToogleAirCondition()
+		{
+			var state = await GetAirConditionState();
+			return await AirCondition((byte)(state == 0 ? 1 : 0));
+		}
 	}
 }

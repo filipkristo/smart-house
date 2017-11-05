@@ -1,24 +1,28 @@
 begin
 remote = uni
 button = KEY_UP
+repeat = 1
 prog = dev
 config = KEY_UP
 end
 begin
 remote = uni
 button = KEY_DOWN
+repeat = 1
 prog = dev
 config = KEY_DOWN
 end
 begin
 remote = uni
 button = KEY_LEFT
+repeat = 1
 prog = dev
 config = KEY_LEFT
 end
 begin
 remote = uni
 button = KEY_RIGHT
+repeat = 1
 prog = dev
 config = KEY_RIGHT
 end
@@ -47,7 +51,7 @@ prog = dev
 config = KEY_STOP
 end
 begin
-remoet = uni
+remote = uni
 button = KEY_POWER
 prog = dev
 config = KEY_POWER
@@ -191,4 +195,16 @@ remote = uni
 button = KEY_KP2
 prog = dev
 config = KEY_KP2
+end
+begin
+remote = uni
+button = KEY_KP3
+prog = dev
+config = KEY_KP3
+end
+begin
+remote = uni
+button = KEY_KP9
+prog = dev
+config = KEY_KP9
 end
