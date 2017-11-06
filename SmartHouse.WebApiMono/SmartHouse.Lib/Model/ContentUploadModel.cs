@@ -14,7 +14,7 @@ namespace SmartHouse.Lib
         [Required]
         public string Application { get; set; }
         [Required]
-        public ContentCategoryEnum? ContentCategoryEnum { get; set; }        
+        public ContentCategoryEnum? ContentCategoryEnum { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string[] Tags { get; set; }

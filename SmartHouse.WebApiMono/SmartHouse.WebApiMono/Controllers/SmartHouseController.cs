@@ -5,6 +5,7 @@ using System.Web.Http;
 using Libmpc;
 using SmartHouse.Lib;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SmartHouse.WebApiMono
 {
@@ -28,6 +29,26 @@ namespace SmartHouse.WebApiMono
             TVService = tvService;
             TelemetryService = telemetryService;
         }
+
+	    [HttpGet]
+	    [Route("Dashboard")]
+		public async Task<DashboardData> Dashboard()
+	    {
+		    var nowPlaying = await NowPlaying();
+			var currentInput = await SmartHouseService.GetCurrentState();
+		    var telemetryData = await TelemetryService.GetLastTemperature();
+		    var isTurnOn = (await YamahaService.PowerStatus()) == PowerStatusEnum.On;
+		    var volume = await YamahaService.GetVolume();
+
+			return new DashboardData()
+		    {
+				NowPlaying = nowPlaying,
+				CurrentInput = currentInput.ToString(),
+				TelemetryData = telemetryData,
+				IsTurnOn = isTurnOn,
+				Volume = volume
+		    };
+	    }
 
         [HttpGet]
         [Route("IsTurnOn")]
@@ -568,16 +589,14 @@ namespace SmartHouse.WebApiMono
         [Route("RestartOpenVPN")]
         public async Task<Result> RestartOpenVPN()
         {
-            var result = await SmartHouseService.RestartOpenVPNServiceTcp();
-            return result;
+            return await SmartHouseService.RestartOpenVPNServiceTcp();
         }
 
         [HttpGet]
         [Route("PlayAlarm")]
         public async Task<Result> PlayAlarm()
         {
-            var result = await SmartHouseService.PlayAlarmTcp();
-            return result;
+            return await SmartHouseService.PlayAlarmTcp();
         }
 
         [HttpGet]
@@ -599,22 +618,24 @@ namespace SmartHouse.WebApiMono
         public async Task<Result> TurnOfTimer(int minutes)
         {
             Timer.TimeoutMinutes = minutes;
-            var result = await SmartHouseService.TimerTcp();
-            return result;
+            return await SmartHouseService.TimerTcp();
         }
 
         [HttpGet]
         [Route("NowPlaying")]
         public async Task<SongResult> NowPlaying(bool lastFm = true)
         {
-            var state = await SmartHouseService.GetCurrentState();
+	        var state = await SmartHouseService.GetCurrentState();
 
-            if (state == SmartHouseState.Pandora)
-                return await PandoraService.GetNowPlaying();
-            else if (state == SmartHouseState.Music)
-                return await MpdService.GetNowPlaying(lastFm);
-            else
-                return null;
+	        switch (state)
+	        {
+		        case SmartHouseState.Pandora:
+			        return await PandoraService.GetNowPlaying();
+		        case SmartHouseState.Music:
+			        return await MpdService.GetNowPlaying(lastFm);
+		        default:
+			        return null;
+	        }
         }
 
         [HttpPost]
@@ -696,6 +717,7 @@ namespace SmartHouse.WebApiMono
                 throw new Exception("Only image files are supported");
 
             var contentBytes = Convert.FromBase64String(model.ContentBase64);
+			File.WriteAllBytes("lastPicture.jpg", contentBytes);
         }
     }
 }

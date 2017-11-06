@@ -13,7 +13,7 @@ namespace SmartHouse.Lib
         public string Artist { get; set; }
 
         [JsonProperty("song")]
-        public string Song { get; set; }        
+        public string Song { get; set; }
 
         [JsonProperty("album")]
         public string Album { get; set; }
@@ -31,6 +31,6 @@ namespace SmartHouse.Lib
         public int PlayedSeconds { get; set; }
 
         [JsonProperty("durationSeconds")]
-        public int DurationSeconds { get; set; }                
+        public int DurationSeconds { get; set; }
     }
 }
