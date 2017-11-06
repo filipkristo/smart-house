@@ -10,7 +10,7 @@ namespace SmartHouse.UWPClient.ViewModels
 {
     public class BaseViewModel : ViewModelBase
     {
-        private Dictionary<Object, Object> propertyValues = new Dictionary<Object, Object>();   
+        private Dictionary<Object, Object> propertyValues = new Dictionary<Object, Object>();
 
         public string Status { get { return Get<string>(); } set { Set(value); } }
 

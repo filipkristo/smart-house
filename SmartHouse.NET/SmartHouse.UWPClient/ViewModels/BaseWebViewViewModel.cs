@@ -53,7 +53,7 @@ namespace SmartHouse.UWPClient.ViewModels
         }
 
         public virtual void webView_Loaded(object sender, NavigationEventArgs e)
-        {            
+        {
             WebView = sender as WebView;
         }
 

@@ -9,7 +9,7 @@ namespace SmartHouse.UWPClient.ViewModels
 {
     public class TorrentViewModel : BaseWebViewViewModel
     {
-        public TorrentViewModel() 
+        public TorrentViewModel()
             : base($"http://{SettingsService.Instance.HostIP}/rutorrent/")
         {
         }

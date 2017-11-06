@@ -13,14 +13,14 @@ using System.Web;
 namespace SmartHouseWeb.App_Start
 {
     public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
-    {        
+    {
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
-        {                        
+        {
             using (var dbContext = new SmartHouseContext())
             {
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbContext));
@@ -32,20 +32,20 @@ namespace SmartHouseWeb.App_Start
                 {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
-                }                
+                }
 
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
                 identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
                 identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-                
+
                 identity.AddClaim(new Claim("sub", context.UserName));
                 identity.AddClaim(new Claim("role", "user"));
-                identity.AddClaim(new Claim(Const.CLAIMS_HOUSEID, user.HouseId.ToString()));                
+                identity.AddClaim(new Claim(Const.CLAIMS_HOUSEID, user.HouseId.ToString()));
 
                 context.Validated(identity);
-            }            
+            }
         }
     }
 }

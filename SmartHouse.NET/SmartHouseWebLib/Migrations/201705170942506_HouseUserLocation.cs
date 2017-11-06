@@ -2,7 +2,7 @@ namespace SmartHouseWebLib.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class HouseUserLocation : DbMigration
     {
         public override void Up()
@@ -18,7 +18,7 @@ namespace SmartHouseWebLib.Migrations
                         ImageUrl = c.String(maxLength: 255),
                     })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.UserLocations",
                 c => new
@@ -34,12 +34,12 @@ namespace SmartHouseWebLib.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
+
             AddColumn("dbo.AspNetUsers", "HouseId", c => c.Int(nullable: false));
             CreateIndex("dbo.AspNetUsers", "HouseId");
             AddForeignKey("dbo.AspNetUsers", "HouseId", "dbo.Houses", "Id", cascadeDelete: true);
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.UserLocations", "UserId", "dbo.AspNetUsers");

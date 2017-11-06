@@ -35,9 +35,9 @@ namespace SmartHouseWeb.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -145,7 +145,7 @@ namespace SmartHouseWeb.Controllers
 
         //
         // POST: /Account/Register
-        [HttpPost]        
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Const.ROLE_ADMIN)]
         public async Task<ActionResult> Register(RegisterViewModel model)
@@ -157,7 +157,7 @@ namespace SmartHouseWeb.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

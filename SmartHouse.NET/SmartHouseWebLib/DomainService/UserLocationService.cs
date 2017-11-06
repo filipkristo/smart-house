@@ -37,7 +37,7 @@ namespace SmartHouseWebLib.DomainService
         public async Task<UserLocation> GetAsync(int Id)
         {
             return await unitOfWork.UserLocationRepository.GetByIDAsync(Id);
-        }        
+        }
 
         public async Task<int> Insert(UserLocation model)
         {

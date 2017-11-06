@@ -2,7 +2,7 @@ namespace SmartHouseWebLib.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class TelemetryRoomTables : DbMigration
     {
         public override void Up()
@@ -19,7 +19,7 @@ namespace SmartHouseWebLib.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Houses", t => t.HouseId, cascadeDelete: true)
                 .Index(t => t.HouseId);
-            
+
             CreateTable(
                 "dbo.TelemetryDatas",
                 c => new
@@ -34,10 +34,10 @@ namespace SmartHouseWebLib.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Rooms", t => t.RoomId, cascadeDelete: true)
                 .Index(t => t.RoomId);
-            
+
             AddColumn("dbo.UserLocations", "DeviceInfo", c => c.String(maxLength: 255));
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.TelemetryDatas", "RoomId", "dbo.Rooms");

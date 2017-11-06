@@ -41,7 +41,7 @@ namespace SmartHouse.LastFMApi
             else
             {
                 var response = await client.Auth.GetSessionTokenAsync(USERNAME, PASSWORD);
-                
+
                 if(client.Auth.Authenticated)
                 {
                     var session = client.Auth.UserSession;
@@ -134,6 +134,6 @@ namespace SmartHouse.LastFMApi
         public void Dispose()
         {
             client.Dispose();
-        }        
+        }
     }
 }

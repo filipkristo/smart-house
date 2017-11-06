@@ -48,7 +48,7 @@ namespace SmartHouseWebLib.UnitOfWork
 
         public void Dispose()
         {
-            dbContext?.Dispose();            
+            dbContext?.Dispose();
         }
 
         #endregion

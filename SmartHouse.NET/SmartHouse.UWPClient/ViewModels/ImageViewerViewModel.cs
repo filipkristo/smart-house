@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.Storage;
 using Windows.UI.Xaml.Navigation;
+using SmartHouse.UWPLib.Service;
 
 namespace SmartHouse.UWPClient.ViewModels
 {

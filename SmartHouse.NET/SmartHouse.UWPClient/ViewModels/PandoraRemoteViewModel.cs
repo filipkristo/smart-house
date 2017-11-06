@@ -13,6 +13,6 @@ namespace SmartHouse.UWPClient.ViewModels
             : base($"http://{SettingsService.Instance.HostIP}/player/pandora.php")
         {
 
-        }        
+        }
     }
 }

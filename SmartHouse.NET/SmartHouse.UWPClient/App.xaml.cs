@@ -48,7 +48,7 @@ namespace SmartHouse.UWPClient
                 Window.Current.Content = new ModalDialog{DisableBackButtonWhenModal = true, Content = new Views.Shell(nav), ModalContent = new Views.Busy()};
             }
 
-            (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();            
+            (Window.Current.Content as FrameworkElement).RequestedTheme = SettingsService.Instance.AppTheme.ToElementTheme();
             Views.Shell.HamburgerMenu.RefreshStyles(SettingsService.Instance.AppTheme);
 
             if (ApiInformation.IsTypePresent("Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager"))
@@ -70,8 +70,8 @@ namespace SmartHouse.UWPClient
             if (SettingsService.Instance.UseBackgroundWorker)
             {
                 await StartSignalRClient();
-                var task = StartAzureIotMessaging();                
-            }                
+                var task = StartAzureIotMessaging();
+            }
         }
 
         private async Task StartAzureIotMessaging()
@@ -117,8 +117,8 @@ namespace SmartHouse.UWPClient
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
-                }                
-            }            
+                }
+            }
             else
             {
                 skiped++;
@@ -132,7 +132,7 @@ namespace SmartHouse.UWPClient
         }
 
         public override Task OnSuspendingAsync(object s, SuspendingEventArgs e, bool prelaunchActivated)
-        {            
+        {
             return base.OnSuspendingAsync(s, e, prelaunchActivated);
         }
 

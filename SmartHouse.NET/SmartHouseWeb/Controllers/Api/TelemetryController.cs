@@ -31,7 +31,7 @@ namespace SmartHouseWeb.Controllers.Api
         public async Task<IHttpActionResult> SaveTelemetryData(TelemetryDataDto telemetryDataDto)
         {
             var userId = User.Identity.GetUserId();
-            var rooms = await roomService.GetAllAsync();            
+            var rooms = await roomService.GetAllAsync();
 
             var telemetryData = new TelemetryData()
             {
@@ -40,7 +40,7 @@ namespace SmartHouseWeb.Controllers.Api
                 Humidity = telemetryDataDto.Humidity,
                 RoomId = rooms.FirstOrDefault().Id,
                 Temperature = telemetryDataDto.Temperature,
-                HeatIndex = telemetryDataDto.HeatIndex,                
+                HeatIndex = telemetryDataDto.HeatIndex,
             };
 
             await telemetryDataService.Insert(telemetryData);

@@ -10,7 +10,7 @@ namespace SmartHouseWeb
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
-        {            
+        {
             ConfigureAuth(app);
             ConfigureOAuth(app);
 
@@ -27,7 +27,7 @@ namespace SmartHouseWeb
                 AccessTokenExpireTimeSpan = System.TimeSpan.FromDays(1),
                 Provider = new SimpleAuthorizationServerProvider(),
                 RefreshTokenProvider = new ApplicationRefreshTokenProvider()
-            };            
+            };
 
             // Token Generation
             app.UseOAuthAuthorizationServer(OAuthServerOptions);

@@ -18,8 +18,8 @@ namespace SmartHouseWeb.Models
 
         public int GasValue { get; set; }
 
-        public DateTime CreatedUtc { get; set; }        
+        public DateTime CreatedUtc { get; set; }
 
-        public int RoomId { get; set; }        
+        public int RoomId { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace SmartHouse.UWPClient.ViewModels
                 InitializeTileBackgroundTask();
             }
         }
-        
+
         private void InitializePhoneTask()
         {
             var task = new PhoneCallTask();
@@ -91,8 +91,8 @@ namespace SmartHouse.UWPClient.ViewModels
             var accessStatus = await Geolocator.RequestAccessAsync();
             switch (accessStatus)
             {
-                case GeolocationAccessStatus.Allowed:                    
-                    CheckGeoFancesAddress();                    
+                case GeolocationAccessStatus.Allowed:
+                    CheckGeoFancesAddress();
                     await _geofenceTask.RegisterBackgroundTask();
                     FillEventListBoxWithExistingEvents();
 
@@ -117,7 +117,7 @@ namespace SmartHouse.UWPClient.ViewModels
 
         private async void Current_StatusChanged(GeofenceMonitor sender, object args)
         {
-            Write("Sender: "); 
+            Write("Sender: ");
             WriteLine(JsonConvert.SerializeObject(sender));
 
             Write("Args: ");
@@ -173,13 +173,13 @@ namespace SmartHouse.UWPClient.ViewModels
             {
                 WriteLine(ex);
             }
-        }                
+        }
 
         private void CheckGeoFancesAddress()
         {
             var helper = new GeofenceLocationHelper();
 
-            _geofences = GeofenceMonitor.Current.Geofences;            
+            _geofences = GeofenceMonitor.Current.Geofences;
 
             if(!_geofences.Any(x => x.Id == GeofenceLocationHelper.HOME_KEY))
             {
@@ -219,7 +219,7 @@ namespace SmartHouse.UWPClient.ViewModels
                     var localIp = tcpClient.Information.LocalAddress.DisplayName;
                     var remoteIp = tcpClient.Information.RemoteAddress.DisplayName;
                 }
-                                
+
                 PingStatus = "Connected to server";
             }
             catch (Exception ex)
@@ -239,7 +239,7 @@ namespace SmartHouse.UWPClient.ViewModels
                 var geofenceEvent = settings.Values["BackgroundGeofenceEventCollection"].ToString();
 
                 if (geofenceEvent.Length != 0)
-                {                    
+                {
                     GeofenceBackgroundEvents.Clear();
 
                     var events = JsonValue.Parse(geofenceEvent).GetArray();

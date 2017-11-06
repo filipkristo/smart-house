@@ -9,7 +9,7 @@ namespace SmartHouseWebLib.DomainService.Interface
 {
     public interface IRoomService
     {
-        Task<IEnumerable<Room>> GetAllAsync();        
+        Task<IEnumerable<Room>> GetAllAsync();
         Task<Room> GetAsync(int Id);
         Task<int> Insert(Room model);
         Task<int> Update(Room model);

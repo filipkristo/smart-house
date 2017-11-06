@@ -11,7 +11,7 @@ namespace SmartHouseWebLib.DomainService.Interface
     {
         Task<IEnumerable<UserLocation>> GetAllAsync();
         Task<IEnumerable<UserLocation>> GetAllDescAsync();
-        Task<UserLocation> GetAsync(int Id);        
+        Task<UserLocation> GetAsync(int Id);
         Task<int> Insert(UserLocation model);
         Task<int> Update(UserLocation model);
         Task<int> Delete(UserLocation model);

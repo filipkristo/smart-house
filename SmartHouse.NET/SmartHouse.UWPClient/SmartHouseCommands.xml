@@ -61,8 +61,8 @@
     </Command>
     
     <Command Name="smartHouseInput">
-      <Example> TV input </Example>
-      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {input} input</ListenFor>
+      <Example> Switch to TV input </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> switch to {input} input</ListenFor>
       <Feedback> Setting TV input </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
@@ -92,6 +92,20 @@
       <Example> Turn off air conditioner </Example>
       <ListenFor RequireAppName="BeforeOrAfterPhrase"> Turn off air conditioner </ListenFor>
       <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+    
+    <Command Name="showTemperature">
+      <Example> What's the weather </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> What's the weather </ListenFor>
+      <Feedback> Please wait </Feedback>
+      <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
+    </Command>
+
+    <Command Name="nowPlaying">
+      <Example> Do you know this song </Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> Do you know [this] [that] song </ListenFor>
+      <Feedback> Of course </Feedback>
       <VoiceCommandService Target="SmartHouseVoiceCommandService"/>
     </Command>
     

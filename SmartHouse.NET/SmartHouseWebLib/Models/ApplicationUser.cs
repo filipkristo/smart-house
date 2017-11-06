@@ -12,7 +12,7 @@ namespace SmartHouseWebLib.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [MaxLength(255)]        
+        [MaxLength(255)]
         [Required]
         public string Name { get; set; }
 

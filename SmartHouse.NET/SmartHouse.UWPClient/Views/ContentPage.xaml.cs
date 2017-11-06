@@ -653,7 +653,7 @@ namespace SmartHouse.UWPClient.Views
             }
 
             RegisterEventHandlers();
-            
+
             _captureFolder = ApplicationData.Current.TemporaryFolder;
         }
 

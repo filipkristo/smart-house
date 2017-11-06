@@ -26,7 +26,7 @@ namespace SmartHouseWebLib.Models
         public string ImageUrl { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
-        public virtual ICollection<Room> Rooms { get; set; }        
+        public virtual ICollection<Room> Rooms { get; set; }
 
     }
 }

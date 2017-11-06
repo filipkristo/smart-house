@@ -26,7 +26,7 @@ namespace SmartHouse.UWPClient.Views
         public MPDClient()
         {
             this.InitializeComponent();
-            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;                       
-        }        
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+        }
     }
 }

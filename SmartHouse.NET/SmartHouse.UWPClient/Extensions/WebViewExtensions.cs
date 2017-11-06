@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 namespace SmartHouse.UWPClient.Extensions
 {
     public static class WebViewExtensions
-    {        
+    {
         public static string GetUriSource(WebView view)
         {
             return (string)view.GetValue(UriSourceProperty);

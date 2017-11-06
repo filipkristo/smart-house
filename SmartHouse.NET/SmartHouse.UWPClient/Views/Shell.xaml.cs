@@ -35,7 +35,7 @@ namespace SmartHouse.UWPClient.Views
             this.InitializeComponent();
 
             _settings = SettingsService.Instance;
-        }        
+        }
 
         public Shell(INavigationService navigationService) : this()
         {
@@ -46,6 +46,6 @@ namespace SmartHouse.UWPClient.Views
         {
             Menu.NavigationService = navigationService;
         }
-        
+
     }
 }

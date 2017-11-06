@@ -40,7 +40,7 @@ namespace SmartHouse.UWPLib.Service
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(baseUrl);
-                
+
                 var content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("grant_type", "password"),
@@ -52,14 +52,14 @@ namespace SmartHouse.UWPLib.Service
                 var result = await response.Content.ReadAsStringAsync();
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {                    
+                {
                     oauthResponse = JsonConvert.DeserializeObject<OAuthResponse>(result);
                     oauthResponse.IssuedUtc = DateTime.UtcNow;
 
                     var settings = ApplicationData.Current.LocalSettings;
-                    var JSON = JsonConvert.SerializeObject(oauthResponse);
-                    settings.Values[TokenKey] = JSON;
-                }   
+                    var json = JsonConvert.SerializeObject(oauthResponse);
+                    settings.Values[TokenKey] = json;
+                }
                 else
                 {
                     throw new Exception(result);
@@ -73,14 +73,14 @@ namespace SmartHouse.UWPLib.Service
 
             if (settings.Values.ContainsKey(TokenKey))
             {
-                var JSON = settings.Values[TokenKey].ToString();
-                var oauth = JsonConvert.DeserializeObject<OAuthResponse>(JSON);
+                var json = settings.Values[TokenKey].ToString();
+                var oauth = JsonConvert.DeserializeObject<OAuthResponse>(json);
 
                 if (oauth.IssuedUtc.AddSeconds(oauth.ExpireIn) > DateTime.UtcNow)
                 {
                     oauthResponse = oauth;
                     return true;
-                }   
+                }
                 else
                 {
                     settings.Values.Remove(TokenKey);
@@ -99,8 +99,8 @@ namespace SmartHouse.UWPLib.Service
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", oauthResponse.AccessToken);
                 httpClient.BaseAddress = new Uri(baseUrl);
 
-                var JSON = JsonConvert.SerializeObject(userLocation);
-                var content = new StringContent(JSON, Encoding.UTF8, "application/json");
+                var json = JsonConvert.SerializeObject(userLocation);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await httpClient.PostAsync("/api/Location/SaveUserLocation", content);
                 var result = await response.Content.ReadAsStringAsync();
@@ -130,7 +130,7 @@ namespace SmartHouse.UWPLib.Service
                 GasValue = (int)telemetry.GasValue,
                 HeatIndex = telemetry.HeatIndex,
                 Humidity = telemetry.Humidity,
-                Temperature = telemetry.Temperature                
+                Temperature = telemetry.Temperature
             };
 
             using (var httpClient = new HttpClient())

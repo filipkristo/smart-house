@@ -17,7 +17,7 @@ using System.Web.Routing;
 namespace SmartHouseWeb
 {
     public class MvcApplication : System.Web.HttpApplication
-    {        
+    {
         private EventHubClient eventHubClient;
 
         protected void Application_Start()

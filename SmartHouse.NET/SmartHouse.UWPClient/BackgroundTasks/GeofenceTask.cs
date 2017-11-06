@@ -27,9 +27,9 @@ namespace SmartHouse.UWPClient.BackgroundTasks
                 case BackgroundAccessStatus.AlwaysAllowed:
                 case BackgroundAccessStatus.AllowedSubjectToSystemPolicy:
                     RequestLocationAccess();
-                    break;                    
+                    break;
                 default:
-                    throw new Exception("Background task disabled");                    
+                    throw new Exception("Background task disabled");
             }
 
             var geofenceTaskBuilder = new BackgroundTaskBuilder()
@@ -42,7 +42,7 @@ namespace SmartHouse.UWPClient.BackgroundTasks
             geofenceTaskBuilder.SetTrigger(trigger);
 
             backgroundTask = geofenceTaskBuilder.Register();
-            return backgroundTask;            
+            return backgroundTask;
         }
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace SmartHouse.UWPClient.BackgroundTasks
                 case GeolocationAccessStatus.Allowed:
                     break;
 
-                case GeolocationAccessStatus.Denied:                    
+                case GeolocationAccessStatus.Denied:
                     break;
 
-                case GeolocationAccessStatus.Unspecified:                    
+                case GeolocationAccessStatus.Unspecified:
                     break;
             }
         }
@@ -96,6 +96,6 @@ namespace SmartHouse.UWPClient.BackgroundTasks
                 }
                 catch { }
             }
-        }        
+        }
     }
 }

@@ -10,6 +10,6 @@ namespace SmartHouseBackgroundIoT
 {
     public sealed class AzureIotMessaging
     {
-        
+
     }
 }

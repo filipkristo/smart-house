@@ -127,8 +127,8 @@
     </Compile>
     <Compile Include="BLL\GeofenceLocationHelper.cs" />
     <Compile Include="BLL\HaversineFormula.cs" />
-    <Compile Include="BLL\PandoraService.cs" />
-    <Compile Include="BLL\SmartHouseService.cs" />
+    <Compile Include="Service\PandoraService.cs" />
+    <Compile Include="Service\SmartHouseService.cs" />
     <Compile Include="Model\LocationStatus.cs" />
     <Compile Include="Model\OAuthResponse.cs" />
     <Compile Include="Model\PandoraCommands.cs" />

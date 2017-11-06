@@ -77,9 +77,9 @@ namespace SmartHouseWeb.Controllers
             using (var serviceClient = ServiceClient.CreateFromConnectionString(Config.ConnectionStringShared))
             {
                 var commandMessage = new Message(Encoding.UTF8.GetBytes(message));
-                await serviceClient.SendAsync(Config.DeviceId, commandMessage);                
-            }             
-            
+                await serviceClient.SendAsync(Config.DeviceId, commandMessage);
+            }
+
         }
     }
 }

@@ -17,7 +17,7 @@ namespace BackgroundTask
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
             var deferral = taskInstance.GetDeferral();
-            
+
             if (SettingsService.Instance.LiveTile)
             {
                 using (var lastFmService = new LastFMService())
@@ -66,7 +66,7 @@ namespace BackgroundTask
         private static Windows.Data.Xml.Dom.XmlDocument GetLargeTileTemplate(ArtistTileData item)
         {
             var tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150Text03);
-            
+
             var srcAttribute = tileXml.CreateAttribute("src");
             srcAttribute.Value = item.Url;
 
@@ -76,7 +76,7 @@ namespace BackgroundTask
             var element = tileXml.GetElementsByTagName("image")[0];
             element.Attributes.SetNamedItem(srcAttribute);
             element.Attributes.SetNamedItem(altAttribute);
-            
+
             return tileXml;
         }
 

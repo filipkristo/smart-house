@@ -11,6 +11,7 @@ using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Resources.Core;
 using Windows.ApplicationModel.VoiceCommands;
+using SmartHouse.UWPLib.Service;
 
 namespace SmartHouse.UWPClient.VoiceCommands
 {
@@ -75,7 +76,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                         VoiceCommandServiceConnection.FromAppServiceTriggerDetails(
                             triggerDetails);
 
-                    voiceServiceConnection.VoiceCommandCompleted += OnVoiceCommandCompleted;                   
+                    voiceServiceConnection.VoiceCommandCompleted += OnVoiceCommandCompleted;
                     VoiceCommand voiceCommand = await voiceServiceConnection.GetVoiceCommandAsync();
 
                     // Depending on the operation (defined in SmartHouse:SmartHouseCommands.xml)
@@ -86,19 +87,25 @@ namespace SmartHouse.UWPClient.VoiceCommands
                             var command = voiceCommand.Properties["command"][0];
                             await ExecutePandoraCommands(command);
                             break;
-                        case "smartHouseTurnOnCommand":                            
+                        case "smartHouseTurnOnCommand":
                             await ExecuteSmarthouseCommands("Turn on");
                             break;
                         case "smartHouseTurnOffCommand":
                             await ExecuteSmarthouseCommands("Turn off");
                             break;
-                        case "smartHouseVolumeUp":                            
+                        case "smartHouseVolumeUp":
                             await ExecuteSmarthouseCommands("Volume up");
                             break;
-                        case "smartHouseVolumeDown":                            
+                        case "smartHouseVolumeDown":
                             await ExecuteSmarthouseCommands("Volume down");
                             break;
-                        case "smartHouseMode":
+	                    case "showTemperature":
+							await CurrentTempeature();
+							break;
+	                    case "nowPlaying":
+		                    await NowPlaying();
+							break;
+						case "smartHouseMode":
                             var mode = voiceCommand.Properties["mode"][0];
                             await SetSmartHouseMode(mode);
                             break;
@@ -124,7 +131,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                         case "turnOffAirConditioner":
                             await TurnOffAirCondition();
                             break;
-                        default:                            
+                        default:
                             LaunchAppInForeground();
                             break;
                     }
@@ -132,41 +139,44 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 catch (Exception ex)
                 {
                     await CompleteMessageError(ex.Message);
-                    Debug.WriteLine("Handling Voice Command failed " + ex.ToString());
+                    Debug.WriteLine("Handling Voice Command failed " + ex);
                 }
             }
         }
 
         private async Task ExecuteSmarthouseCommands(string command)
         {
-            var smartHouse = new SmartHouseService();
-            await ShowProgressScreen($"Please wait");
+            var smartHouse = new SmartHouseService();            
 
             switch (command)
             {
                 case "Turn on":
-                    var result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.TurnOn);
+	                await ShowProgressScreen($"Please wait");
+					var result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.TurnOn);
                     await CompleteMessage(result.Message);
                     break;
                 case "Turn off":
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.TurnOff);
+	                await ShowProgressScreen($"Please wait");
+					result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.TurnOff);
                     await CompleteMessage(result.Message);
                     break;
                 case "Volume up":
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+	                await ShowProgressScreen($"Please wait");
+					await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
                     await CompleteMessage("");
                     break;
                 case "Volume down":
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+	                await ShowProgressScreen($"Please wait");
+					await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
+                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
                     await CompleteMessage("");
-                    break;                
-                default:
+                    break;	             
+				default:
                     LaunchAppInForeground();
                     break;
             }
@@ -206,7 +216,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
 
             var result = await smartHouse.GetCurrentState();
             await CompleteMessage($"Connected input: {result}");
-        }        
+        }
 
         private async Task TurnOnAirCondition()
         {
@@ -226,8 +236,31 @@ namespace SmartHouse.UWPClient.VoiceCommands
             await CompleteMessage($"Air conditioner {result?.Message}");
         }
 
-        private async Task ExecutePandoraCommands(string command)
-        {            
+	    private async Task NowPlaying()
+	    {
+		    var smartHouse = new SmartHouseService();
+
+		    await ShowProgressScreen("Of course");
+		    var result = await smartHouse.GetCurrentSong();
+		    await CortanaResponseShowSong(result);
+	    }
+
+	    private async Task CurrentTempeature()
+	    {
+		    var smartHouse = new SmartHouseService();
+
+		    await ShowProgressScreen("Please wait...");
+		    var result = await smartHouse.GetRoomTemperature();
+
+		    var message = $"Tempearture is at {result.Temperature} deggree, humidity {result.Humidity} percent, and gas is {result.GasValue}.";
+		    if (result.GasValue > 250)
+			    message += " Phill, Gas value is high... You smoking to much.";
+
+			await CompleteMessage(message);
+	    }
+
+		private async Task ExecutePandoraCommands(string command)
+        {
             var pandora = new PandoraService();
             var smartHouse = new SmartHouseService();
             await ShowProgressScreen($"Starting to {command} song");
@@ -245,7 +278,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 case "Next":
                     await smartHouse.Run(UWPLib.Model.SmartHouseCommands.Next);
                     await CompleteMessage("");
-                    break;                
+                    break;
                 case "Love":
                     await smartHouse.LoveSong();
                     await CompleteMessage("");
@@ -259,8 +292,8 @@ namespace SmartHouse.UWPClient.VoiceCommands
                     await CompleteMessage("");
                     break;
                 case "Show":
-                    var info = await pandora.ShowInfo();
-                    await CortanaResponseLoveSong(info);
+                    var info = await smartHouse.GetCurrentSong();
+                    await CortanaResponseShowSong(info);
                     break;
                 case "NextStation":
                     var nextInfo = await pandora.Run(SmartHouse.UWPLib.Model.PandoraCommands.NextStation);
@@ -279,7 +312,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
         private async Task CompleteMessage(string message)
         {
             // Provide a completion message to the user.
-            var userMessage = new VoiceCommandUserMessage();            
+            var userMessage = new VoiceCommandUserMessage();
             userMessage.DisplayMessage = userMessage.SpokenMessage = message;
             var response = VoiceCommandResponse.CreateResponse(userMessage);
             await voiceServiceConnection.ReportSuccessAsync(response);
@@ -309,18 +342,23 @@ namespace SmartHouse.UWPClient.VoiceCommands
             await voiceServiceConnection.RequestAppLaunchAsync(response);
         }
 
-        private async Task CortanaResponseLoveSong(SongResult info)
+        private async Task CortanaResponseShowSong(SongResult info)
         {
-            var message = $"Playing Song: {info.Song}, from artist {info.Artist}, on album {info.Album}. {(info.Loved ? "You like this song." : "")}";            
-
-            if (info.Loved)
+	        if (info == null)
+	        {
+				await CompleteMessage("Right now... Nothing is playing");
+			}
+            else if (info.Loved)
             {
-                await CompleteMessage(message);
+	            var message = $"Now is playing: {info.Song}, from artist {info.Artist}, on album {info.Album}. You liked this song.";
+				await CompleteMessage(message);
             }
             else
             {
-                var userPrompt = new VoiceCommandUserMessage();
-                userPrompt.DisplayMessage = userPrompt.SpokenMessage = message + "Do you like this song";
+	            var message = $"Now is playing: {info.Song}, from artist {info.Artist}, on album {info.Album}. Do you like this song?";
+
+				var userPrompt = new VoiceCommandUserMessage();
+                userPrompt.DisplayMessage = userPrompt.SpokenMessage = message;
 
                 var userReprompt = new VoiceCommandUserMessage();
                 var prompt = "Do you like this song?";
@@ -345,7 +383,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
                 {
                     await CompleteMessage("");
                 }
-            }            
+            }
         }
 
         /// <summary>

@@ -35,6 +35,6 @@ namespace SmartHouse.UWPClient.BackgroundTasks
 
                 var registration = taskBuilder.Register();
             }
-        }        
+        }
     }
 }

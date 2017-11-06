@@ -1,15 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SmartHouse.Lib;
 using SmartHouse.UWPLib.Model;
-using SmartHouse.UWPLib.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SmartHouse.UWPLib.BLL
+namespace SmartHouse.UWPLib.Service
 {
     public class PandoraService
     {
@@ -31,20 +26,7 @@ namespace SmartHouse.UWPLib.BLL
 
                 return JsonConvert.DeserializeObject<Result>(json);
             }
-        }
-
-        public async Task<SongResult> ShowInfo()
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/NowPlaying";
-                var json = await client.GetStringAsync(uri);
-
-                return JsonConvert.DeserializeObject<SongResult>(json);
-            }
-        }
+        }        
 
         public async Task<Result> NextStation()
         {

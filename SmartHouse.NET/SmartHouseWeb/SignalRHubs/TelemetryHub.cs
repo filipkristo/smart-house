@@ -16,12 +16,12 @@ namespace SmartHouseWeb.SignalRHubs
         public static readonly ConnectionMapping<string> Connections = new ConnectionMapping<string>();
 
         public void NotifyClient(TelemetryDataDto telemetry, string userId)
-        {            
+        {
             if (Connections.UserExists(userId))
             {
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<TelemetryHub>();
                 var clients = Connections.GetConnections(userId).ToList();
-                
+
                 hubContext.Clients.Clients(clients).receiveTelemetry(telemetry);
             }
         }

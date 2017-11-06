@@ -28,7 +28,7 @@ namespace SmartHouseBackgroundIoT
             await ReceiveDataFromAzure();
 
             deferral.Complete();
-        }        
+        }
 
         private async Task StartSignalRClient()
         {

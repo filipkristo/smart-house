@@ -35,7 +35,7 @@ namespace SmartHouseWebLib.Utils
         {
             return CombineLambdas(left, right, ExpressionType.OrElse);
         }
-        
+
 
         private static Expression<Func<T, bool>> CombineLambdas<T>(this Expression<Func<T, bool>> left,
             Expression<Func<T, bool>> right, ExpressionType expressionType)
@@ -72,6 +72,6 @@ namespace SmartHouseWebLib.Utils
                 return node;
             }
         }
-        
+
     }
 }

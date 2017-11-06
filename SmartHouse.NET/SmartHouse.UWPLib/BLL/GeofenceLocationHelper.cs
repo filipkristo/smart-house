@@ -22,15 +22,15 @@ namespace SmartHouse.UWPLib.BLL
             BasicGeoposition position;
             position.Latitude = latitude;
             position.Longitude = longitude;
-            position.Altitude = altitude;            
-            
-            Geocircle geocircle = new Geocircle(position, radius);            
+            position.Altitude = altitude;
+
+            Geocircle geocircle = new Geocircle(position, radius);
 
             // want to listen for enter geofence, exit geofence and remove geofence events
             // you can select a subset of these event states
             MonitoredGeofenceStates mask = MonitoredGeofenceStates.Entered | MonitoredGeofenceStates.Exited | MonitoredGeofenceStates.Removed;
 
-            var dwellTime = TimeSpan.FromSeconds(5);            
+            var dwellTime = TimeSpan.FromSeconds(5);
 
             return new Geofence(key, geocircle, mask, false, dwellTime);
         }

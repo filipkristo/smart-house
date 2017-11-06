@@ -1,6 +1,6 @@
 ﻿using SmartHouse.Lib;
-using SmartHouse.UWPLib.BLL;
 using System;
+using SmartHouse.UWPLib.Service;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Networking.Sockets;
 using Windows.Storage;
-using SmartHouse.UWPLib.Service;
 
 namespace BackgroundPhoneTask
 {
@@ -23,10 +22,10 @@ namespace BackgroundPhoneTask
             var deferral = taskInstance.GetDeferral();
             var isLocalNetwork = await IsInLocalNetwork();
 
-            if(isLocalNetwork)
+	        var service = new SmartHouseService();
+	        if(isLocalNetwork)
             {
-                var service = new SmartHouseService();
-                var started = IsPhoneCallStarted();
+	            var started = IsPhoneCallStarted();
 
                 if (started)
                 {

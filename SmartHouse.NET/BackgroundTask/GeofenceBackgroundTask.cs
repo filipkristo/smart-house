@@ -37,7 +37,7 @@ namespace BackgroundTask
 
             try
             {
-                var geoLocator = new Geolocator();                
+                var geoLocator = new Geolocator();
                 var position = await geoLocator.GetGeopositionAsync();
 
                 TryToInitializeWebClient();
@@ -124,7 +124,7 @@ namespace BackgroundTask
                     var reports = GeofenceMonitor.Current.ReadReports();
 
                     foreach (var report in reports)
-                    {                        
+                    {
                         GeofenceState state = report.NewState;
                         geofenceItemEvent = report.Geofence.Id + " " + formatterLongTime.Format(eventDateTime);
 
@@ -280,7 +280,7 @@ namespace BackgroundTask
                 Debug.WriteLine(ex);
             }
         }
-        
+
         private async Task UploadDataToCloud(UserLocation userLocation)
         {
             try
@@ -291,7 +291,7 @@ namespace BackgroundTask
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);                
+                Debug.WriteLine(ex);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace SmartHouse.UWPClient.Views
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class RemoteController : Page
-    {        
+    {
         public RemoteController()
         {
             this.InitializeComponent();
@@ -65,8 +65,8 @@ namespace SmartHouse.UWPClient.Views
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            base.OnNavigatingFrom(e);            
-        }        
-        
+            base.OnNavigatingFrom(e);
+        }
+
     }
 }
