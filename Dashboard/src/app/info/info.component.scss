@@ -1,0 +1,21 @@
+@import "../../styles.scss";
+
+img {
+  width: 80%;
+  display: block;
+  margin: auto;
+  @include grayscale(100%);
+}
+em {
+  color: $denim;
+  font-weight: bold;
+}
+p {
+  @extend em;
+  padding-top: 5px;
+}
+i {
+  font-size: 150%;
+  color: #B56357;
+}
+.info-container { margin-top: 5%; }
