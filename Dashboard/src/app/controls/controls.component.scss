@@ -1,0 +1,18 @@
+@import "../../styles.scss";
+
+button {
+  background-color: $denim;
+  color: $marigold;
+  border-color: $steel;
+}
+button:hover, button:active {
+  color: $marigold;
+  background-color: $steel;
+  border-color: $steel;
+}
+.btn-group { margin: 5px; }
+.controls-container {
+   margin: auto;
+   width: 50%;
+   line-height: 250px;
+  }
