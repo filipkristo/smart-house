@@ -7,6 +7,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { InfoComponent } from './info/info.component';
 import { ControlsComponent } from './controls/controls.component';
 
+import { DashboardDataService } from './services/dashboard-data.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,7 @@ import { ControlsComponent } from './controls/controls.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [DashboardDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
