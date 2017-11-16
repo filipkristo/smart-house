@@ -9,8 +9,10 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
   constructor(
-    private dashboardDataService : DashboardDataService) {
-      console.log('FROM APP.COMPONENTS', dashboardDataService.getData());
+    public dashboardDataService : DashboardDataService
+  ) {
+      console.log("CALLING GETDATA FROM APP:COMPONENT");
+      dashboardDataService.getData();
     }
 
 }

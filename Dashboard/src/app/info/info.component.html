@@ -1,36 +1,36 @@
 <div class="container info-container">
   <div class="row">
     <div class="col-md-5">
-      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/SmithsDeluxe.jpg/220px-SmithsDeluxe.jpg">
+      <img src="{{ nowPlaying?.albumUri }}">
     </div>
     <div class="col-md-6">
       <div class="container-xl">
         <div class="row">
           <div class="col-md-6">
             <em>Artist</em>
-            <p> {{ artist }}</p>
+            <p> {{ nowPlaying?.artist}}</p>
           </div>
           <div class="col-md-6">
             <em>Album</em>
-            <p> {{ album }}</p>
+            <p> {{ nowPlaying?.album }}</p>
           </div>
         </div>
         <hr>
         <div class="row">
           <div class="col-md-6">
             <em>Song</em>
-            <p> {{ song }}</p>
+            <p> {{ nowPlaying?.song }}</p>
           </div>
           <div class="col-md-6">
             <em>Radio</em>
-            <p> {{ radio }}</p>
+            <p> {{ nowPlaying?.genre }}</p>
           </div>
         </div>
         <hr>
         <div class="row">
           <div class="col-md-6">
-            <p *ngIf="!!loved"><i class="fa fa-heart"></i></p>
-            <p *ngIf="!loved"><i class="fa fa-heart-o"></i></p>
+            <p *ngIf="!!nowPlaying?.loved"><i class="fa fa-heart"></i></p>
+            <p *ngIf="!nowPlaying?.loved"><i class="fa fa-heart-o"></i></p>
           </div>
         </div>
         <div class="row">
