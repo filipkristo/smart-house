@@ -110,6 +110,9 @@
     <Compile Include="..\..\SmartHouse.WebApiMono\SmartHouse.Lib\Model\ContentUploadModel.cs">
       <Link>Model\ContentUploadModel.cs</Link>
     </Compile>
+    <Compile Include="..\..\SmartHouse.WebApiMono\SmartHouse.Lib\Model\DashboardData.cs">
+      <Link>Model\DashboardData.cs</Link>
+    </Compile>
     <Compile Include="..\..\SmartHouse.WebApiMono\SmartHouse.Lib\Model\Pandora\SongResult.cs">
       <Link>Model\SongResult.cs</Link>
     </Compile>
@@ -144,7 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.1</Version>
+      <Version>6.0.2</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.3</Version>

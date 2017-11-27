@@ -95,6 +95,32 @@ namespace SmartHouse.UWPLib.Service
             }
         }
 
+        public async Task<Result> BanSong()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Remote/Ban";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
+
+        public async Task<Result> TiredOfThisSong()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Remote/TiredOfThisSong";
+                var json = await client.GetStringAsync(uri);
+
+                return JsonConvert.DeserializeObject<Result>(json);
+            }
+        }
+
         public async Task<Result> TurnOnAirConditioner()
         {
             using (var client = new HttpClient())
@@ -197,5 +223,30 @@ namespace SmartHouse.UWPLib.Service
 			    return JsonConvert.DeserializeObject<SongResult>(json);
 		    }
 	    }
+
+        public async Task<DashboardData> GetDashboardData()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/Dashboard";
+
+                var json = await client.GetStringAsync(uri);
+                return JsonConvert.DeserializeObject<DashboardData>(json);
+            }
+        }
+
+        public async Task SetVolume(double volume)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Yamaha/SetVolume?volume={volume}";
+
+                var json = await client.GetStringAsync(uri);
+            }
+        }
 	}
 }

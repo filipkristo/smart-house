@@ -146,7 +146,7 @@ namespace SmartHouse.UWPClient.VoiceCommands
 
         private async Task ExecuteSmarthouseCommands(string command)
         {
-            var smartHouse = new SmartHouseService();            
+            var smartHouse = new SmartHouseService();
 
             switch (command)
             {
@@ -160,22 +160,12 @@ namespace SmartHouse.UWPClient.VoiceCommands
 					result = await smartHouse.Run(UWPLib.Model.SmartHouseCommands.TurnOff);
                     await CompleteMessage(result.Message);
                     break;
-                case "Volume up":
-	                await ShowProgressScreen($"Please wait");
-					await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeUp);
-                    await CompleteMessage("");
+                case "Volume up":	                
+                    await VolumeUp();
                     break;
-                case "Volume down":
-	                await ShowProgressScreen($"Please wait");
-					await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    await smartHouse.Run(UWPLib.Model.SmartHouseCommands.VolumeDown);
-                    await CompleteMessage("");
-                    break;	             
+                case "Volume down":	                
+                    await VolumeDown();
+                    break;
 				default:
                     LaunchAppInForeground();
                     break;
@@ -340,6 +330,32 @@ namespace SmartHouse.UWPClient.VoiceCommands
             response.AppLaunchArgument = "";
 
             await voiceServiceConnection.RequestAppLaunchAsync(response);
+        }
+
+        private async Task VolumeUp()
+        {
+            await ShowProgressScreen($"Please wait");
+
+            var service = new SmartHouseService();
+            var data = await service.GetDashboardData();
+
+            var newVolume = (data.Volume / 10D) + 2D;
+            await service.SetVolume(newVolume);
+
+            await CompleteMessage($"Volume is at {newVolume}");
+        }
+
+        private async Task VolumeDown()
+        {
+            await ShowProgressScreen($"Please wait");
+
+            var service = new SmartHouseService();
+            var data = await service.GetDashboardData();
+
+            var newVolume = (data.Volume / 10D) - 2D;
+            await service.SetVolume(newVolume);
+
+            await CompleteMessage($"Volume is at {newVolume}");
         }
 
         private async Task CortanaResponseShowSong(SongResult info)

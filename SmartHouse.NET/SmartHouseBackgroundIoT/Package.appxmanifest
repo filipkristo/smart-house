@@ -24,13 +24,13 @@
         <Extension Category="windows.backgroundTasks" EntryPoint="SmartHouseBackgroundIoT.StartupTask">
           <BackgroundTasks>
             <iot:Task Type="startup" />
-            <iot:Capability Name="systemManagement"/>
           </BackgroundTasks>
         </Extension>
       </Extensions>
     </Application>
   </Applications>
   <Capabilities>
-    <Capability Name="internetClient" />    
+    <Capability Name="internetClient" />
+    <Capability Name="internetClientServer" />
   </Capabilities>
 </Package>

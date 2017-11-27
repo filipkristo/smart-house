@@ -69,18 +69,18 @@ namespace SmartHouse.UWPClient
 
             if (SettingsService.Instance.UseBackgroundWorker)
             {
-                await StartSignalRClient();
-                var task = StartAzureIotMessaging();
+                StartSignalRClient();
+                StartAzureIotMessaging();
             }
         }
 
-        private async Task StartAzureIotMessaging()
+        private async void StartAzureIotMessaging()
         {
             var messaging = new AzureIotMessaging();
             await messaging.ReceiveDataFromAzure();
         }
 
-        private async Task StartSignalRClient()
+        private async void StartSignalRClient()
         {
             var IP = SettingsService.Instance.HostIP;
             var Port = SettingsService.Instance.HostPort;

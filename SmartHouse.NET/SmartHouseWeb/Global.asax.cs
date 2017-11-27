@@ -13,6 +13,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Newtonsoft.Json;
+using SmartHouseWeb.SignalRHubs;
+using SmartHouseWebLib.Models;
 
 namespace SmartHouseWeb
 {
@@ -40,12 +43,12 @@ namespace SmartHouseWeb
             var d2cPartitions = eventHubClient.GetRuntimeInformation().PartitionIds;
 
             var tasks = new List<Task>();
-            foreach (string partition in d2cPartitions)
+            foreach (var partition in d2cPartitions)
             {
                 tasks.Add(ReceiveMessagesFromDeviceAsync(partition, token));
             }
 
-            Task.WaitAll(tasks.ToArray());
+            Task.WaitAll(tasks.ToArray(), token);
         }
 
         private async Task ReceiveMessagesFromDeviceAsync(string partition, CancellationToken ct)
@@ -55,17 +58,17 @@ namespace SmartHouseWeb
             while (true)
             {
                 if (ct.IsCancellationRequested) break;
-                EventData eventData = await eventHubReceiver.ReceiveAsync();
+                var eventData = await eventHubReceiver.ReceiveAsync();
                 if (eventData == null) continue;
 
                 var data = Encoding.UTF8.GetString(eventData.GetBytes());
                 Debug.WriteLine("Message received. Partition: {0} Data: '{1}'", partition, data);
 
-                //var temperature = JsonConvert.DeserializeObject<TemperatureData>(data);
+                var temperature = JsonConvert.DeserializeObject<TelemetryData>(data);
                 //temperature.PartitionId = partition;
 
-                //var hub = new TemperatureHub();
-                //await hub.NotifyClient(temperature);
+                var hub = new TelemetryHub();
+                //hub.NotifyClient(temperature);
             }
         }
     }

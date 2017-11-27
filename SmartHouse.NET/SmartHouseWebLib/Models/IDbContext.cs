@@ -10,7 +10,6 @@ namespace SmartHouseWebLib.Models
     public interface IDbContext : IDisposable
     {
         bool IsDetached<TEntity>(TEntity entity) where TEntity : class;
-
         void SetEntityStateModified<TEntity>(TEntity entityToModifie) where TEntity : class;
         void SetEntityStateAdded<TEntity>(TEntity entityToModifie) where TEntity : class;
         DbSet Set(Type entityType);
