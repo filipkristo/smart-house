@@ -20,8 +20,8 @@ namespace SmartHouse.WebApiMono.Controllers
         private readonly ILastFMService LastFMService;
 
         public RemoteController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService)
-			: base(service)
-		{
+            : base(service)
+        {
             YamahaService = yamahaService;
             PandoraService = pandoraService;
             SmartHouseService = smartHouseService;
@@ -219,6 +219,25 @@ namespace SmartHouse.WebApiMono.Controllers
             else if(smartHouseState == SmartHouseState.TV)
             {
                 await TVService.Stop();
+            }
+        }
+
+        [HttpGet]
+        [Route("Back")]
+        public async Task Back()
+        {
+            var powerStatus = await YamahaService.PowerStatus();
+            var smartHouseState = await SmartHouseService.GetCurrentState();
+
+            if (powerStatus == PowerStatusEnum.StandBy)
+            {
+                PushNotification("Smarthouse is turn off");
+                return;
+            }
+
+            if (smartHouseState == SmartHouseState.TV)
+            {
+                await TVService.Back();
             }
         }
 

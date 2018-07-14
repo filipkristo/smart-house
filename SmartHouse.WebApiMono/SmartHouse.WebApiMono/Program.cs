@@ -91,12 +91,17 @@ namespace SmartHouse.WebApiMono
             Action action = () =>
             {
                 using (var client = new HttpClient())
+                {
                     client.GetAsync($"http://127.0.0.1:{Port}/api/SmartHouse/TurnOff").Wait();
+                }
 
                 Logger.LogInfoMessage("Smart house turn off");
 
-                var smartHouse = new SmartHouseService();				
+                var smartHouse = new SmartHouseService();
+                var pandoraService = new PandoraService();
 
+                pandoraService.Stop();
+                
                 using (var orvibioService = new OrviboService())
                 {
                     var turnOffResult = orvibioService.TurnOff();
@@ -110,8 +115,8 @@ namespace SmartHouse.WebApiMono
                     Logger.LogInfoMessage(turnOnResult.Message);
                 }
 
-	            Thread.Sleep(TimeSpan.FromMinutes(1));
-	            smartHouse.RestartOpenVPNService().Wait();
+                Thread.Sleep(TimeSpan.FromMinutes(3));
+                smartHouse.RestartOpenVPNService().Wait();
             };
 
             var alarmClock = new AlarmClock(DateTime.Today.AddDays(1).Date.AddTicks(timeSpan.Ticks), action);

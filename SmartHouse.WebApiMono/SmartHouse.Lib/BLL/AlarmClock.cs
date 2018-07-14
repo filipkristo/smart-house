@@ -31,7 +31,7 @@ namespace SmartHouse.Lib
 
             while (now < TargetTime)
             {
-                var SleepMilliseconds = (int)Math.Round((TargetTime - now).TotalMilliseconds / 2);                
+                var SleepMilliseconds = (int)Math.Round((TargetTime - now).TotalMilliseconds / 2);
                 Thread.Sleep(SleepMilliseconds > MinSleepMilliseconds ? SleepMilliseconds : MinSleepMilliseconds);
                 now = DateTime.Now;
             }
