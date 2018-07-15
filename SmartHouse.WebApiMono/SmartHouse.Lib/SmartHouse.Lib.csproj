@@ -29,8 +29,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IF.Lastfm.Core, Version=1.0.1.307, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inflatable.Lastfm.1.0.1.307\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
+    <Reference Include="IF.Lastfm.Core, Version=1.1.0.339, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Inflatable.Lastfm.1.1.0.339\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -39,8 +39,8 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.1\lib\portable-net45+win8+wpa81\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -59,6 +59,8 @@
     <Compile Include="BLL\DefaultVolumeSetterState.cs" />
     <Compile Include="Interfaces\ILyricsService.cs" />
     <Compile Include="Interfaces\IOrviboService.cs" />
+    <Compile Include="Interfaces\ISmartBulbService.cs" />
+    <Compile Include="Interfaces\ISunriseSunsetService.cs" />
     <Compile Include="Interfaces\ITVService.cs" />
     <Compile Include="Model\ArtistTileData.cs" />
     <Compile Include="Model\ContentCategoryEnum.cs" />
@@ -68,6 +70,8 @@
     <Compile Include="Model\Pandora\SongResult.cs" />
     <Compile Include="Model\PhoneCallData.cs" />
     <Compile Include="Model\ProcessResult.cs" />
+    <Compile Include="Model\SunriseSunsetData.cs" />
+    <Compile Include="Model\SunriseSunsetResult.cs" />
     <Compile Include="NamedPipes\CommandPipe.cs" />
     <Compile Include="NamedPipes\IRRemotePipe.cs" />
     <Compile Include="NamedPipes\NPCommands.cs" />
@@ -76,6 +80,8 @@
     <Compile Include="Service\LyricsService.cs" />
     <Compile Include="Service\OrviboService.cs" />
     <Compile Include="Service\PhoneCallsStack.cs" />
+    <Compile Include="Service\SmartBulbService.cs" />
+    <Compile Include="Service\SunriseSunsetService.cs" />
     <Compile Include="Service\TVService.cs" />
     <Compile Include="Util\BashHelper.cs" />
     <Compile Include="Model\PandoraCommandEnum.cs" />
@@ -88,6 +94,7 @@
     <Compile Include="Model\Settings\KodiSettings.cs" />
     <Compile Include="Model\Pandora\PandoraResult.cs" />
     <Compile Include="Model\KeyValue.cs" />
+    <Compile Include="Util\TimeSpanJsonConverter.cs" />
     <Compile Include="Util\YamahaHelper.cs" />
     <Compile Include="Service\YamahaService.cs" />
     <Compile Include="Service\PandoraService.cs" />

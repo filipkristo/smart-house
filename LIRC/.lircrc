@@ -204,6 +204,24 @@ config = KEY_KP3
 end
 begin
 remote = uni
+button = KEY_KP4
+prog = dev
+config = KEY_KP4
+end
+begin
+remote = uni
+button = KEY_KP5
+prog = dev
+config = KEY_KP5
+end
+begin
+remote = uni
+button = KEY_KP6
+prog = dev
+config = KEY_KP6
+end
+begin
+remote = uni
 button = KEY_KP9
 prog = dev
 config = KEY_KP9

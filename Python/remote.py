@@ -61,6 +61,12 @@ while True:
             requests.get('http://127.0.0.1:8081/api/Remote/Ban')
         elif "KEY_KP3" in codeIR[0]:
             requests.get('http://127.0.0.1:8081/api/Remote/TiredOfThisSong')
+        elif "KEY_KP4" in codeIR[0]:
+            requests.post('http://127.0.0.1:8081/api/SmartBlub/Toggle')
+        elif "KEY_KP5" in codeIR[0]:
+            requests.post('http://127.0.0.1:8081/api/SmartBlub/SetWhite')
+        elif "KEY_KP6" in codeIR[0]:
+            requests.post('http://127.0.0.1:8081/api/SmartBlub/SetRed')        
         elif "KEY_KP9" in codeIR[0]:
             requests.post('http://127.0.0.1:8081/api/Sensor/ToogleAirCondition')
         else:

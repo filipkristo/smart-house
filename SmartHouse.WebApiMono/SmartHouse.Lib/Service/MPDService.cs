@@ -33,8 +33,8 @@ namespace SmartHouse.Lib
 
         public Result Play()
         {
-            ConnectIfNotConnected();
-            MpdClient.Play();
+            //ConnectIfNotConnected();
+            //MpdClient.Play();
 
             return new Result()
             {
@@ -46,8 +46,8 @@ namespace SmartHouse.Lib
 
         public Result Pause()
         {
-            ConnectIfNotConnected();
-            MpdClient.Pause(true);
+            //ConnectIfNotConnected();
+            //MpdClient.Pause(true);
 
             return new Result()
             {
@@ -59,8 +59,8 @@ namespace SmartHouse.Lib
 
         public Result Stop()
         {
-            ConnectIfNotConnected();
-            MpdClient.Stop();
+            //ConnectIfNotConnected();
+            //MpdClient.Stop();
 
             return new Result()
             {
@@ -136,7 +136,7 @@ namespace SmartHouse.Lib
                 }
 
                 return result;
-            }                                   
+            }
         }
 
         public async Task<Result> LoveSong()

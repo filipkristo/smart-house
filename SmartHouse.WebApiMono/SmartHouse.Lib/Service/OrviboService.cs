@@ -20,7 +20,7 @@ namespace SmartHouse.Lib
         public OrviboService()
         {
             SetupController();
-            DoDiscovery();   
+            DoDiscovery();
         }
 
         public Result TurnOn()
@@ -46,7 +46,7 @@ namespace SmartHouse.Lib
                     Ok = false,
                     Message = "Didn't find device"
                 };
-            }                
+            }
         }
 
         public Result TurnOff()

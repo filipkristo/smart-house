@@ -11,13 +11,12 @@ namespace SmartHouse.Lib
 {
 	public static class YamahaHelper
 	{
-
 		public async static Task<string> DoRequest(string command)
 		{
             const string uri = "http://10.110.167.49/YamahaRemoteControl/ctrl";
 
 			using (var client = new HttpClient())
-			{	
+			{
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 				client.DefaultRequestHeaders.Add("User-Agent", "SmartHouse");
 
