@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartHouse.Lib
 {
-	public class TelemetryData
+    public class TelemetryData
     {
         [Required]
         [JsonProperty(PropertyName = "temperature")]
@@ -25,5 +25,5 @@ namespace SmartHouse.Lib
         [Required]
         [JsonProperty(PropertyName = "measured")]
         public DateTime Measured { get; set; }
-	}
+    }
 }

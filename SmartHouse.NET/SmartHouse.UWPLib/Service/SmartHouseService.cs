@@ -198,31 +198,31 @@ namespace SmartHouse.UWPLib.Service
             }
         }
 
-	    public async Task<TelemetryData> GetRoomTemperature()
-	    {
-			using (var client = new HttpClient())
-			{
-				client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        public async Task<TelemetryData> GetRoomTemperature()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-				var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Sensor/GetCurrentTemperature";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/Sensor/GetCurrentTemperature";
 
-				var json = await client.GetStringAsync(uri);
-				return JsonConvert.DeserializeObject<TelemetryData>(json);
-			}
-		}
+                var json = await client.GetStringAsync(uri);
+                return JsonConvert.DeserializeObject<TelemetryData>(json);
+            }
+        }
 
-	    public async Task<SongResult> GetCurrentSong()
-	    {
-		    using (var client = new HttpClient())
-		    {
-			    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        public async Task<SongResult> GetCurrentSong()
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-			    var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/NowPlaying";
+                var uri = $"http://{settingsService.HostIP}:{settingsService.HostPort}/api/SmartHouse/NowPlaying";
 
-			    var json = await client.GetStringAsync(uri);
-			    return JsonConvert.DeserializeObject<SongResult>(json);
-		    }
-	    }
+                var json = await client.GetStringAsync(uri);
+                return JsonConvert.DeserializeObject<SongResult>(json);
+            }
+        }
 
         public async Task<DashboardData> GetDashboardData()
         {
@@ -248,5 +248,5 @@ namespace SmartHouse.UWPLib.Service
                 var json = await client.GetStringAsync(uri);
             }
         }
-	}
+    }
 }

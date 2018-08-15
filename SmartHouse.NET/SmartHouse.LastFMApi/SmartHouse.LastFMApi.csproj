@@ -113,10 +113,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Inflatable.Lastfm">
-      <Version>1.0.1.307</Version>
+      <Version>1.1.0.339</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.2</Version>
+      <Version>6.1.7</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
