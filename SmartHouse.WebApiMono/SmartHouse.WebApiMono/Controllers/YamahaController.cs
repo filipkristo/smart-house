@@ -63,7 +63,7 @@ namespace SmartHouse.WebApiMono
 		{
 			var newVolume = (int)Math.Round(volume * 10, 0);
 			var result = await YamahaService.SetVolume(newVolume);
-			NotifyClients();
+            VolumeChangeNotify(newVolume);
 
 			return result;
 		}

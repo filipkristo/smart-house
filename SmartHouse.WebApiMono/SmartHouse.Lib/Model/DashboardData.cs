@@ -8,7 +8,7 @@ namespace SmartHouse.Lib
 {
 	public class DashboardData
 	{
-		public SongResult NowPlaying { get; set; }
+		public PandoraResult NowPlaying { get; set; }
 		public string CurrentInput { get; set; }
 		public TelemetryData TelemetryData { get; set; }
 		public bool IsTurnOn { get; set; }

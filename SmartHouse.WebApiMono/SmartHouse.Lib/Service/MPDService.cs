@@ -108,7 +108,7 @@ namespace SmartHouse.Lib
             return MpdClient.CurrentSong();
         }
 
-        public async Task<SongResult> GetNowPlaying(bool lastFM)
+        public async Task<PandoraResult> GetNowPlaying(bool lastFM)
         {
             ConnectIfNotConnected();
 
@@ -117,16 +117,15 @@ namespace SmartHouse.Lib
 
             using (var lastFMService = new LastFMService())
             {
-                var result = new SongResult()
+                var result = new PandoraResult
                 {
                     Album = song.Album,
                     AlbumUri = null,
                     Artist = song.Artist,
                     DurationSeconds = status.TimeTotal,
                     Loved = false,
-                    PlayedSeconds = status.TimeElapsed,
                     Song = song.Title,
-                    Genre = song.Genre
+                    Radio = song.Genre
                 };
 
                 if (lastFM)

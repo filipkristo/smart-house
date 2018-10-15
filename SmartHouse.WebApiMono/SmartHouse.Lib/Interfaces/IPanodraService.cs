@@ -42,7 +42,7 @@ namespace SmartHouse.Lib
 
 		PandoraResult GetCurrentSongInfo();
 
-        Task<SongResult> GetNowPlaying();
+        Task<PandoraResult> GetNowPlaying();
 
         Task<Result> LoveSong();
 

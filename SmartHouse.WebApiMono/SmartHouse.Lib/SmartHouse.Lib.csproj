@@ -67,7 +67,6 @@
     <Compile Include="Model\ContentUploadModel.cs" />
     <Compile Include="Model\DashboardData.cs" />
     <Compile Include="Model\IRCommands.cs" />
-    <Compile Include="Model\Pandora\SongResult.cs" />
     <Compile Include="Model\PhoneCallData.cs" />
     <Compile Include="Model\ProcessResult.cs" />
     <Compile Include="Model\SunriseSunsetData.cs" />

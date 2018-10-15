@@ -187,22 +187,21 @@ namespace SmartHouse.Lib
 			};
 		}
 
-        public Task<SongResult> GetNowPlaying()
+        public Task<PandoraResult> GetNowPlaying()
         {
             return Task.Run(() =>
             {
                 var result = GetCurrentSongInfo();
 
-                return new SongResult()
+                return new PandoraResult()
                 {
                     Album = result.Album,
                     AlbumUri = result.AlbumUri,
                     Artist = result.Artist,
                     DurationSeconds = result.DurationSeconds,
-                    Loved = result.Loved,
-                    PlayedSeconds = 0,
+                    Loved = result.Loved,                    
                     Song = result.Song,
-                    Genre = result.Radio
+                    Radio = result.Radio
                 };
             });            
         }
