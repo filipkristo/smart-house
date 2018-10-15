@@ -32,12 +32,6 @@ Restore dependencies
     dotnet restore
 ```
 
-Execute unit tests
-```
-    cd "SmartHouseLambda/test/SmartHouseLambda.Tests"
-    dotnet test
-```
-
 Deploy function to AWS Lambda
 ```
     cd "SmartHouseLambda/src/SmartHouseLambda"
