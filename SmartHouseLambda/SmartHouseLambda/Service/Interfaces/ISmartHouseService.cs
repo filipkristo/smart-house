@@ -19,7 +19,7 @@ namespace SmartHouseLambda.Service.Interfaces
 
         Task Pause();
 
-        Task NextSong();
+        Task Next();
 
         Task VolumeUp();
 

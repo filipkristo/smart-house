@@ -21,6 +21,7 @@ namespace SmartHouseLambda.Service
             _client.BaseAddress = new Uri(url);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.Timeout = TimeSpan.FromSeconds(6);
         }
 
         public Task TurnOnSmartHouse() => PostAsync("/api/SmartHouse/TurnOn");
@@ -31,11 +32,11 @@ namespace SmartHouseLambda.Service
 
         public Task TurnOffAirConditioner() => PostAsync("/api/SmartHouse/TurnOffAirConditioner");
 
-        public Task Play() => PostAsync("/api/SmartHouse/Play");
+        public Task Play() => PostAsync("/api/Remote/Play");
 
-        public Task Pause() => PostAsync("/api/SmartHouse/Pause");
+        public Task Pause() => PostAsync("/api/Remote/Pause");
 
-        public Task NextSong() => PostAsync("/api/SmartHouse/NextSong");
+        public Task Next() => PostAsync("/api/Remote/Next");
 
         public Task VolumeUp() => PostAsync("/api/SmartHouse/VolumeUp");
 
