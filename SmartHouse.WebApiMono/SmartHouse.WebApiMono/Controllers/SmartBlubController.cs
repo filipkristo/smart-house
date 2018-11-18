@@ -60,5 +60,13 @@ namespace SmartHouse.WebApiMono.Controllers
 
             };
         }
+
+        [HttpGet]
+        [Route("IsTurnOn")]
+        public async Task<bool> IsTurnOn()
+        {
+            await _smartBulbService.Initialize();
+            return await _smartBulbService.IsTurnOn();
+        }
     }
 }

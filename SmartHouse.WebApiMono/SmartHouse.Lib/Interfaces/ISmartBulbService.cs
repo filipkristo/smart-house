@@ -19,5 +19,7 @@ namespace SmartHouse.Lib
         Task SetWhite();
 
         Task Toggle();
+
+        Task<bool> IsTurnOn();
     }
 }

@@ -31,6 +31,22 @@ namespace SmartHouse.Lib
 
         public Task Toggle() => _deviceGroup?.Toggle();
 
+        public async Task<bool> IsTurnOn()
+        {
+            var result = false;
+
+            if (_deviceGroup == null)
+                await Initialize().ConfigureAwait(false);
+
+            if(_deviceGroup.Count > 0)
+            {
+                var isOn = await _deviceGroup[0].GetProp(YeelightAPI.Models.PROPERTIES.power).ConfigureAwait(false);
+                result = isOn.ToString().Equals("on", StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            return result;
+        }
+
         public async Task SetWhite()
         {
             if(_deviceGroup != null)

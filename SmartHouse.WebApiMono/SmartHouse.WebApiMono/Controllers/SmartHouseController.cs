@@ -43,14 +43,18 @@ namespace SmartHouse.WebApiMono
             var telemetryData = await _telemetryService.GetLastTemperature();
             var isTurnOn = (await _yamahaService.PowerStatus()) == PowerStatusEnum.On;
             var volume = await _yamahaService.GetVolume();
+            var isLightsTurnOn = await _smartBulbService.IsTurnOn();
+            var isAirConditionerTurnOn = (await _telemetryService.GetAirConditionState()) == 1;
 
-            return new DashboardData()
+            return new DashboardData
             {
                 NowPlaying = nowPlaying,
                 CurrentInput = currentInput.ToString(),
                 TelemetryData = telemetryData,
                 IsTurnOn = isTurnOn,
-                Volume = volume
+                Volume = volume,
+                IsAirConditionerTurnOn = isAirConditionerTurnOn,
+                IsLightsTurnOn = isLightsTurnOn
             };
         }
 
@@ -748,5 +752,7 @@ namespace SmartHouse.WebApiMono
             var contentBytes = Convert.FromBase64String(model.ContentBase64);
             File.WriteAllBytes("lastPicture.jpg", contentBytes);
         }
+
+
     }
 }

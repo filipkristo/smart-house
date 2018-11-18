@@ -13,5 +13,7 @@ namespace SmartHouse.Lib
 		public TelemetryData TelemetryData { get; set; }
 		public bool IsTurnOn { get; set; }
 		public short Volume { get; set; }
+        public bool IsLightsTurnOn { get; set; }
+        public bool IsAirConditionerTurnOn { get; set; }
 	}
 }
