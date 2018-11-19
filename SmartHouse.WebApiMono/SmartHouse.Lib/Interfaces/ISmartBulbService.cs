@@ -10,9 +10,9 @@ namespace SmartHouse.Lib
     {
         Task Initialize();
 
-        Task PowerOn();
+        Task TurnOn();
 
-        Task PowerOff();
+        Task TurnOff();
 
         Task SetRed();
 

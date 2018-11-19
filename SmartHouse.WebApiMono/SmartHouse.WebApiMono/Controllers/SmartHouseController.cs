@@ -98,7 +98,7 @@ namespace SmartHouse.WebApiMono
                 if(await _sunriseSunsetService.IsNight())
                 {
                     await _smartBulbService.Initialize();
-                    await _smartBulbService.PowerOn();
+                    await _smartBulbService.TurnOn();
                     sb.AppendLine("Smart blub turn on");
                 }
 
@@ -195,7 +195,7 @@ namespace SmartHouse.WebApiMono
             if (await _sunriseSunsetService.IsNight())
             {
                 await _smartBulbService.Initialize();
-                await _smartBulbService.PowerOff();
+                await _smartBulbService.TurnOff();
             }
 
             NotifyClients();

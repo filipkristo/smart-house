@@ -43,8 +43,9 @@ namespace SmartHouse.WebApiMono
         {
             var result = await TelemetryService.AirCondition(on);
 			PushNotification($"Air conditioner is {result.Message}");
+            NotifyClients();
 
-	        return result;
+            return result;
         }
 
 		[HttpPost]
@@ -53,8 +54,9 @@ namespace SmartHouse.WebApiMono
 		{
 			var result = await TelemetryService.ToogleAirCondition();
 			PushNotification($"Air conditioner is {result.Message}");
+            NotifyClients();
 
-			return result;
+            return result;
 		}
 	}
 }

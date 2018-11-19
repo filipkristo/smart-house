@@ -25,6 +25,40 @@ namespace SmartHouse.WebApiMono.Controllers
             await _smartBulbService.Initialize();
             await _smartBulbService.Toggle();
 
+            NotifyClients();
+
+            return new Result
+            {
+                Ok = true,
+                Message = "Ok"
+            };
+        }
+
+        [HttpPost]
+        [Route("TurnOn")]
+        public async Task<Result> TurnOn()
+        {
+            await _smartBulbService.Initialize();
+            await _smartBulbService.TurnOn();
+
+            NotifyClients();
+
+            return new Result
+            {
+                Ok = true,
+                Message = "Ok"
+            };
+        }
+
+        [HttpPost]
+        [Route("TurnOff")]
+        public async Task<Result> TurnOff()
+        {
+            await _smartBulbService.Initialize();
+            await _smartBulbService.TurnOff();
+
+            NotifyClients();
+
             return new Result
             {
                 Ok = true,

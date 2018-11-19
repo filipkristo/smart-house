@@ -25,9 +25,9 @@ namespace SmartHouse.Lib
             }
         }
 
-        public Task PowerOn() => _deviceGroup?.TurnOn(_delay);
+        public Task TurnOn() => _deviceGroup?.TurnOn(_delay);
 
-        public Task PowerOff() => _deviceGroup?.TurnOff(_delay);
+        public Task TurnOff() => _deviceGroup?.TurnOff(_delay);
 
         public Task Toggle() => _deviceGroup?.Toggle();
 
