@@ -6,30 +6,30 @@ using SmartHouse.Lib;
 
 namespace SmartHouse.WebApiMono
 {
-	[RoutePrefix("api/Pandora")]
-	public class PandoraController : BaseController
+	[RoutePrefix("api/Player")]
+	public class PlayerController : BaseController
 	{
-		private IPanodraService PandoraService;
-		private ILastFMService LastFMService;
+		private IPlayerFactoryService _playerService;
+		private ILastFMService _lastFmService;
 
-		public PandoraController(ISettingsService service, IPanodraService pandoraService, ILastFMService lastFMService) : base(service)
+		public PlayerController(ISettingsService service, IPlayerFactoryService pandoraService, ILastFMService lastFMService) : base(service)
 		{
-			PandoraService = pandoraService;
-			LastFMService = lastFMService;
+			_playerService = pandoraService;
+			_lastFmService = lastFMService;
 		}
 
 		[HttpGet]
 		[Route("Play")]
 		public Result Play()
 		{
-			return PandoraService.Play();
+			return _playerService.Play();
 		}
 
 		[HttpGet]
 		[Route("Start")]
 		public async Task<Result> Start()
 		{
-			var result = await PandoraService.StartTcp();
+			var result = await _playerService.StartTcp();
 			await Task.Delay(1000);
 
 			return result;
@@ -39,28 +39,28 @@ namespace SmartHouse.WebApiMono
 		[Route("Stop")]
 		public async Task<Result> Stop()
 		{
-			return await PandoraService.StopTcp();
+			return await _playerService.StopTcp();
 		}
 
 		[HttpGet]
 		[Route("Restart")]
 		public async Task<Result> Restart()
 		{
-			return await PandoraService.RestartTcp();
+			return await _playerService.RestartTcp();
 		}
 
 		[HttpGet]
 		[Route("Next")]
 		public Result Next()
 		{
-			return PandoraService.Next();
+			return _playerService.Next();
 		}
 
 		[HttpGet]
 		[Route("ThumbUp")]
 		public Result ThumbUp()
 		{
-			var result = PandoraService.ThumbUp();
+			var result = _playerService.ThumbUp();
 
 			NotifyClients();
 			PushNotification("Thumb Up");
@@ -72,7 +72,7 @@ namespace SmartHouse.WebApiMono
 		[Route("ThumbDown")]
 		public Result ThumbDown()
 		{
-			var result = PandoraService.ThumbDown();
+			var result = _playerService.ThumbDown();
 
 			NotifyClients();
 			PushNotification("Thumb Down");
@@ -84,7 +84,7 @@ namespace SmartHouse.WebApiMono
 		[Route("Tired")]
 		public Result Tired()
 		{
-			var result = PandoraService.TiredOfThisSong();
+			var result = _playerService.TiredOfThisSong();
 
 			NotifyClients();
 			PushNotification("Tired of this song");
@@ -96,21 +96,21 @@ namespace SmartHouse.WebApiMono
 		[Route("VolumeUp")]
 		public Result VolumeUp()
 		{
-			return PandoraService.VolumeUp();
+			return _playerService.VolumeUp();
 		}
 
 		[HttpGet]
 		[Route("VolumeDown")]
 		public Result VolumeDown()
 		{
-			return PandoraService.VolumeDown();
+			return _playerService.VolumeDown();
 		}
 
 		[HttpGet]
 		[Route("ChangeStation")]
 		public Result ChangeStation(string stationId)
 		{
-			var result = PandoraService.ChangeStation(stationId);
+			var result = _playerService.ChangeStation(stationId);
 			NotifyClients();
 
 			return result;
@@ -118,9 +118,9 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("NextStation")]
-		public Result NextStation()
+		public async Task<Result> NextStation()
 		{
-			var result = PandoraService.NextStation();
+			var result = await _playerService.NextStation();
 
 			NotifyClients();
 			PushNotification(result.Message);
@@ -130,9 +130,9 @@ namespace SmartHouse.WebApiMono
 
 		[HttpGet]
 		[Route("PrevStation")]
-		public Result PrevStation()
+		public async Task<Result> PrevStation()
 		{
-			var result = PandoraService.PrevStation();
+			var result = await _playerService.PrevStation();
 
 			NotifyClients();
 			PushNotification(result.Message);
@@ -144,21 +144,21 @@ namespace SmartHouse.WebApiMono
 		[Route("CurrentSongInfo")]
 		public PandoraResult CurrentSongInfo()
 		{
-			return PandoraService.GetCurrentSongInfo();
+			return _playerService.GetCurrentSongInfo();
 		}
 
 		[HttpGet]
 		[Route("StationList")]
-		public IEnumerable<KeyValue> StationList()
+		public async Task<IEnumerable<KeyValue>> StationList()
 		{
-			return PandoraService.GetStationList();
+			return await _playerService.GetStationList();
 		}
 
 		[HttpGet]
 		[Route("IsPlaying")]
-		public bool IsPlaying()
+		public async Task<bool> IsPlaying()
 		{
-			return PandoraService.IsPlaying();
+			return await _playerService.IsPlaying();
 		}
 
 		[HttpGet]
@@ -169,15 +169,15 @@ namespace SmartHouse.WebApiMono
 			if (context == null)
 				return;
 
-			var pandoraInfo = PandoraService.GetCurrentSongInfo();
+			var pandoraInfo = _playerService.GetCurrentSongInfo();
 			context.Clients.All.pandoraRefresh(pandoraInfo);
 		}
 
 		[HttpGet]
 		[Route("StartScrobble")]
-		public string StartScrobble()
+		public async Task<string> StartScrobble()
 		{
-			var pandoraInfo = PandoraService.GetCurrentSongInfo();
+			var pandoraInfo = _playerService.GetCurrentSongInfo();
 			var song = new SongDetails()
 			{
 				Album = pandoraInfo.Album,
@@ -185,14 +185,14 @@ namespace SmartHouse.WebApiMono
 				Song = pandoraInfo.Song
 			};
 
-			return LastFMService.StartScrobbleBash(song);
+			return await _lastFmService.StartScrobble(song);
 		}
 
 		[HttpGet]
 		[Route("UpdateNowPlaying")]
 		public async Task<string> UpdateNowPlaying()
 		{
-			var pandoraInfo = PandoraService.GetCurrentSongInfo();
+			var pandoraInfo = _playerService.GetCurrentSongInfo();
 			var song = new SongDetails()
 			{
 				Album = pandoraInfo.Album,
@@ -200,7 +200,7 @@ namespace SmartHouse.WebApiMono
 				Song = pandoraInfo.Song
 			};
 
-			return await LastFMService.UpdateNowPlaying(song);
+			return await _lastFmService.UpdateNowPlaying(song);
 		}
 	}
 }

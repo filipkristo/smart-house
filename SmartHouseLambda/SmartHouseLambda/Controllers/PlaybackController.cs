@@ -26,7 +26,7 @@ namespace SmartHouseLambda.Controllers
             }
             else if(request.Directive.Header.Name.Equals("Next"))
             {
-                await _service.NextSong().ConfigureAwait(false);
+                await _service.Next().ConfigureAwait(false);
             }
             else if (request.Directive.Header.Name.Equals("Stop"))
             {

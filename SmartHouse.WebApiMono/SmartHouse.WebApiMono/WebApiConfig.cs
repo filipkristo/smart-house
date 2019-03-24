@@ -59,7 +59,7 @@ namespace SmartHouse.WebApiMono
             var unity = new UnityContainer();
 
             unity.RegisterType<ISettingsService, SettingService>(new HierarchicalLifetimeManager());
-            unity.RegisterType<IPanodraService, PandoraService>(new HierarchicalLifetimeManager());
+            unity.RegisterType<IPlayerFactoryService, PlayerFactory>(new HierarchicalLifetimeManager());
             unity.RegisterType<IYamahaService, YamahaService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ISmartHouseService, SmartHouseService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ITelemetryService, TelemetryService>(new HierarchicalLifetimeManager());
@@ -67,7 +67,6 @@ namespace SmartHouse.WebApiMono
             unity.RegisterType<ILastFMService, LastFMService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ITVService, TVService>(new HierarchicalLifetimeManager());
             unity.RegisterType<IOrviboService, OrviboService>(new HierarchicalLifetimeManager());
-            unity.RegisterType<ILyricsService, LyricsService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ILyricsService, LyricsService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ISmartBulbService, SmartBulbService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ISunriseSunsetService, SunriseSunsetService>(new HierarchicalLifetimeManager());

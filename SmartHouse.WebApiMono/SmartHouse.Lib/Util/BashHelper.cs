@@ -57,7 +57,7 @@ namespace SmartHouse.Lib
                 proc.Start();
 
                 var output = proc.StandardOutput.ReadToEnd();
-                var error = proc.StandardError.ReadToEnd();                
+                var error = proc.StandardError.ReadToEnd();
 
                 proc.WaitForExit();
 
@@ -102,11 +102,11 @@ namespace SmartHouse.Lib
                         {
                             stream.WriteLine(item);
                         }
-                    }                        
-                }                
+                    }
+                }
 
                 var output = proc.StandardOutput.ReadToEnd();
-                var error = proc.StandardError.ReadToEnd();                
+                var error = proc.StandardError.ReadToEnd();
 
                 proc.WaitForExit();
 

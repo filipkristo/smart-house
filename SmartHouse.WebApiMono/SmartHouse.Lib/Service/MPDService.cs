@@ -115,56 +115,54 @@ namespace SmartHouse.Lib
             var song = GetCurrentSong();
             var status = GetStatus();
 
-            using (var lastFMService = new LastFMService())
+            var lastFMService = new LastFMService();
+
+            var result = new PandoraResult
             {
-                var result = new PandoraResult
-                {
-                    Album = song.Album,
-                    AlbumUri = null,
-                    Artist = song.Artist,
-                    DurationSeconds = status.TimeTotal,
-                    Loved = false,
-                    Song = song.Title,
-                    Radio = song.Genre
-                };
+                Album = song.Album,
+                AlbumUri = null,
+                Artist = song.Artist,
+                DurationSeconds = status.TimeTotal,
+                Loved = false,
+                Song = song.Title,
+                Radio = song.Genre
+            };
 
-                if (lastFM)
-                {
-                    result.Loved = (await lastFMService.GetSongInfo(result.Artist, result.Song))?.IsLoved ?? false;
-                    result.AlbumUri = (await lastFMService.GetAlbumInfo(result.Artist, result.Album))?.Images?.Large?.ToString();
-                }
-
-                return result;
+            if (lastFM)
+            {
+                result.Loved = (await lastFMService.GetSongInfo(result.Artist, result.Song))?.IsLoved ?? false;
+                result.AlbumUri = (await lastFMService.GetAlbumInfo(result.Artist, result.Album))?.ImageUrl?.ToString();
             }
+
+            return result;
         }
 
         public async Task<Result> LoveSong()
         {
             ConnectIfNotConnected();
 
-            using (var lastFMService = new LastFMService())
-            {
-                var mpdInfo = await GetNowPlaying(false);
-                var mpdSong = GetCurrentSong();
+            var lastFMService = new LastFMService();
 
-                if (mpdInfo.Loved)
-                    return new Result()
-                    {
-                        Ok = true,
-                        ErrorCode = 0,
-                        Message = "You already liked this song"
-                    };
+            var mpdInfo = await GetNowPlaying(false);
+            var mpdSong = GetCurrentSong();
 
-                var status = await lastFMService.LoveSong(mpdInfo.Artist, mpdInfo.Song);
-                SaveToFavoritesPlaylist(mpdSong);
-
-                return new Result
+            if (mpdInfo.Loved)
+                return new Result()
                 {
                     Ok = true,
                     ErrorCode = 0,
-                    Message = $"You liked {mpdInfo.Song} song. Status: {status}"
+                    Message = "You already liked this song"
                 };
-            }            
+
+            var status = await lastFMService.LoveSong(mpdInfo.Artist, mpdInfo.Song);
+            SaveToFavoritesPlaylist(mpdSong);
+
+            return new Result
+            {
+                Ok = true,
+                ErrorCode = 0,
+                Message = $"You liked {mpdInfo.Song} song. Status: {status}"
+            };
         }
 
         private void SaveToFavoritesPlaylist(MpdFile mpdSong)
@@ -191,7 +189,7 @@ namespace SmartHouse.Lib
         public void Dispose()
         {
             if(MpdClient.Connected)
-                MpdClient.Connection.Disconnect();            
+                MpdClient.Connection.Disconnect();
         }
     }
 }

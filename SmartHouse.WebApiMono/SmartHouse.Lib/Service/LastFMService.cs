@@ -1,216 +1,100 @@
 ﻿using System;
 using System.Threading.Tasks;
-using IF.Lastfm.Core.Api;
-using IF.Lastfm.Core.Objects;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 using System.Net;
-using IF.Lastfm.Core.Api.Helpers;
+using System.Net.Http;
 
 namespace SmartHouse.Lib
 {
     public class LastFMService : ILastFMService
     {
-        private const string API_KEY = "XXX";
-        private const string API_SECRET = "XXX";
+        private static readonly HttpClient _httpClient;
 
-        private const string USERNAME = "XXX";
-        private const string PASSWORD = "XXX";
-
-        private readonly LastfmClient client;
-
-        public LastFMService()
+        static LastFMService()
         {
-            client = new LastfmClient(API_KEY, API_SECRET);
-        }
-
-        private async Task Authenticate(LastfmClient client)
-        {
-            const string fileName = "last.fm";
-
-            if (!File.Exists(fileName))
-            {
-                var result = await client.Auth.GetSessionTokenAsync(USERNAME, PASSWORD);
-
-                if (client.Auth.Authenticated)
-                {
-                    var json = JsonConvert.SerializeObject(client.Auth.UserSession);
-                    File.WriteAllText("last.fm", json, Encoding.UTF8);
-                }
-                else
-                {
-                    throw new Exception("Last.FM Authenticate problem");
-                }
-            }
-            else
-            {
-                var json = File.ReadAllText(fileName, Encoding.UTF8);
-                var session = JsonConvert.DeserializeObject<LastUserSession>(json);
-
-                client.Auth.LoadSession(session);
-
-                if (!client.Auth.Authenticated)
-                {
-                    File.Delete(fileName);
-                    throw new Exception("Last.FM Authenticate problem");
-                }
-
-            }
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri("http://10.110.166.95/");
+            _httpClient.DefaultRequestHeaders.Accept.ParseAdd("application/json");
         }
 
         public async Task<string> StartScrobble(SongDetails song)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
+            var payload = JsonConvert.SerializeObject(song);
+            var stringContent = new StringContent(payload, Encoding.UTF8, "application/json");
 
-            var scrobble = new Scrobble(song.Artist, song.Album, song.Song, DateTime.UtcNow);
-            var response = await client.Scrobbler.ScrobbleAsync(scrobble);
+            var response = await _httpClient.PostAsync("api/LastFm/StartScrobble", stringContent).ConfigureAwait(false);
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            return response.Status.ToString();
-        }
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException(json);
 
-        /// <summary>
-        /// Dependency: https://github.com/filipkristo/LastfmWSClient.git
-        /// </summary>
-        /// <param name="song"></param>
-        /// <returns></returns>
-        public string StartScrobbleBash(SongDetails song)
-        {
-            const string script = "./scrobble";
-
-            var result = BashHelper.ExecBashScript(script, song.Artist, song.Song, song.Album, Environment.NewLine);
-            return string.IsNullOrWhiteSpace(result.Error) ? $"StartScrobbleBash - OK: {result.Message}" : $"StartScrobbleBash - FAIL: {result.Error}";
+            return JsonConvert.DeserializeObject<string>(json);
         }
 
         public async Task<string> UpdateNowPlaying(SongDetails song)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
+            var payload = JsonConvert.SerializeObject(song);
+            var stringContent = new StringContent(payload, Encoding.UTF8, "application/json");
 
-            var scrobble = new Scrobble(song.Artist, song.Album, song.Song, DateTime.UtcNow);
-            var response = await client.Track.UpdateNowPlayingAsync(scrobble);
+            var response = await _httpClient.PostAsync("api/LastFm/UpdateNowPlaying", stringContent).ConfigureAwait(false);
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            return response.Status.ToString();
+            if (!response.IsSuccessStatusCode)
+                throw new ApplicationException(json);
+
+            return JsonConvert.DeserializeObject<string>(json);
         }
 
         public async Task<string> LoveSong(string artistName, string trackName)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
-
-            var response = await client.Track.LoveAsync(trackName, artistName);
-            return response.Status.ToString();
+            var json = await _httpClient.GetStringAsync($"api/LastFm/LoveSong?artistName={Uri.EscapeDataString(artistName)}&songName={Uri.EscapeDataString(trackName)}").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<string>(json);
         }
 
         public async Task<string> UnloveSong(string artistName, string trackName)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
-
-            var response = await client.Track.UnloveAsync(trackName, artistName);
-            return response.Status.ToString();
+            var json = await _httpClient.GetStringAsync($"api/LastFm/UnloveSong?artistName={Uri.EscapeDataString(artistName)}&songName={Uri.EscapeDataString(trackName)}").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<string>(json);
         }
 
-        public async Task<LastTrack> GetSongInfo(string artistName, string trackName)
+        public async Task<TrackInfoResponse> GetSongInfo(string artistName, string trackName)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
-
-            var response = await client.Track.GetInfoAsync(trackName, artistName, USERNAME);
-            return response.Content;
+            var json = await _httpClient.GetStringAsync($"api/LastFm/GetSongInfo?artistName={Uri.EscapeDataString(artistName)}&songName={Uri.EscapeDataString(trackName)}").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<TrackInfoResponse>(json);
         }
 
-        public async Task<List<LastTrack>> GetTopTracks()
+        public async Task<IReadOnlyList<TrackInfoResponse>> GetTopTracks()
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
-
-            var response = await client.Chart.GetTopTracksAsync(1, 50);
-            return response.Content.ToList();
+            var json = await _httpClient.GetStringAsync("api/LastFm/GetTopTracks").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<List<TrackInfoResponse>>(json);
         }
 
-        public async Task<LastAlbum> GetAlbumInfo(string artist, string album)
+        public async Task<AlbumInfoResponse> GetAlbumInfo(string artist, string album)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
-
-            var response = await client.Album.GetInfoAsync(artist, album, true);
-            return response.Content;
+            var json = await _httpClient.GetStringAsync($"api/LastFm/GetAlbumInfo?artist={Uri.EscapeDataString(artist)}&album={Uri.EscapeDataString(album)}").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<AlbumInfoResponse>(json);
         }
 
-        public async Task<LastArtist> GetArtistInfo(string artist)
+        public async Task<ArtistInfoResponse> GetArtistInfo(string artist)
         {
-            if (!client.Auth.Authenticated)
-                await Authenticate(client);
-
-            var response = await client.Artist.GetInfoAsync(artist: artist, autocorrect: true);
-            return response.Content;
+            var json = await _httpClient.GetStringAsync($"api/LastFm/GetArtistInfo?artist={Uri.EscapeDataString(artist)}").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<ArtistInfoResponse>(json);
         }
 
-        public async Task<IEnumerable<LastArtist>> GetSimilarArtist(string artist, int limit = 50)
+        public async Task<IReadOnlyList<ArtistInfoResponse>> GetSimilarArtist(string artist)
         {
-            if(!client.Auth.Authenticated)
-                await Authenticate(client);
-
-            var response = await client.Artist.GetSimilarAsync(artist, true, limit);
-            return response.Content;
+            var json = await _httpClient.GetStringAsync($"api/LastFm/GetSimilarArtist?artist={Uri.EscapeDataString(artist)}").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<List<ArtistInfoResponse>>(json);
         }
 
-        public async Task<IEnumerable<ArtistTileData>> GetRecentTopArtists(DateTimeOffset since, int count)
+        public async Task<IReadOnlyList<ArtistTileData>> GetRecentTopArtists()
         {
-            var pageNum = 1;
-            var scrobblers = new List<LastTrack>();
-            IEnumerable<LastTrack> pagedTracks = null;
-
-            do
-            {
-                pagedTracks = await LoadScrobbles(pageNum, since).ConfigureAwait(false);
-                scrobblers.AddRange(pagedTracks);
-
-                pageNum++;
-
-            } while (pagedTracks.Any());
-
-            var artists = scrobblers
-                .GroupBy(x => new { Id = x.ArtistMbid, Name = x.ArtistName })
-                .OrderByDescending(x => x.Count())
-                .Select(x => new ArtistTileData()
-                {
-                    Id = x.Key.Id,
-                    Name = x.Key.Name,
-                    Count = x.Count()
-                })
-                .Take(count)
-                .ToList();
-
-            foreach (var artist in artists)
-            {
-                LastResponse<LastArtist> artistInfo = null;
-
-                if (!string.IsNullOrWhiteSpace(artist.Id))
-                    artistInfo = await client.Artist.GetInfoByMbidAsync(artist.Id).ConfigureAwait(false);
-                else
-                    artistInfo = await client.Artist.GetInfoAsync(artist.Name, autocorrect: true).ConfigureAwait(false);
-
-                artist.ImageUrl = artistInfo?.Content?.MainImage?.Large?.OriginalString ?? artistInfo?.Content?.MainImage?.LastOrDefault(x => !string.IsNullOrWhiteSpace(x?.OriginalString))?.OriginalString;
-                artist.Url = artistInfo?.Content?.Url?.OriginalString;
-            }
-
-            return artists;
-        }
-
-        private async Task<IEnumerable<LastTrack>> LoadScrobbles(int pageNum, DateTimeOffset since)
-        {
-            var tracks = await client.User.GetRecentScrobbles(USERNAME, DateTime.Today.AddDays(-1), pageNum, 30).ConfigureAwait(false);
-            return tracks.Where(x => x.IsNowPlaying != true);
-        }
-
-        public void Dispose()
-        {
-            client.Dispose();
+            var json = await _httpClient.GetStringAsync("api/LastFm/GetRecentTopArtists").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<List<ArtistTileData>>(json);
         }
     }
 }

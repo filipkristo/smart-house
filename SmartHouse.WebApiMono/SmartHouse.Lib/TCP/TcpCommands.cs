@@ -40,12 +40,7 @@ namespace SmartHouse.Lib
 				default:
 					throw new Exception($"Command {command} is not defined");
 			}
-		}
-
-		public PandoraResult GetPandoraSongInfo()
-		{
-			return new PandoraService().GetCurrentSongInfo();
-		}
+		}		
 
 #pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
 		private async void RunTimer()

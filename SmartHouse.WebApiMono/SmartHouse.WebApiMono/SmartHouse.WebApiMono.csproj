@@ -40,9 +40,6 @@
     <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.8.6\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="IF.Lastfm.Core, Version=1.1.0.339, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inflatable.Lastfm.1.1.0.339\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -123,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DeezerController.cs" />
     <Compile Include="Controllers\LyricsController.cs" />
     <Compile Include="Controllers\OrviboController.cs" />
     <Compile Include="Controllers\RemoteController.cs" />
@@ -137,7 +135,7 @@
     <Compile Include="Logging\ExceptionFilter.cs" />
     <Compile Include="Controllers\SmartHouseController.cs" />
     <Compile Include="Controllers\UtilController.cs" />
-    <Compile Include="Controllers\PandoraController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="DI\ScopeContainer.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />

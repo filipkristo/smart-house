@@ -13,17 +13,17 @@ namespace SmartHouse.WebApiMono.Controllers
     public class RemoteController : BaseController
     {
         private readonly IYamahaService YamahaService;
-        private readonly IPanodraService PandoraService;
+        private readonly IPlayerFactoryService PlayerService;
         private readonly ISmartHouseService SmartHouseService;
         private readonly IMPDService MpdService;
         private readonly ITVService TVService;
         private readonly ILastFMService LastFMService;
 
-        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPanodraService pandoraService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService)
+        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPlayerFactoryService playerService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService)
             : base(service)
         {
             YamahaService = yamahaService;
-            PandoraService = pandoraService;
+            PlayerService = playerService;
             SmartHouseService = smartHouseService;
             MpdService = mpdService;
             TVService = tvService;
@@ -38,7 +38,7 @@ namespace SmartHouse.WebApiMono.Controllers
 
             if(smartHouseState == SmartHouseState.Pandora)
             {
-                var result = PandoraService.NextStation();
+                var result = await PlayerService.NextStation();
 
                 NotifyClients();
                 PushNotification(result.Message);
@@ -57,7 +57,7 @@ namespace SmartHouse.WebApiMono.Controllers
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                var result = PandoraService.PrevStation();
+                var result = await PlayerService.PrevStation();
 
                 NotifyClients();
                 PushNotification(result.Message);
@@ -87,8 +87,8 @@ namespace SmartHouse.WebApiMono.Controllers
                 }
                 else if (state == SmartHouseState.Pandora)
                 {
-                    PandoraService.Next();
-                    sb.AppendLine("Pandora next song. Pandora can't go previous");
+                    PlayerService.Prev();
+                    sb.AppendLine("Player prev song");
                 }
                 else if (state == SmartHouseState.TV)
                 {
@@ -129,7 +129,7 @@ namespace SmartHouse.WebApiMono.Controllers
                 }
                 else if (smartHouseState == SmartHouseState.Pandora)
                 {
-                    PandoraService.Next();
+                    PlayerService.Next();
                     sb.AppendLine("Pandora next song");
                 }
                 else if (smartHouseState == SmartHouseState.TV)
@@ -165,7 +165,11 @@ namespace SmartHouse.WebApiMono.Controllers
 
                 if (state == SmartHouseState.Pandora)
                 {
-                    PandoraService.Play();
+                    if (await PlayerService.IsPlaying())
+                        PlayerService.Pause();
+                    else
+                        PlayerService.Play();
+
                     sb.AppendLine("Starting to play/pause Pandora");
                 }
                 else if (state == SmartHouseState.Music)
@@ -209,7 +213,7 @@ namespace SmartHouse.WebApiMono.Controllers
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                await PandoraService.StopTcp();
+                await PlayerService.StopTcp();
                 PushNotification("Pianobar has exited");
             }
             else if(smartHouseState == SmartHouseState.Music)
@@ -242,6 +246,33 @@ namespace SmartHouse.WebApiMono.Controllers
         }
 
         [HttpGet]
+        [Route("Play")]
+        public async Task Play()
+        {
+            var powerStatus = await YamahaService.PowerStatus();
+            var smartHouseState = await SmartHouseService.GetCurrentState();
+
+            if (powerStatus == PowerStatusEnum.StandBy)
+            {
+                PushNotification("Smarthouse is turn off");
+                return;
+            }
+
+            if (smartHouseState == SmartHouseState.Pandora)
+            {
+                PlayerService.Play();
+            }
+            else if (smartHouseState == SmartHouseState.Music)
+            {
+                MpdService.Play();
+            }
+            else if (smartHouseState == SmartHouseState.TV)
+            {
+                await TVService.Play();
+            }
+        }
+
+        [HttpGet]
         [Route("Pause")]
         public async Task Pause()
         {
@@ -256,7 +287,7 @@ namespace SmartHouse.WebApiMono.Controllers
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                PandoraService.Pause();
+                PlayerService.Pause();
             }
             else if (smartHouseState == SmartHouseState.Music)
             {
@@ -276,7 +307,7 @@ namespace SmartHouse.WebApiMono.Controllers
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                var result = await PandoraService.LoveSong();
+                var result = await PlayerService.LoveSong();
 
                 NotifyClients();
                 PushNotification(result.Message);
@@ -311,7 +342,7 @@ namespace SmartHouse.WebApiMono.Controllers
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                var result = PandoraService.ThumbDown();
+                var result = PlayerService.ThumbDown();
 
                 NotifyClients();
                 PushNotification("Thumb Down");
@@ -326,7 +357,7 @@ namespace SmartHouse.WebApiMono.Controllers
 
             if (smartHouseState == SmartHouseState.Pandora)
             {
-                var result = PandoraService.TiredOfThisSong();
+                var result = PlayerService.TiredOfThisSong();
 
                 NotifyClients();
                 PushNotification("Tired of this song");

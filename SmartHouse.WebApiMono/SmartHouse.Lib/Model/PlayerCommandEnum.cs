@@ -1,7 +1,7 @@
 ﻿using System;
 namespace SmartHouse.Lib
 {
-	public enum PandoraCommandEnum
+	public enum PlayerCommandEnum
 	{
 		ThumbUp = 0,
 		ThumbDown,

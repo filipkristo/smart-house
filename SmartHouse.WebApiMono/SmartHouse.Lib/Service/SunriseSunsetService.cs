@@ -10,10 +10,10 @@ namespace SmartHouse.Lib
 {
     public class SunriseSunsetService : ISunriseSunsetService
     {
-        private const string _uri = "https://api.sunrise-sunset.org/json?lat=43.511821&lng=16.472851300000002";
-        private readonly HttpClient _httpClient;
+        private const string _uri = "http://10.110.166.95/api/SunriseSunset/IsNight";
+        private static readonly HttpClient _httpClient;
 
-        public SunriseSunsetService()
+        static SunriseSunsetService()
         {
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.ParseAdd("application/json");
@@ -22,10 +22,7 @@ namespace SmartHouse.Lib
         public async Task<bool> IsNight()
         {
             var json = await _httpClient.GetStringAsync(_uri).ConfigureAwait(false);
-            var result = JsonConvert.DeserializeObject<SunriseSunsetResult>(json);
-
-            var currentTime = DateTime.Now.TimeOfDay;
-            return currentTime >= result.Results.AstronomicalTwilightEnd || currentTime < result.Results.Sunrise;
+            return JsonConvert.DeserializeObject<bool>(json);
         }
     }
 }

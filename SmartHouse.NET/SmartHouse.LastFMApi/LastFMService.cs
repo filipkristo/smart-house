@@ -18,11 +18,11 @@ namespace SmartHouse.LastFMApi
         private const string LastFMSessionKey = "LastFMSession";
         private readonly LastfmClient client;
 
-        private const string API_KEY = "XXX";
-        private const string API_SECRET = "XXX";
+        private const string API_KEY = "f6efd05dff7733d006993bdb97bbdb06";
+        private const string API_SECRET = "6fe8591b91d15471d484e3842fa96b96";
 
-        private const string USERNAME = "XXX";
-        private const string PASSWORD = "XXX";
+        private const string USERNAME = "filip_kristo";
+        private const string PASSWORD = "duKH1G6Ar[gDNIS2TE]WFl]LnRrroB{E";
 
         public LastFMService()
         {

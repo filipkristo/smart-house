@@ -5,30 +5,30 @@ using SmartHouse.Lib;
 
 namespace SmartHouse.WebApiMono
 {
-	[RoutePrefix("api/Sensor")]
-	public class SensorController : BaseController
-	{
-		private readonly ITelemetryService TelemetryService;
+    [RoutePrefix("api/Sensor")]
+    public class SensorController : BaseController
+    {
+        private readonly ITelemetryService TelemetryService;
 
-		public SensorController(ISettingsService settingsService)
+        public SensorController(ISettingsService settingsService)
             : base(settingsService)
-		{
+        {
             this.TelemetryService = new TelemetryService();
-		}
+        }
 
-		[HttpPost]
-		[Route("SaveTemperature")]
-		public Result SaveTemperature(TelemetryData data)
-		{
-			return TelemetryService.SaveTemperature(data);
-		}
+        [HttpPost]
+        [Route("SaveTemperature")]
+        public Result SaveTemperature(TelemetryData data)
+        {
+            return TelemetryService.SaveTemperature(data);
+        }
 
-		[HttpGet]
-		[Route("GetCurrentTemperature")]
-		public async Task<TelemetryData> GetCurrentTemperature()
-		{
-			return await TelemetryService.GetLastTemperature();
-		}
+        [HttpGet]
+        [Route("GetCurrentTemperature")]
+        public async Task<TelemetryData> GetCurrentTemperature()
+        {
+            return await TelemetryService.GetLastTemperature();
+        }
 
         [HttpGet]
         [Route("GetAirConditionState")]
@@ -42,21 +42,21 @@ namespace SmartHouse.WebApiMono
         public async Task<Result> AirCondition(byte on)
         {
             var result = await TelemetryService.AirCondition(on);
-			PushNotification($"Air conditioner is {result.Message}");
+            PushNotification($"Air conditioner is {result.Message}");
             NotifyClients();
 
             return result;
         }
 
-		[HttpPost]
-		[Route("ToogleAirCondition")]
-		public async Task<Result> ToogleAirCondition()
-		{
-			var result = await TelemetryService.ToogleAirCondition();
-			PushNotification($"Air conditioner is {result.Message}");
+        [HttpPost]
+        [Route("ToogleAirCondition")]
+        public async Task<Result> ToogleAirCondition()
+        {
+            var result = await TelemetryService.ToogleAirCondition();
+            PushNotification($"Air conditioner is {result.Message}");
             NotifyClients();
 
             return result;
-		}
-	}
+        }
+    }
 }

@@ -27,7 +27,7 @@ namespace SmartHouse.WebApiMono
 
                 log4net.Config.XmlConfigurator.Configure();
                 Log.Info("Application_Start");
-
+                
                 StartTcpServer();
                 StartUdpTemperature();
                 StartAlarmClock();

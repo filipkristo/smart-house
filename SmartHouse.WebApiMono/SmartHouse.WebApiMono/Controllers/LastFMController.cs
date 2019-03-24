@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using IF.Lastfm.Core.Objects;
 using SmartHouse.Lib;
 
 namespace SmartHouse.WebApiMono
@@ -22,12 +21,12 @@ namespace SmartHouse.WebApiMono
 
         [Route("StartScrobble")]
         [HttpPost]
-        public HttpResponseMessage StartScrobble(SongDetails song)
+        public async Task<HttpResponseMessage> StartScrobble(SongDetails song)
         {
             if (!ModelState.IsValid)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
 
-            _lastFmService.StartScrobbleBash(song);
+            await _lastFmService.StartScrobble(song);
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
@@ -47,44 +46,44 @@ namespace SmartHouse.WebApiMono
 
         [Route("GetTopTracks")]
         [HttpGet]
-        public async Task<List<LastTrack>> GetTopTracks()
+        public async Task<IEnumerable<TrackInfoResponse>> GetTopTracks()
         {
             return await _lastFmService.GetTopTracks();
         }
 
         [Route("GetSongInfo")]
         [HttpGet]
-        public async Task<LastTrack> GetSongInfo(string artistName, string songName)
+        public async Task<TrackInfoResponse> GetSongInfo(string artistName, string songName)
         {
             return await _lastFmService.GetSongInfo(artistName, songName);
         }
 
         [Route("GetAlbumInfo")]
-        [HttpGet]
-        public async Task<LastAlbum> GetAlbumInfo(string artist, string album)
+        [HttpGet]        
+        public async Task<AlbumInfoResponse> GetAlbumInfo(string artist, string album)
         {
             return await _lastFmService.GetAlbumInfo(artist, album);
         }
 
         [Route("GetArtistInfo")]
-        [HttpGet]
-        public async Task<LastArtist> GetArtistInfo(string artist)
+        [HttpGet]        
+        public async Task<ArtistInfoResponse> GetArtistInfo(string artist)
         {
             return await _lastFmService.GetArtistInfo(artist);
         }
 
         [Route("GetSimilarArtist")]
-        [HttpGet]
-        public async Task<IEnumerable<LastArtist>> GetSimilarArtist(string artist, int limit = 50)
+        [HttpGet]        
+        public async Task<IEnumerable<ArtistInfoResponse>> GetSimilarArtist(string artist)
         {
-            return await _lastFmService.GetSimilarArtist(artist, limit);
+            return await _lastFmService.GetSimilarArtist(artist);
         }
 
         [Route("GetRecentTopArtists")]
         [HttpGet]
         public async Task<IEnumerable<ArtistTileData>> GetRecentTopArtists()
         {
-            return await _lastFmService.GetRecentTopArtists(DateTimeOffset.UtcNow.Date.AddDays(-1), 10);
+            return await _lastFmService.GetRecentTopArtists();
         }
     }
 }

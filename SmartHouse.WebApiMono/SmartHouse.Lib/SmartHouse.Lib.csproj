@@ -29,9 +29,6 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IF.Lastfm.Core, Version=1.1.0.339, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Inflatable.Lastfm.1.1.0.339\lib\netstandard1.1\IF.Lastfm.Core.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -59,23 +56,31 @@
     <Compile Include="BLL\DefaultVolumeSetterState.cs" />
     <Compile Include="Interfaces\ILyricsService.cs" />
     <Compile Include="Interfaces\IOrviboService.cs" />
+    <Compile Include="Interfaces\IPlayerFactoryService.cs" />
     <Compile Include="Interfaces\ISmartBulbService.cs" />
     <Compile Include="Interfaces\ISunriseSunsetService.cs" />
     <Compile Include="Interfaces\ITVService.cs" />
+    <Compile Include="Model\AlbumInfoResponse.cs" />
+    <Compile Include="Model\ArtistInfoResponse.cs" />
+    <Compile Include="Model\DeezerFavoriteStation.cs" />
+    <Compile Include="Model\LastFmTagResponse.cs" />
+    <Compile Include="Model\TrackInfoResponse.cs" />
+    <Compile Include="Service\BasePlayerService.cs" />
+    <Compile Include="Service\PlayerFactory.cs" />
     <Compile Include="Model\ArtistTileData.cs" />
     <Compile Include="Model\ContentCategoryEnum.cs" />
     <Compile Include="Model\ContentUploadModel.cs" />
     <Compile Include="Model\DashboardData.cs" />
+    <Compile Include="Model\DeezerState.cs" />
     <Compile Include="Model\IRCommands.cs" />
     <Compile Include="Model\PhoneCallData.cs" />
     <Compile Include="Model\ProcessResult.cs" />
-    <Compile Include="Model\SunriseSunsetData.cs" />
-    <Compile Include="Model\SunriseSunsetResult.cs" />
     <Compile Include="NamedPipes\CommandPipe.cs" />
     <Compile Include="NamedPipes\IRRemotePipe.cs" />
     <Compile Include="NamedPipes\NPCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Result.cs" />
+    <Compile Include="Service\DeezerService.cs" />
     <Compile Include="Service\LyricsService.cs" />
     <Compile Include="Service\OrviboService.cs" />
     <Compile Include="Service\PhoneCallsStack.cs" />
@@ -83,7 +88,7 @@
     <Compile Include="Service\SunriseSunsetService.cs" />
     <Compile Include="Service\TVService.cs" />
     <Compile Include="Util\BashHelper.cs" />
-    <Compile Include="Model\PandoraCommandEnum.cs" />
+    <Compile Include="Model\PlayerCommandEnum.cs" />
     <Compile Include="Interfaces\ISettings.cs" />
     <Compile Include="Service\SettingService.cs" />
     <Compile Include="Interfaces\ISettingsService.cs" />
@@ -93,11 +98,10 @@
     <Compile Include="Model\Settings\KodiSettings.cs" />
     <Compile Include="Model\Pandora\PandoraResult.cs" />
     <Compile Include="Model\KeyValue.cs" />
-    <Compile Include="Util\TimeSpanJsonConverter.cs" />
     <Compile Include="Util\YamahaHelper.cs" />
     <Compile Include="Service\YamahaService.cs" />
     <Compile Include="Service\PandoraService.cs" />
-    <Compile Include="Interfaces\IPanodraService.cs" />
+    <Compile Include="Interfaces\IPlayerService.cs" />
     <Compile Include="Interfaces\IYamahaService.cs" />
     <Compile Include="Model\PowerStatusEnum.cs" />
     <Compile Include="Service\SmartHouseService.cs" />
