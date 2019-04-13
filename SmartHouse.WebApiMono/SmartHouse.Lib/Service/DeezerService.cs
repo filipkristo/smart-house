@@ -18,7 +18,7 @@ namespace SmartHouse.Lib
         static DeezerService()
         {
             _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.BaseAddress = new Uri("http://10.110.166.91/");
+            _httpClient.BaseAddress = new Uri("http://10.110.166.99/");
             _httpClient.Timeout = TimeSpan.FromSeconds(5);
         }
 
