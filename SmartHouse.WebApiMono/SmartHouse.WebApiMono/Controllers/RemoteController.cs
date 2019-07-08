@@ -19,8 +19,8 @@ namespace SmartHouse.WebApiMono.Controllers
         private readonly ITVService TVService;
         private readonly ILastFMService LastFMService;
 
-        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPlayerFactoryService playerService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService)
-            : base(service)
+        public RemoteController(ISettingsService service, IYamahaService yamahaService, IPlayerFactoryService playerService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ILastFMService lastFMService, IRabbitMqService rabbitMqService)
+            : base(service, rabbitMqService)
         {
             YamahaService = yamahaService;
             PlayerService = playerService;

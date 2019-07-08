@@ -70,6 +70,7 @@ namespace SmartHouse.WebApiMono
             unity.RegisterType<ILyricsService, LyricsService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ISmartBulbService, SmartBulbService>(new HierarchicalLifetimeManager());
             unity.RegisterType<ISunriseSunsetService, SunriseSunsetService>(new HierarchicalLifetimeManager());
+            unity.RegisterType<IRabbitMqService, RabbitMqService>(new HierarchicalLifetimeManager());
 
             config.DependencyResolver = new UnityResolver(unity);
         }

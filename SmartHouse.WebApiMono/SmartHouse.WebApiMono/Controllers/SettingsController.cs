@@ -9,7 +9,7 @@ namespace SmartHouse.WebApiMono
 {
 	public class SettingsController : BaseController
 	{
-		public SettingsController(ISettingsService service) : base(service)
+		public SettingsController(ISettingsService service, IRabbitMqService rabbitMqService) : base(service, rabbitMqService)
 		{
 
 		}

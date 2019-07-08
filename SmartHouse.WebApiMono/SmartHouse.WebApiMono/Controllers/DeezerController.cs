@@ -17,7 +17,7 @@ namespace SmartHouse.WebApiMono.Controllers
         private readonly ILastFMService _lastFMService;
         private readonly IPlayerService _playerFactoryService;
 
-        public DeezerController(ISettingsService settingsService, ILastFMService lastFMService) : base(settingsService)
+        public DeezerController(ISettingsService settingsService, ILastFMService lastFMService, IRabbitMqService rabbitMqService) : base(settingsService, rabbitMqService)
         {
             _lastFMService = lastFMService;
             _playerFactoryService = new DeezerService();
@@ -57,6 +57,8 @@ namespace SmartHouse.WebApiMono.Controllers
                 Radio = deezerState.StreamName,
                 Song = deezerState.SongName
             };
+
+            RabbitMqService.SongChange(pandoraInfo);
             context.Clients.All.pandoraRefresh(pandoraInfo);
 
             var song = new SongDetails()

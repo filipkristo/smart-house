@@ -10,7 +10,7 @@ namespace SmartHouse.WebApiMono
 	{
 		private readonly IMPDService MpdService;
 
-		public MPDController(ISettingsService service, IMPDService mpdService) : base(service)
+		public MPDController(ISettingsService service, IMPDService mpdService, IRabbitMqService rabbitMqService) : base(service, rabbitMqService)
 		{
 			MpdService = mpdService;
 		}

@@ -13,7 +13,7 @@ namespace SmartHouse.WebApiMono.Controllers
     {
         private readonly ILyricsService LyricsService;
 
-        public LyricsController(ISettingsService service, ILyricsService lyricsService) : base(service)
+        public LyricsController(ISettingsService service, ILyricsService lyricsService, IRabbitMqService rabbitMqService) : base(service, rabbitMqService)
         {
             LyricsService = lyricsService;
         }

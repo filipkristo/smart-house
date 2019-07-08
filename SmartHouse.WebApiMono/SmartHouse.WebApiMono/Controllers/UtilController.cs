@@ -11,7 +11,7 @@ namespace SmartHouse.WebApiMono
 	[RoutePrefix("api/Util")]
 	public class UtilController : BaseController
 	{
-		public UtilController(ISettingsService service) : base(service)
+		public UtilController(ISettingsService service, IRabbitMqService rabbitMqService) : base(service, rabbitMqService)
 		{
 
 		}
@@ -69,6 +69,7 @@ namespace SmartHouse.WebApiMono
 			if (context == null)
 				return false;
 
+            RabbitMqService.Hello(param ?? "Call from server");
 			context.Clients.All.hello(param ?? "Call from server");
 			return true;
 		}

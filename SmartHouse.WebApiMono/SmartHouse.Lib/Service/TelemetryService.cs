@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace SmartHouse.Lib
 {
-	public class TelemetryService : ITelemetryService
+	public class TelemetryService : ITelemetryService, IDisposable
 	{
         private const string tempFile = "temperature";
 
         private static TelemetryData TemperatureData { get; } = new TelemetryData();
+
+        private readonly RabbitMqService rabbitMqService = new RabbitMqService();
 
         public Action<TelemetryData> SignalR { get; set; }        		
 
@@ -43,6 +45,7 @@ namespace SmartHouse.Lib
                 TemperatureData.GasValue = Convert.ToDecimal(data.Split(';')[3]);
                 TemperatureData.Measured = DateTime.UtcNow;
 
+                rabbitMqService.UpdateTemperature(TemperatureData);
                 SignalR?.Invoke(TemperatureData);
 			}
 
@@ -124,5 +127,10 @@ namespace SmartHouse.Lib
 			var state = await GetAirConditionState();
 			return await AirCondition((byte)(state == 0 ? 1 : 0));
 		}
-	}
+
+        public void Dispose()
+        {
+            rabbitMqService.Dispose();
+        }
+    }
 }

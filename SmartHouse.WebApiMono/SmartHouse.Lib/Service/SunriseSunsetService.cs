@@ -10,7 +10,7 @@ namespace SmartHouse.Lib
 {
     public class SunriseSunsetService : ISunriseSunsetService
     {
-        private const string _uri = "http://10.110.166.95/api/SunriseSunset/IsNight";
+        private const string _uri = "http://10.110.166.99/apiservice/api/SunriseSunset/IsNight";
         private static readonly HttpClient _httpClient;
 
         static SunriseSunsetService()

@@ -14,7 +14,7 @@ namespace SmartHouse.WebApiMono.Controllers
     {
         private readonly IOrviboService OrvibioService;
 
-        public OrviboController(ISettingsService settingsService, IOrviboService orvibioService) : base(settingsService)
+        public OrviboController(ISettingsService settingsService, IOrviboService orvibioService, IRabbitMqService rabbitMqService) : base(settingsService, rabbitMqService)
         {
             OrvibioService = orvibioService;
         }

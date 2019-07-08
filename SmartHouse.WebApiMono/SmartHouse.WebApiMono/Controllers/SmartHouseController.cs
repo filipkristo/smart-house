@@ -21,8 +21,8 @@ namespace SmartHouse.WebApiMono
         private readonly ISmartBulbService _smartBulbService;
         private readonly ISunriseSunsetService _sunriseSunsetService;
 
-        public SmartHouseController(ISettingsService settingsService, IYamahaService yamahaService, IPlayerFactoryService playerService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ITelemetryService telemetryService, ISmartBulbService smartBulbService, ISunriseSunsetService sunriseSunsetService)
-            : base(settingsService)
+        public SmartHouseController(ISettingsService settingsService, IYamahaService yamahaService, IPlayerFactoryService playerService, ISmartHouseService smartHouseService, IMPDService mpdService, ITVService tvService, ITelemetryService telemetryService, ISmartBulbService smartBulbService, ISunriseSunsetService sunriseSunsetService, IRabbitMqService rabbitMqService)
+            : base(settingsService, rabbitMqService)
         {
             _yamahaService = yamahaService;
             _playerService = playerService;
@@ -167,6 +167,8 @@ namespace SmartHouse.WebApiMono
         {
             var sb = new StringBuilder();
             var powerStatus = await _yamahaService.PowerStatus();
+
+            PushNotification("Please wait...");
 
             if (await _playerService.IsPlaying())
             {

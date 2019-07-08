@@ -10,7 +10,7 @@ namespace SmartHouse.WebApiMono
 	{
 		private readonly IYamahaService YamahaService;
 
-		public YamahaController(ISettingsService service, IYamahaService yamahaService) : base(service)
+		public YamahaController(ISettingsService service, IYamahaService yamahaService, IRabbitMqService rabbitMqService) : base(service, rabbitMqService)
 		{
 			YamahaService = yamahaService;
 		}

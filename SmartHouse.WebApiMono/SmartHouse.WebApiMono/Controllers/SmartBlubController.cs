@@ -13,7 +13,7 @@ namespace SmartHouse.WebApiMono.Controllers
     {
         private readonly ISmartBulbService _smartBulbService;
 
-        public SmartBlubController(ISettingsService service, ISmartBulbService smartBulbService) : base(service)
+        public SmartBlubController(ISettingsService service, ISmartBulbService smartBulbService, IRabbitMqService rabbitMqService) : base(service, rabbitMqService)
         {
             _smartBulbService = smartBulbService;
         }
@@ -26,6 +26,7 @@ namespace SmartHouse.WebApiMono.Controllers
             await _smartBulbService.Toggle();
 
             NotifyClients();
+            PushNotification("Toggle lights");
 
             return new Result
             {
@@ -42,6 +43,7 @@ namespace SmartHouse.WebApiMono.Controllers
             await _smartBulbService.TurnOn();
 
             NotifyClients();
+            PushNotification("Turn on");
 
             return new Result
             {
@@ -58,6 +60,7 @@ namespace SmartHouse.WebApiMono.Controllers
             await _smartBulbService.TurnOff();
 
             NotifyClients();
+            PushNotification("Turn off");
 
             return new Result
             {
@@ -73,6 +76,8 @@ namespace SmartHouse.WebApiMono.Controllers
             await _smartBulbService.Initialize();
             await _smartBulbService.SetWhite();
 
+            PushNotification("Set white lights");
+
             return new Result
             {
                 Ok = true,
@@ -86,6 +91,8 @@ namespace SmartHouse.WebApiMono.Controllers
         {
             await _smartBulbService.Initialize();
             await _smartBulbService.SetRed();
+
+            PushNotification("Set red lights");
 
             return new Result
             {

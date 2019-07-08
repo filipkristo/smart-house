@@ -13,8 +13,8 @@ namespace SmartHouse.WebApiMono
     {
         private readonly ILastFMService _lastFmService;
 
-        public LastFMController(ISettingsService service, ILastFMService lastFmService)
-            : base(service)
+        public LastFMController(ISettingsService service, ILastFMService lastFmService, IRabbitMqService rabbitMqService)
+            : base(service, rabbitMqService)
         {
             _lastFmService = lastFmService;
         }

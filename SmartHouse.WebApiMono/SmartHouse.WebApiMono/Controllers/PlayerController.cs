@@ -12,7 +12,7 @@ namespace SmartHouse.WebApiMono
 		private IPlayerFactoryService _playerService;
 		private ILastFMService _lastFmService;
 
-		public PlayerController(ISettingsService service, IPlayerFactoryService pandoraService, ILastFMService lastFMService) : base(service)
+		public PlayerController(ISettingsService service, IPlayerFactoryService pandoraService, ILastFMService lastFMService, IRabbitMqService rabbitMqService) : base(service, rabbitMqService)
 		{
 			_playerService = pandoraService;
 			_lastFmService = lastFMService;
@@ -22,7 +22,10 @@ namespace SmartHouse.WebApiMono
 		[Route("Play")]
 		public Result Play()
 		{
-			return _playerService.Play();
+			var result = _playerService.Play();
+
+            PushNotification("Play");
+            return result;
 		}
 
 		[HttpGet]
@@ -31,16 +34,19 @@ namespace SmartHouse.WebApiMono
 		{
 			var result = await _playerService.StartTcp();
 			await Task.Delay(1000);
+            PushNotification("Start Tcp");
 
-			return result;
+            return result;
 		}
 
 		[HttpGet]
 		[Route("Stop")]
 		public async Task<Result> Stop()
 		{
-			return await _playerService.StopTcp();
-		}
+			var result = await _playerService.StopTcp();
+            PushNotification("Stop Tcp");
+            return result;
+        }
 
 		[HttpGet]
 		[Route("Restart")]
@@ -53,8 +59,11 @@ namespace SmartHouse.WebApiMono
 		[Route("Next")]
 		public Result Next()
 		{
-			return _playerService.Next();
-		}
+			var result = _playerService.Next();
+
+            PushNotification(result.Message);
+            return result;
+        }
 
 		[HttpGet]
 		[Route("ThumbUp")]
@@ -111,9 +120,11 @@ namespace SmartHouse.WebApiMono
 		public Result ChangeStation(string stationId)
 		{
 			var result = _playerService.ChangeStation(stationId);
-			NotifyClients();
 
-			return result;
+			NotifyClients();
+            PushNotification(result.Message);
+
+            return result;
 		}
 
 		[HttpGet]
@@ -170,6 +181,8 @@ namespace SmartHouse.WebApiMono
 				return;
 
 			var pandoraInfo = _playerService.GetCurrentSongInfo();
+
+            RabbitMqService.SongChange(pandoraInfo);
 			context.Clients.All.pandoraRefresh(pandoraInfo);
 		}
 
