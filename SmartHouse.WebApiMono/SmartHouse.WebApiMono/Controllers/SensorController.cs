@@ -18,9 +18,9 @@ namespace SmartHouse.WebApiMono
 
         [HttpPost]
         [Route("SaveTemperature")]
-        public Result SaveTemperature(TelemetryData data)
+        public async Task<Result> SaveTemperature(TelemetryData data)
         {
-            return TelemetryService.SaveTemperature(data);
+            return await TelemetryService.SaveTemperature(data);
         }
 
         [HttpGet]
