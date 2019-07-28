@@ -17,8 +17,10 @@ namespace SmartHouseLambda.Service
         {
             var url = Environment.GetEnvironmentVariable("SMART_HOUSE_SERVICE_URL");
 
-            _client = new HttpClient();
-            _client.BaseAddress = new Uri(url);
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri(url)
+            };
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _client.Timeout = TimeSpan.FromSeconds(6);

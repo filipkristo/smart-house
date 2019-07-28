@@ -23,9 +23,24 @@ namespace SmartHouse.Lib
             return await GetTemperatureFromFile();
 		}
 
-		public Result SaveTemperature(TelemetryData data)
+		public async Task<Result> SaveTemperature(TelemetryData data)
 		{
-			return new Result()
+            lock (TemperatureData)
+            {
+                TemperatureData.DeviceId = data.DeviceId;
+                TemperatureData.Temperature = data.Temperature;
+                TemperatureData.Humidity = data.Humidity;
+                TemperatureData.HeatIndex = data.HeatIndex;
+                TemperatureData.GasValue = data.GasValue;
+                TemperatureData.Measured = data.Measured;
+
+                rabbitMqService.UpdateTemperature(TemperatureData);
+                SignalR?.Invoke(TemperatureData);
+            }
+
+            await SaveTemperatureToFile(TemperatureData);
+
+            return new Result()
 			{
 				Message = $"Temperature {data.Temperature}, humidity: {data.Humidity}, heatindex: {data.HeatIndex}",
 				ErrorCode = 0,
@@ -39,6 +54,7 @@ namespace SmartHouse.Lib
 
 			lock (TemperatureData)
 			{
+                TemperatureData.DeviceId = 1;
 				TemperatureData.Temperature = Convert.ToDecimal(data.Split(';')[0]);
 				TemperatureData.Humidity = Convert.ToDecimal(data.Split(';')[1]);
 				TemperatureData.HeatIndex = Convert.ToDecimal(data.Split(';')[2]);
