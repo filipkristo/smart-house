@@ -1,0 +1,47 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseGatewayApp", "SmartHouseGatewayApp\SmartHouseGatewayApp.csproj", "{5B4D0E2F-6D72-423C-8043-B5C0A68CC38B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseAbstraction", "SmartHouseAbstraction\SmartHouseAbstraction.csproj", "{320368D8-BC96-40D7-A53B-175C8112393A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseCore", "SmartHouseCore\SmartHouseCore.csproj", "{65D36F6E-29E5-452C-B552-A1BCCF06F629}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseDataStore", "SmartHouseDataStore\SmartHouseDataStore.csproj", "{52492B2F-6179-40AA-BDD2-16F437670D18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseDevice", "SmartHouseDevice\SmartHouseDevice.csproj", "{BCED707F-61D6-4DDA-B36D-0AE27FCFBC82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseDto", "SmartHouseDto\SmartHouseDto.csproj", "{8FC2FFC0-C6FB-4D72-9759-B69E860A2141}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B4D0E2F-6D72-423C-8043-B5C0A68CC38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B4D0E2F-6D72-423C-8043-B5C0A68CC38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B4D0E2F-6D72-423C-8043-B5C0A68CC38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B4D0E2F-6D72-423C-8043-B5C0A68CC38B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{320368D8-BC96-40D7-A53B-175C8112393A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{320368D8-BC96-40D7-A53B-175C8112393A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{320368D8-BC96-40D7-A53B-175C8112393A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{320368D8-BC96-40D7-A53B-175C8112393A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65D36F6E-29E5-452C-B552-A1BCCF06F629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D36F6E-29E5-452C-B552-A1BCCF06F629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65D36F6E-29E5-452C-B552-A1BCCF06F629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D36F6E-29E5-452C-B552-A1BCCF06F629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52492B2F-6179-40AA-BDD2-16F437670D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52492B2F-6179-40AA-BDD2-16F437670D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52492B2F-6179-40AA-BDD2-16F437670D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52492B2F-6179-40AA-BDD2-16F437670D18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCED707F-61D6-4DDA-B36D-0AE27FCFBC82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCED707F-61D6-4DDA-B36D-0AE27FCFBC82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCED707F-61D6-4DDA-B36D-0AE27FCFBC82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCED707F-61D6-4DDA-B36D-0AE27FCFBC82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FC2FFC0-C6FB-4D72-9759-B69E860A2141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC2FFC0-C6FB-4D72-9759-B69E860A2141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC2FFC0-C6FB-4D72-9759-B69E860A2141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC2FFC0-C6FB-4D72-9759-B69E860A2141}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

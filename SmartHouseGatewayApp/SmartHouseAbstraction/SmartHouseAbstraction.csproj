@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartHouseDto\SmartHouseDto.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="DataStore\" />
+    <Folder Include="Device\" />
+    <Folder Include="Core\Command\" />
+    <Folder Include="DataStore\Model\" />
+    <Folder Include="Device\Lights\" />
+  </ItemGroup>
+</Project>
