@@ -7,4 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartHouseAbstraction\SmartHouseAbstraction.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Command\" />
+  </ItemGroup>
 </Project>

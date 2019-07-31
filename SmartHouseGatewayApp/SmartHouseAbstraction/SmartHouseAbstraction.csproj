@@ -14,5 +14,6 @@
     <Folder Include="Core\Command\" />
     <Folder Include="DataStore\Model\" />
     <Folder Include="Device\Lights\" />
+    <Folder Include="DataStore\Service\" />
   </ItemGroup>
 </Project>
