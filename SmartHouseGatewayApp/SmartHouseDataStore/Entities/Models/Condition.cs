@@ -1,12 +1,10 @@
 ﻿using SmartHouseAbstraction.DataStore.Model;
 using System.ComponentModel.DataAnnotations;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartHouseDataStore.Entities
 {
-    public class Condition:IEntity
+    public class Condition : IEntity
     {
         public int Id { get; set; }
 

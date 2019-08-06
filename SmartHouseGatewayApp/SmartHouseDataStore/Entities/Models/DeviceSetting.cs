@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SmartHouseAbstraction.DataStore.Model;
+﻿using SmartHouseAbstraction.DataStore.Model;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartHouseDataStore.Entities
 {
-    public class DeviceSetting:IEntity
+    public class DeviceSetting : IEntity
     {
         public int Id { get; set; }
 
