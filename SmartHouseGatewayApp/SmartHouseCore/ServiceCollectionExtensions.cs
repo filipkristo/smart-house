@@ -7,7 +7,7 @@ namespace SmartHouseCore
     {
         public static void ConfireSmartHouseServices(this IServiceCollection services)
         {
-
+            //TODO:
         }
     }
 }
