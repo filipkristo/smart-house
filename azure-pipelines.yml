@@ -6,9 +6,8 @@
 trigger:
 - master
 pr:
-  branches:
-    include:
-    - '*'  # must quote since "*" is a YAML reserved character; we want a string
+- master
+
 pool:
   vmImage: 'ubuntu-latest'
 
