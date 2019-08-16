@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SmartHouseDataStore;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartHouseGatewayApp
 {
@@ -26,6 +28,10 @@ namespace SmartHouseGatewayApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? "data source=.;persist security info=False;Initial Catalog=smarthouse_db;User ID=sa;Password=filipkristo1";
+            services.AddDbContext<SmartHouseContext>(options =>
+                options.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
