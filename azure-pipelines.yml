@@ -23,15 +23,17 @@ steps:
     command: 'test'
     projects: 'SmartHouseGatewayApp/SmartHouseCoreTests/SmartHouseCoreTests.csproj'
     arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'Running Core tests'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(BuildConfiguration) --runtime linux-arm --output $(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
+    ArtifactName: 'SmartHouseGatewayApp'
     publishLocation: 'Container'
+
