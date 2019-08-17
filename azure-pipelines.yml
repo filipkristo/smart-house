@@ -15,5 +15,28 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build SmartHouseGatewayApp/SmartHouseGatewayApp.sln --configuration $(buildConfiguration) --runtime linux-arm
+- script: dotnet build SmartHouseGatewayApp/SmartHouseGatewayApp/SmartHouseGatewayApp.csproj --configuration $(buildConfiguration) --runtime linux-arm
   displayName: 'dotnet build linux-arm $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'SmartHouseGatewayApp/SmartHouseCoreTests/SmartHouseCoreTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'Running Core tests'
+  displayName: 'Running Core tests'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(BuildConfiguration) --runtime linux-arm --output $(Build.ArtifactStagingDirectory)'
+  displayName: 'dotnet publish linux-arm $(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'SmartHouseGatewayApp'
+    publishLocation: 'Container'
+  displayName: 'publish artifacts'
+
