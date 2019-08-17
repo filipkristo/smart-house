@@ -16,4 +16,4 @@ variables:
 
 steps:
 - script: dotnet build SmartHouseGatewayApp/SmartHouseGatewayApp.sln --configuration $(buildConfiguration) --runtime linux-arm
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'dotnet build linux-arm $(buildConfiguration)'
