@@ -23,8 +23,8 @@ steps:
     command: 'test'
     projects: 'SmartHouseGatewayApp/SmartHouseCoreTests/SmartHouseCoreTests.csproj'
     arguments: '--configuration $(buildConfiguration)'
-    testRunTitle: 'Running Core tests'
-  displayName: 'Running Core tests'
+    testRunTitle: 'running smarthouse core tests'
+  displayName: 'running smarthouse core tests'
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -38,5 +38,5 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'SmartHouseGatewayApp'
     publishLocation: 'Container'
-  displayName: 'publish artifacts'
+  displayName: 'publish artifacts to pipline'
 
