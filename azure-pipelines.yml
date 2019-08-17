@@ -17,3 +17,9 @@ variables:
 steps:
 - script: dotnet build SmartHouseGatewayApp/SmartHouseGatewayApp.sln --configuration $(buildConfiguration) --runtime linux-arm
   displayName: 'dotnet build linux-arm $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'SmartHouseGatewayApp/SmartHouseCoreTests/SmartHouseCoreTests.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
