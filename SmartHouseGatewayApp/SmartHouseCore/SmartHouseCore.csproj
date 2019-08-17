@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartHouseAbstraction\SmartHouseAbstraction.csproj" />
+    <ProjectReference Include="..\SmartHouseCommon\SmartHouseCommon.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Command\" />

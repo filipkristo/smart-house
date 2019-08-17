@@ -19,5 +19,6 @@
     <ProjectReference Include="..\SmartHouseCore\SmartHouseCore.csproj" />
     <ProjectReference Include="..\SmartHouseDataStore\SmartHouseDataStore.csproj" />
     <ProjectReference Include="..\SmartHouseDevice\SmartHouseDevice.csproj" />
+    <ProjectReference Include="..\SmartHouseCommon\SmartHouseCommon.csproj" />
   </ItemGroup>
 </Project>

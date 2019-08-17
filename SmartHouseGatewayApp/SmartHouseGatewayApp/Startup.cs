@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using SmartHouseCore;
 using SmartHouseDataStore;
 using SmartHouseDevice;
+using SmartHouseCommon;
 
 namespace SmartHouseGatewayApp
 {
@@ -35,7 +36,8 @@ namespace SmartHouseGatewayApp
             services.ConfireSmartHouseCoreServices();
             services.ConfireSmartHouseDataStoreServices();
             services.ConfireSmartHouseDeviceServices();
-        }
+			services.ConfireSmartHouseCommonServices();
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
