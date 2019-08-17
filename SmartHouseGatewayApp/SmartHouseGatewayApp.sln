@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseDeviceAbstraction
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseCommon", "SmartHouseCommon\SmartHouseCommon.csproj", "{512BFBCB-B9F3-4F40-970E-9380A7FC969D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E363DCDA-4104-4C96-9BA5-10C9D9D4C6DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseCoreTests", "SmartHouseCoreTests\SmartHouseCoreTests.csproj", "{EC622C5F-FCF5-42B3-AC32-A8C9A846FAFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,5 +65,12 @@ Global
 		{512BFBCB-B9F3-4F40-970E-9380A7FC969D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{512BFBCB-B9F3-4F40-970E-9380A7FC969D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{512BFBCB-B9F3-4F40-970E-9380A7FC969D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC622C5F-FCF5-42B3-AC32-A8C9A846FAFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC622C5F-FCF5-42B3-AC32-A8C9A846FAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC622C5F-FCF5-42B3-AC32-A8C9A846FAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC622C5F-FCF5-42B3-AC32-A8C9A846FAFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EC622C5F-FCF5-42B3-AC32-A8C9A846FAFD} = {E363DCDA-4104-4C96-9BA5-10C9D9D4C6DB}
 	EndGlobalSection
 EndGlobal
