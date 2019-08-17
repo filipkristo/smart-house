@@ -8,7 +8,7 @@ namespace SmartHouseCoreTests
         [Fact]
         public void Test()
         {
-            Test build error
+            
         }
     }
 }
