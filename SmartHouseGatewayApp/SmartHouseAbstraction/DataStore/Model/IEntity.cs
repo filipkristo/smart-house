@@ -1,5 +1,4 @@
-﻿using System;
-namespace SmartHouseAbstraction.DataStore.Model
+﻿namespace SmartHouseAbstraction.DataStore.Model
 {
     public interface IEntity
     {

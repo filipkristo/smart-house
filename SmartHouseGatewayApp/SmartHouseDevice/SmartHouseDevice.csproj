@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartHouseCore\SmartHouseCore.csproj" />
+    <ProjectReference Include="..\SmartHouseDeviceAbstraction\SmartHouseDeviceAbstraction.csproj" />
+    <ProjectReference Include="..\SmartHouseCommon\SmartHouseCommon.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lights\" />

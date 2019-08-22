@@ -10,7 +10,7 @@ using SmartHouseDataStore;
 namespace SmartHouseDataStore.Migrations
 {
     [DbContext(typeof(SmartHouseContext))]
-    [Migration("20190815182915_InitialCreate")]
+    [Migration("20190822095241_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
