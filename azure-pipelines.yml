@@ -25,7 +25,21 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
     testRunTitle: 'running smarthouse core tests'
   displayName: 'running smarthouse core tests'
-
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'SmartHouseGatewayApp/SmartHouseDataStoreTests/SmartHouseDataStoreTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'running smarthouse datastore tests'
+  displayName: 'running smarthouse datastore tests'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'SmartHouseGatewayApp/SmartHouseDeviceTests/SmartHouseDeviceTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'running smarthouse device tests'
+  displayName: 'running smarthouse device tests'
+  
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
