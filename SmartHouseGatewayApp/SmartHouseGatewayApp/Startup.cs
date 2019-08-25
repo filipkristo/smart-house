@@ -64,7 +64,7 @@ namespace SmartHouseGatewayApp
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? "data source=.;persist security info=False;Initial Catalog=smarthouse_db;User ID=sa;Password=filipkristo1";
+            var connectionString = Configuration.GetConnectionString(" DefaultConnection");
             services.AddDbContext<SmartHouseContext>(options =>
                 options.UseSqlServer(connectionString));
         
