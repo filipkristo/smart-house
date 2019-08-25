@@ -19,6 +19,7 @@ using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
 using Serilog;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartHouseGatewayApp
 {
@@ -61,6 +62,12 @@ namespace SmartHouseGatewayApp
                     }
                 });
             });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            var connectionString = Configuration.GetConnectionString(" DefaultConnection");
+            services.AddDbContext<SmartHouseContext>(options =>
+                options.UseSqlServer(connectionString));
+        
 
             services.AddHealthChecks();
 
