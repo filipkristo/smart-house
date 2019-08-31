@@ -1,0 +1,56 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+pr:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- script: dotnet build SmartHouseGatewayApp/SmartHouseGatewayApp/SmartHouseGatewayApp.csproj --configuration $(buildConfiguration) --runtime linux-arm
+  displayName: 'dotnet build linux-arm $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'SmartHouseGatewayApp/SmartHouseCoreTests/SmartHouseCoreTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'running smarthouse core tests'
+  displayName: 'running smarthouse core tests'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'SmartHouseGatewayApp/SmartHouseDataStoreTests/SmartHouseDataStoreTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'running smarthouse datastore tests'
+  displayName: 'running smarthouse datastore tests'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'SmartHouseGatewayApp/SmartHouseDeviceTests/SmartHouseDeviceTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+    testRunTitle: 'running smarthouse device tests'
+  displayName: 'running smarthouse device tests'
+  
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(BuildConfiguration) --runtime linux-arm --output $(Build.ArtifactStagingDirectory)'
+  displayName: 'dotnet publish linux-arm $(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'SmartHouseGatewayApp'
+    publishLocation: 'Container'
+  displayName: 'publish artifacts to pipline'
+
