@@ -64,7 +64,7 @@ namespace SmartHouseGatewayApp
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var connectionString = Configuration.GetConnectionString(" DefaultConnection");
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<SmartHouseContext>(options =>
                 options.UseSqlServer(connectionString));
         
@@ -104,6 +104,8 @@ namespace SmartHouseGatewayApp
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartHouse Gateway API V1");
                 c.DisplayRequestDuration();
             });
+
+            DbMigration.Migrate(app.ApplicationServices);
         }
     }
 }
