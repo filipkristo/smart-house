@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190824162931_InitialCreate.cs" />
+    <Compile Remove="Migrations\20190824162931_InitialCreate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SmartHouseCore\SmartHouseCore.csproj" />
     <ProjectReference Include="..\SmartHouseDataStoreAbstraction\SmartHouseDataStoreAbstraction.csproj" />
     <ProjectReference Include="..\SmartHouseCommon\SmartHouseCommon.csproj" />
