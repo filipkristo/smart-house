@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SmartHouseCoreAbstraction.Commands;
 using SmartHouseGatewayApp.Dto;
 
@@ -15,10 +16,12 @@ namespace SmartHouseGatewayApp.Controllers
     public class CommandController : ControllerBase
     {
         private readonly ICommandInvoker _commandInvoker;
+        private readonly ILogger _logger;
 
-        public CommandController(ICommandInvoker commandInvoker)
+        public CommandController(ICommandInvoker commandInvoker, ILogger<CommandController> logger)
         {
             _commandInvoker = commandInvoker;
+            _logger = logger;
         }
 
         [HttpPost]
