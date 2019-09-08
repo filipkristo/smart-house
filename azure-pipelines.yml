@@ -65,4 +65,4 @@ steps:
     releaseNotesSource: 'input'
     releaseNotes: 'new version'
     compareWith: 'lastFullRelease'
-    assets: $(Build.ArtifactStagingDirectory)
+    assets: '$(Build.ArtifactStagingDirectory)'
