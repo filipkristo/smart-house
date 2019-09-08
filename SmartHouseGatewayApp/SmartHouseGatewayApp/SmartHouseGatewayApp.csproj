@@ -31,5 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dto\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
 </Project>

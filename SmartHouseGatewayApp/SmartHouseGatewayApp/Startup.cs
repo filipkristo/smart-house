@@ -20,6 +20,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Serilog;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using SmartHouseGatewayApp.Middlewares;
 
 namespace SmartHouseGatewayApp
 {
@@ -84,17 +85,7 @@ namespace SmartHouseGatewayApp
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseMvc();
 
             app.UseSwagger();
