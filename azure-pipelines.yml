@@ -54,3 +54,13 @@ steps:
     publishLocation: 'Container'
   displayName: 'publish artifacts to pipline'
 
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: 'GitHub'
+    repositoryName: 'filipkristo/smart-house'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'auto'
+    releaseNotesSource: 'input'
+    releaseNotes: 'new version'
+    compareWith: 'lastFullRelease'
