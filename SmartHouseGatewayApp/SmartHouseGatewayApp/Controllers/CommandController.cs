@@ -27,7 +27,11 @@ namespace SmartHouseGatewayApp.Controllers
         [HttpPost]
         public async Task Post(CommandDto commandDto)
         {
+            _logger.LogInformation($"Started to execute command:{commandDto.CommandName}, for device:{commandDto.DeviceName}");
+
             await _commandInvoker.InvokeAsync(commandDto.CommandName, commandDto.DeviceName);
+
+            _logger.LogInformation($"Command executed");
         }
     }
 }
