@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseGatewayApp", "SmartHouseGatewayApp\SmartHouseGatewayApp.csproj", "{5B4D0E2F-6D72-423C-8043-B5C0A68CC38B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseAbstraction", "SmartHouseAbstraction\SmartHouseAbstraction.csproj", "{320368D8-BC96-40D7-A53B-175C8112393A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseCoreAbstraction", "SmartHouseAbstraction\SmartHouseCoreAbstraction.csproj", "{320368D8-BC96-40D7-A53B-175C8112393A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHouseCore", "SmartHouseCore\SmartHouseCore.csproj", "{65D36F6E-29E5-452C-B552-A1BCCF06F629}"
 EndProject

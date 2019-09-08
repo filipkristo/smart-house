@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace SmartHouseAbstraction.Core.Command
+namespace SmartHouseCoreAbstraction.Commands
 {
     public interface ICommandInvoker
     {

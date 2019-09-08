@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SmartHouseAbstraction.DataStore.Model;
+using SmartHouseDataStoreAbstraction.Models;
 
 namespace SmartHouseDataStore.Entities
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SmartHouseAbstraction.Device.Lights;
+using SmartHouseDeviceAbstraction.Lights;
 
 namespace SmartHouseDevice.Lights
 {

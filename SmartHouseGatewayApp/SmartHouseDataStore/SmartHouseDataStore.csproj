@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartHouseCore\SmartHouseCore.csproj" />
     <ProjectReference Include="..\SmartHouseDataStoreAbstraction\SmartHouseDataStoreAbstraction.csproj" />
     <ProjectReference Include="..\SmartHouseCommon\SmartHouseCommon.csproj" />
   </ItemGroup>

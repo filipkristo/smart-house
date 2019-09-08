@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SmartHouseCore.Commands;
+using SmartHouseCoreAbstraction.Commands;
 
 namespace SmartHouseCore
 {
@@ -6,7 +8,7 @@ namespace SmartHouseCore
     {
         public static void ConfireSmartHouseCoreServices(this IServiceCollection services)
         {
-            
+            services.AddTransient<ICommandInvoker, CommandInvoker>();
         }
     }
 }

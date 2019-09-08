@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SmartHouseAbstraction.Device.Lights
+namespace SmartHouseDeviceAbstraction.Lights
 {
     public interface ILightBulbService
     {

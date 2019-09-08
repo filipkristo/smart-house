@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SmartHouseDataStore.Service;
+using SmartHouseDataStoreAbstraction.Commands;
 
 namespace SmartHouseDataStore
 {
@@ -6,7 +8,7 @@ namespace SmartHouseDataStore
     {
         public static void ConfireSmartHouseDataStoreServices(this IServiceCollection services)
         {
-
+            services.AddTransient<ICommandService, CommandService>();
         }
     }
 }

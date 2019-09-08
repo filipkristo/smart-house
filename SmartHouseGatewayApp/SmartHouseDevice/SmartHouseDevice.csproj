@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartHouseCore\SmartHouseCore.csproj" />
     <ProjectReference Include="..\SmartHouseDeviceAbstraction\SmartHouseDeviceAbstraction.csproj" />
     <ProjectReference Include="..\SmartHouseCommon\SmartHouseCommon.csproj" />
+    <ProjectReference Include="..\SmartHouseDto\SmartHouseDto.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lights\" />

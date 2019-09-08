@@ -11,4 +11,8 @@
   <ItemGroup>
     <Compile Remove="Class1.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+    <Folder Include="Exceptions\DataStore\" />
+  </ItemGroup>
 </Project>

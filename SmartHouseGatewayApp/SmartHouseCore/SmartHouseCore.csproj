@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartHouseAbstraction\SmartHouseAbstraction.csproj" />
     <ProjectReference Include="..\SmartHouseCommon\SmartHouseCommon.csproj" />
+    <ProjectReference Include="..\SmartHouseAbstraction\SmartHouseCoreAbstraction.csproj" />
+    <ProjectReference Include="..\SmartHouseDataStoreAbstraction\SmartHouseDataStoreAbstraction.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Command\" />
+    <Folder Include="Commands\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />

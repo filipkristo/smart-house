@@ -1,4 +1,4 @@
-﻿namespace SmartHouseAbstraction.DataStore.Model
+﻿namespace SmartHouseDataStoreAbstraction.Models
 {
     public interface IEntity
     {

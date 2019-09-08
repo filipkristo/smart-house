@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using SmartHouseAbstraction.DataStore.Model;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SmartHouseDataStoreAbstraction.Models;
 
 namespace SmartHouseDataStore.Entities
 {

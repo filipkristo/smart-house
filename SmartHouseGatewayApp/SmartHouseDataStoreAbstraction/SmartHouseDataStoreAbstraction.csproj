@@ -7,4 +7,11 @@
   <ItemGroup>
     <Compile Remove="Class1.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmartHouseDto\SmartHouseDto.csproj" />
+  </ItemGroup>
 </Project>

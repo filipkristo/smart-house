@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SmartHouseAbstraction.DataStore.Service;
+using SmartHouseCommon.Exceptions.DataStore;
+using SmartHouseDataStoreAbstraction.Commands;
 using SmartHouseDto.Commands;
 
 namespace SmartHouseDataStore.Service
@@ -29,18 +30,30 @@ namespace SmartHouseDataStore.Service
                 .Include(x => x.Device.DeviceStates)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            if (entity == null)
+                throw new EntityNotFoundException($"Command entity with id '{id}' doesn't exists");
+
             return _mapper.Map<Command>(entity);
         }
 
-        public async Task<Command> GetCommandByNameAsnc(string name)
+        public async Task<Command> GetCommandByNameAsnc(string name, string deviceName)
         {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+
+            if (deviceName == null)
+                throw new ArgumentNullException(nameof(deviceName));
+
             var entity = await _smartHouseContext
                 .Commands
                 .Include(x => x.Device)
                 .Include(x => x.Device.DeviceSettings)
                 .Include(x => x.Device.DeviceType)
                 .Include(x => x.Device.DeviceStates)
-                .FirstOrDefaultAsync(x => x.Name == name);
+                .FirstOrDefaultAsync(x => x.Name == name && x.Device.Name == deviceName);
+
+            if (entity == null)
+                throw new EntityNotFoundException($"Command entity with name '{name}' and device {deviceName} doesn't exists");
 
             return _mapper.Map<Command>(entity);
         }

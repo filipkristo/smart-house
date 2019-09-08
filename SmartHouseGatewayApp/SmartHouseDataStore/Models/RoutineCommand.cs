@@ -1,4 +1,4 @@
-﻿using SmartHouseAbstraction.DataStore.Model;
+﻿using SmartHouseDataStoreAbstraction.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
