@@ -12,6 +12,7 @@ namespace SmartHouseDataStore.AutoMapperProfile
             CreateMap<entity.Device, dto.Device>();
             CreateMap<entity.DeviceSetting, dto.DeviceState>();
             CreateMap<entity.DeviceType, dto.DeviceType>();
+            CreateMap<entity.DeviceSetting, dto.DeviceSetting>();
         }   
     }
 }

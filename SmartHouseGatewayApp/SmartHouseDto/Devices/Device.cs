@@ -20,5 +20,7 @@ namespace SmartHouseDto.Devices
         public DeviceType DeviceType { get; set; }
 
         public IReadOnlyList<DeviceState> DeviceStates { get; set; }
+
+        public IReadOnlyList<DeviceSetting> DeviceSettings { get; set; }
     }
 }

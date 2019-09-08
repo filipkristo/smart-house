@@ -24,9 +24,9 @@ namespace SmartHouseDataStore.Service
             var entity = await _smartHouseContext
                 .Commands
                 .Include(x => x.Device)
-                .ThenInclude(x => x.DeviceStates)
-                .Include(x => x.Device)
-                .ThenInclude(x => x.DeviceType)
+                .Include(x => x.Device.DeviceSettings)               
+                .Include(x => x.Device.DeviceType)
+                .Include(x => x.Device.DeviceStates)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return _mapper.Map<Command>(entity);
@@ -37,9 +37,9 @@ namespace SmartHouseDataStore.Service
             var entity = await _smartHouseContext
                 .Commands
                 .Include(x => x.Device)
-                .ThenInclude(x => x.DeviceStates)
-                .Include(x => x.Device)
-                .ThenInclude(x => x.DeviceType)
+                .Include(x => x.Device.DeviceSettings)
+                .Include(x => x.Device.DeviceType)
+                .Include(x => x.Device.DeviceStates)
                 .FirstOrDefaultAsync(x => x.Name == name);
 
             return _mapper.Map<Command>(entity);
