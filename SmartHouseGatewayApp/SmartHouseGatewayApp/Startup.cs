@@ -69,7 +69,6 @@ namespace SmartHouseGatewayApp
             services.AddDbContext<SmartHouseContext>(options =>
                 options.UseSqlServer(connectionString));
         
-
             services.AddHealthChecks();
 
         }
