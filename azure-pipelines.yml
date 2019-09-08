@@ -60,7 +60,9 @@ steps:
     repositoryName: 'filipkristo/smart-house'
     action: 'create'
     target: '$(Build.SourceVersion)'
-    tagSource: 'auto'
+    tagSource: manual
+    tag: $(Build.BuildNumber)
     releaseNotesSource: 'input'
     releaseNotes: 'new version'
     compareWith: 'lastFullRelease'
+    assets: $(Build.ArtifactStagingDirectory)
