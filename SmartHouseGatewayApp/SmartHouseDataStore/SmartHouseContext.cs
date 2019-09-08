@@ -46,7 +46,7 @@ namespace SmartHouseDataStore
 
             var deezer = new Device { Id = 1, DeviceTypeId = musicPlayer.Id, Name = "Deezer Player", CrlAssembly = string.Empty, CrlType = string.Empty, Description = string.Empty };
             var pandora = new Device { Id = 2, DeviceTypeId = musicPlayer.Id, Name = "Pandora Player", CrlAssembly = string.Empty, CrlType = string.Empty, Description = string.Empty };
-            var yamaha = new Device { Id = 3, DeviceTypeId = amplifier.Id, Name = "Pandora Player", CrlAssembly = string.Empty, CrlType = string.Empty, Description = string.Empty };
+            var yamaha = new Device { Id = 3, DeviceTypeId = amplifier.Id, Name = "Yamaha RX-V481", CrlAssembly = string.Empty, CrlType = string.Empty, Description = string.Empty };
             var philips = new Device { Id = 4, DeviceTypeId = tv.Id, Name = "Philips", CrlAssembly = string.Empty, CrlType = string.Empty, Description = string.Empty };
             var yeelightLivingRoom = new Device { Id = 5, DeviceTypeId = lights.Id, Name = "Yeelight - living room", CrlAssembly = string.Empty, CrlType = string.Empty, Description = string.Empty };
             var yeelightBedroom = new Device { Id = 6, DeviceTypeId = lights.Id, Name = "Yeelight - bedroom", CrlAssembly = string.Empty, CrlType = string.Empty, Description = string.Empty };
