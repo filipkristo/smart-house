@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Command\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Devices\" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using SmartHouseDto.Command;
+using SmartHouseDto.Commands;
 
 namespace SmartHouseAbstraction.DataStore.Service
 {
